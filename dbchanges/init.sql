@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:8889
--- Généré le :  Ven 08 Décembre 2017 à 12:06
+-- Généré le :  Ven 08 Décembre 2017 à 12:27
 -- Version du serveur :  5.6.35
 -- Version de PHP :  7.1.1
 
@@ -17,6 +17,19 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `pictures`
+--
+
+CREATE TABLE `pictures` (
+  `id_pictures` int(11) NOT NULL,
+  `id_users` int(11) NOT NULL,
+  `canvas` text NOT NULL,
+  `thumb` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `users`
 --
 
@@ -26,9 +39,39 @@ CREATE TABLE `users` (
   `firstname` varchar(50) NOT NULL,
   `lastname` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','membre') NOT NULL,
+  `salt` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Index pour les tables exportées
 --
+
+--
+-- Index pour la table `pictures`
+--
+ALTER TABLE `pictures`
+  ADD PRIMARY KEY (`id_pictures`),
+  ADD KEY `id_users` (`id_users`);
+
+--
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id_users`);
+
+--
+-- AUTO_INCREMENT pour les tables exportées
+--
+
+--
+-- AUTO_INCREMENT pour la table `pictures`
+--
+ALTER TABLE `pictures`
+  MODIFY `id_pictures` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT;
