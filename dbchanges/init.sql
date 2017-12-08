@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:8889
--- Généré le :  Ven 08 Décembre 2017 à 12:27
+-- Généré le :  Ven 08 Décembre 2017 à 12:42
 -- Version du serveur :  5.6.35
 -- Version de PHP :  7.1.1
 
@@ -17,6 +17,17 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `categories`
+--
+
+CREATE TABLE `categories` (
+  `id_categories` int(11) NOT NULL,
+  `title` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `pictures`
 --
 
@@ -24,7 +35,8 @@ CREATE TABLE `pictures` (
   `id_pictures` int(11) NOT NULL,
   `id_users` int(11) NOT NULL,
   `canvas` text NOT NULL,
-  `thumb` text NOT NULL
+  `thumb` text NOT NULL,
+  `id_categories` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -49,11 +61,18 @@ CREATE TABLE `users` (
 --
 
 --
+-- Index pour la table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id_categories`);
+
+--
 -- Index pour la table `pictures`
 --
 ALTER TABLE `pictures`
   ADD PRIMARY KEY (`id_pictures`),
-  ADD KEY `id_users` (`id_users`);
+  ADD KEY `id_users` (`id_users`),
+  ADD KEY `id_categories` (`id_categories`);
 
 --
 -- Index pour la table `users`
@@ -65,6 +84,11 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour les tables exportées
 --
 
+--
+-- AUTO_INCREMENT pour la table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id_categories` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `pictures`
 --
