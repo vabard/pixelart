@@ -11,10 +11,10 @@ return [
     'propel' => [
         'paths' => [
             // The directory where Propel expects to find your `schema.xml` file.
-            'schemaDir' => '/Applications/XAMPP/xamppfiles/htdocs/pixelart',
+            'schemaDir' => '/Users/vassilina/Documents/DEV/DEV/pixelart',
 
             // The directory where Propel should output generated object model classes.
-            'phpDir' => '/Applications/XAMPP/xamppfiles/htdocs/pixelart/src',
+            'phpDir' => '/Users/vassilina/Documents/DEV/DEV/pixelart/src',
         ],
         /*
         'database' => [
