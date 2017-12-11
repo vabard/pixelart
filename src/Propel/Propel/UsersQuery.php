@@ -3,6 +3,7 @@
 namespace Propel\Propel;
 
 use Propel\Propel\Base\UsersQuery as BaseUsersQuery;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * Skeleton subclass for performing query and update operations on the 'users' table.
@@ -14,7 +15,18 @@ use Propel\Propel\Base\UsersQuery as BaseUsersQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class UsersQuery extends BaseUsersQuery
+class UsersQuery extends BaseUsersQuery implements UserProviderInterface
 {
+    public function loadUserByUsername($username): \Symfony\Component\Security\Core\User\UserInterface {
+        return self::create()->findByUsername($username)->findOne();
+    }
+
+    public function refreshUser(\Symfony\Component\Security\Core\User\UserInterface $user): \Symfony\Component\Security\Core\User\UserInterface {
+        
+    }
+
+    public function supportsClass($class): bool {
+        
+    }
 
 }
