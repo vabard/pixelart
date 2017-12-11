@@ -1,0 +1,52 @@
+/* CSS - Cascading Style Sheet */
+/* Palette color codes */
+/* Palette URL: http://paletton.com/#uid=50g0u0ktSw0iyF5nLziwPpSB8kp */
+
+/* Feel free to copy&paste color codes to your application */
+
+
+/* As hex codes */
+
+.color-primary-0 { color: #FF5811 }	/* Main Primary color */
+.color-primary-1 { color: #FF976B }
+.color-primary-2 { color: #FF7A42 }
+.color-primary-3 { color: #CE3D00 }
+.color-primary-4 { color: #A23000 }
+
+.color-secondary-1-0 { color: #FF9B11 }	/* Main Secondary color (1) */
+.color-secondary-1-1 { color: #FFC16B }
+.color-secondary-1-2 { color: #FFAF42 }
+.color-secondary-1-3 { color: #CE7700 }
+.color-secondary-1-4 { color: #A25E00 }
+
+.color-secondary-2-0 { color: #E60F4C }	/* Main Secondary color (2) */
+.color-secondary-2-1 { color: #EE648B }
+.color-secondary-2-2 { color: #E83C6D }
+.color-secondary-2-3 { color: #BA0035 }
+.color-secondary-2-4 { color: #92002A }
+
+
+
+/* As RGBa codes */
+
+.rgba-primary-0 { color: rgba(255, 88, 17,1) }	/* Main Primary color */
+.rgba-primary-1 { color: rgba(255,151,107,1) }
+.rgba-primary-2 { color: rgba(255,122, 66,1) }
+.rgba-primary-3 { color: rgba(206, 61,  0,1) }
+.rgba-primary-4 { color: rgba(162, 48,  0,1) }
+
+.rgba-secondary-1-0 { color: rgba(255,155, 17,1) }	/* Main Secondary color (1) */
+.rgba-secondary-1-1 { color: rgba(255,193,107,1) }
+.rgba-secondary-1-2 { color: rgba(255,175, 66,1) }
+.rgba-secondary-1-3 { color: rgba(206,119,  0,1) }
+.rgba-secondary-1-4 { color: rgba(162, 94,  0,1) }
+
+.rgba-secondary-2-0 { color: rgba(230, 15, 76,1) }	/* Main Secondary color (2) */
+.rgba-secondary-2-1 { color: rgba(238,100,139,1) }
+.rgba-secondary-2-2 { color: rgba(232, 60,109,1) }
+.rgba-secondary-2-3 { color: rgba(186,  0, 53,1) }
+.rgba-secondary-2-4 { color: rgba(146,  0, 42,1) }
+
+
+
+
