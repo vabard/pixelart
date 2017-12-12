@@ -26,8 +26,8 @@ class UsersQuery extends BaseUsersQuery implements UserProviderInterface
         return self::create()->findOneByUsername($user->getUsername());
     }
 
-    public function supportsClass($class): bool {
-        
+    public function supportsClass($class){
+        return $class === 'Users';
     }
 
 }

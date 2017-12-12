@@ -5,6 +5,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Propel\Propel\UsersQuery;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 require __DIR__.'/controllers_admin.php';
 
@@ -38,6 +40,41 @@ $app->get('/login', function(Request $request) use ($app) {
     ));
 })
 ->bind('login')
+;
+$app->match('/register', function(Request $request) use ($app) {
+    
+    $user = UsersQuery::create();
+    
+    $form = $app['form.factory']->createBuilder(\FormType\UserType::class, $user, [
+        'validation_groups' => ['registration']
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Inscription'
+            ])
+            ->getForm();
+    
+    $form->handleRequest($request);
+    
+    if($form->isValid()){
+        $user->setRole('ROLE_USER');
+        $salt = md5(time());
+        $user->setSalt($salt);
+        $encodedPassword = $app['security.encoder_factory']
+                ->getEncoder($user)
+                ->encodePassword($user->getPassword(), $user->getSalt());
+        
+        $user->setPassword($encodedPassword);
+        $user->save();
+        return $app->redirect($app['url_generator']->generate('login'));
+    }
+     
+    $formView = $form->createView();
+    
+    return $app['twig']->render('register.html.twig', ['form' => $formView]);
+    
+})
+->method('GET|POST')
+->bind('register')
 ;
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
