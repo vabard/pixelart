@@ -34,11 +34,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
-                        <a href="index.html"><img src="{{ asset('images/logo.png') }}" alt="logo"></a>
+                        <a href="index.html"><img src="{{ asset('images/pixelart1_transparent.png') }}" alt="logo" width="40" height="40"></a>
+                        <span><img src="{{ asset('images/pixelart_title_transparent.png') }}" alt="title" width="150" height="40"></span>
                     </div>
                     <div class="col-sm-3 col-sm-offset-3 text-right">
-                        <span class="glyphicon glyphicon-user"><a href="">Login</a></span><br>
-                        <span class="glyphicon glyphicon-floppy-disk"><a href="">Register</a></span>
+                        <div class=""><a class="user" href="{{ path('login') }}">Connexion</a><span class="glyphicon glyphicon-user"></span></div>
+                        <div class=""><a class="user" href="">Inscription</a><span class="glyphicon glyphicon-floppy-disk"></span></div>
                     </div>
                 </div>
             </div>
@@ -62,10 +63,9 @@
 
                         <div class="collapse navbar-collapse" id="site-nav-bar">
                             <ul class="nav navbar-nav">
-                                <li class="active"><a href="index.html">Home</a></li>
-                                <li><a href="about.html">About</a></li>
-                                <li><a href="shop.html">Shop</a></li>
-                                <li><a href="faq.html">FAQ</a></li>
+                                <li class="active"><a href="{{ path('homepage') }}">Accueil</a></li>
+                                <li><a href="apprendre.html">Apprendre</a></li>
+                                <li><a href="creation.html">Création</a></li>
                                 <li><a href="contact.html">Contact</a></li>
                             </ul>
                         </div><!-- /.navbar-collapse -->
@@ -83,7 +83,7 @@
     <!-- Footer -->
 
         <footer class="footer text-center">
-            <h3>&copy; Theme by <a href="https://themewagon.com/">Themewagon</a></h3>
+            <h3><a href="https://themewagon.com/">2017 &copy; pixelart-factory.com by vejj</a></h3>
         </footer>
 
     <!-- Scripts -->
