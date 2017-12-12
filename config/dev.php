@@ -2,9 +2,15 @@
 
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
+use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
 
 // include the prod configuration
 require __DIR__.'/prod.php';
+
+$app['security.default_encoder'] = function ($app) {
+    // Plain text (e.g. for debugging)
+    return new PlaintextPasswordEncoder();
+};
 
 // enable the debug mode
 $app['debug'] = true;

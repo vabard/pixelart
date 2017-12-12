@@ -3,6 +3,7 @@
 namespace Propel\Propel;
 
 use Propel\Propel\Base\Users as BaseUsers;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Skeleton subclass for representing a row from the 'users' table.
@@ -14,7 +15,14 @@ use Propel\Propel\Base\Users as BaseUsers;
  * long as it does not already exist in the output directory.
  *
  */
-class Users extends BaseUsers
+class Users extends BaseUsers implements UserInterface
 {
+    public function eraseCredentials() {
+        
+    }
+
+    public function getRoles() {
+        return explode('|', $this->getRole());
+    }
 
 }
