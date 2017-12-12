@@ -115,8 +115,8 @@ body{
 	position: relative;
 }
 .header-quote{
-	color: #fabe12;
-	font-weight: 700;
+	color: #fff;
+	/*font-weight: 700;*/
 	margin-bottom: 0;
 }
 .main-header p{
@@ -125,14 +125,18 @@ body{
 	letter-spacing: 6px;
 }
 .header-title{
+        color: #fabe12;
 	font-weight: 700;
+}
+h1.header-title {
+    font-size: 50px;
 }
 .header-title .thin{
 	letter-spacing: 6px;
 }
 .intro{
 	padding: 200px 0;
-    background-image: url(../images/header.jpg);
+    background-image: url(../images/pixelart_wallpaper_home.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -169,7 +173,14 @@ body{
 .navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
 	color: #fff;
 }
-
+.site-header-bg .user{
+    text-decoration: none;
+    color: #fabe12;
+    font-size: 14px;
+    padding-right: 5px;
+    font-weight: lighter;
+    text-transform: none;
+}
 
 
 
@@ -250,7 +261,7 @@ body{
 }
 .product-title{
 	position: absolute;
-    top: 5px;
+    bottom: 5px;
     left: 25px;
     right: 25px;
     padding: 15px;
@@ -335,12 +346,13 @@ body{
 ##		Partner Section
 =======================================================================*/
 .partner .section-bg{
-	background-color: #fff;
+	background-color: #111;
 	text-align: center;
 	padding-bottom: 80px;
 }
 .partner .title{
-	color: #111;
+	color: #fff;
+        text-transform: uppercase;
 }
 
 

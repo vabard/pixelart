@@ -1,5 +1,107 @@
 {% extends "layout.html.twig" %}
 
+{% block intro %}
+    
+    <div class="intro row">
+        <div class="overlay"></div>
+        <div class="col-sm-6 col-sm-offset-6">
+            <h1 class="header-title"><img src="{{ asset('images/pixelart_title_transparent.png') }}" width="250" height="80"><br><span class="thin">Factory</span></h1>
+            <h2 class="header-quote">Apprendre & créer</h2>           
+        </div>
+    </div> <!-- /.intro.row -->
+
+{% endblock %}
+
 {% block content %}
-    Welcome to your new Silex Application!
+
+
+    <!-- Product -->
+
+    <section id="product" class="product">
+        <div class="container section-bg">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="title-box">
+
+                        <h2 class="title">Bienvenue dans la  <span>Pixel Art Factory</span></h2>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="porduct-box">
+                        <img class="img-responsive" src="{{ asset('images/pixelart_wallpaper1.jpg') }}" alt="product">
+                        <h3 class="product-title">Apprendre</h3>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="porduct-box">
+                        <img class="img-responsive" src="{{ asset('images/pixelart_wallpaper2.jpg') }}" alt="product">
+                        <h3 class="product-title">Créer</h3>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Partner -->
+    <section id="partner" class="partner">
+        <div class="container section-bg">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="title-box">
+                         
+                        <h2 class="title mt0">Vos pixelarts</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="boxed">
+                    <div class="col-sm-12">
+                        <div id="partner-slider" class="owl-carousel">
+                            <div class="item">
+                                <img src="{{ asset('images/1.png') }}" alt="partner">
+                            </div>
+                            <div class="item">
+                                <img src="{{ asset('images/3.png') }}" alt="partner">
+                            </div>
+                            <div class="item">
+                                <img src="{{ asset('images/2.png') }}" alt="partner">
+                            </div>
+                            <div class="item">
+                                <img src="{{ asset('images/5.png') }}" alt="partner">
+                            </div>
+                            <div class="item">
+                                <img src="{{ asset('images/1.png') }}" alt="partner">
+                            </div>
+                            <div class="item">
+                                <img src="{{ asset('images/3.png') }}" alt="partner">
+                            </div>
+                            <div class="item">
+                                <img src="{{ asset('images/2.png') }}" alt="partner">
+                            </div>
+                            <div class="item">
+                                <img src="{{ asset('images/5.png') }}" alt="partner">
+                            </div>
+                            <div class="item">
+                                <img src="{{ asset('images/1.png') }}" alt="partner">
+                            </div>
+                            <div class="item">
+                                <img src="{{ asset('images/3.png') }}" alt="partner">
+                            </div>
+                            <div class="item">
+                                <img src="{{ asset('images/2.png') }}" alt="partner">
+                            </div>
+                            <div class="item">
+                                <img src="{{ asset('images/5.png') }}" alt="partner">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
