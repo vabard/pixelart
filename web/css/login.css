@@ -132,7 +132,7 @@ box-shadow:         0px 0px 8px 0px rgba(50, 50, 50, 0.54);
 }
 
 .login_box .btn-orange:hover {
-    //background-color: #F22F26;
+    /* background-color: #F22F26; */
     border-radius: 0px;
     margin: 5px;
     padding: 5px;
