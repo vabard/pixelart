@@ -24,5 +24,8 @@ class Users extends BaseUsers implements UserInterface
     public function getRoles() {
         return explode('|', $this->getRole());
     }
+    public function setRole($role){
+        $this->role = $role;
+    }
 
 }

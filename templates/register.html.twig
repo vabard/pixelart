@@ -2,5 +2,11 @@
 
 {% block content %}
     {% form_theme form "bootstrap_3_layout.html.twig" %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
     {{ form (form) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

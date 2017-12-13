@@ -2,9 +2,9 @@
 
 namespace Constraints;
 
-use Symfony\Component\Validator\ConstraintValidator;
-use Constraints\UniqueEntity;
+use Propel\Runtime\Connection\ConnectionInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Description of UniqueEntityValidator
@@ -19,7 +19,8 @@ class UniqueEntityValidator extends ConstraintValidator
         $field = $constraint->getField();
         $dao = $constraint->getDao();
         
-        $entity = $dao->findOne(["$field = ?" => $value]);
+        //$entity = $dao->findOne(["$field = ?" => $value]);
+        $entity = $dao->findOneBy($field, $value, $con = null);
         
         if($entity){
             $this->context->buildViolation($constraint->message)
