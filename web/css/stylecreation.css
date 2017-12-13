@@ -1,0 +1,13 @@
+#cadre {
+    border:1px solid black;
+    float:left;
+    overflow-y:scroll;
+    height:750px;
+}
+
+#canvas{
+    border:1px solid red;/* mode dev */
+    
+    width: 100%;
+}
+
