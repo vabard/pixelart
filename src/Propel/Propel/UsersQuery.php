@@ -3,6 +3,7 @@
 namespace Propel\Propel;
 
 use Propel\Propel\Base\UsersQuery as BaseUsersQuery;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
@@ -17,12 +18,12 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class UsersQuery extends BaseUsersQuery implements UserProviderInterface
 {
-    public function loadUserByUsername($username): \Symfony\Component\Security\Core\User\UserInterface {
-        return self::create()->findByUsername($username)->findOne();
+    public function loadUserByUsername($username): UserInterface {
+        return self::create()->findOneByUsername($username);
     }
 
-    public function refreshUser(\Symfony\Component\Security\Core\User\UserInterface $user): \Symfony\Component\Security\Core\User\UserInterface {
-        
+    public function refreshUser(UserInterface $user): UserInterface {
+        return self::create()->findOneByUsername($user->getUsername());
     }
 
     public function supportsClass($class): bool {

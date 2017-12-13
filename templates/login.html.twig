@@ -21,20 +21,25 @@
             </div>
 
             <div class="col-md-12 col-xs-12 login_control">
+                <form class="form" method="post" action="{{ path('login_check') }}">
+                    <div class="control">
+                        <div class="label">Pseudo</div>
+                        <input type="text" class="form-control" name="_username" value="{{ last_username }}"/>
+                    </div>
 
-                <div class="control">
-                    <div class="label">Email Address</div>
-                    <input type="text" class="form-control" value="admin@gmail.com"/>
-                </div>
-
-                <div class="control">
-                    <div class="label">Password</div>
-                    <input type="password" class="form-control" value="123456"/>
-                </div>
-                <div align="center">
-                    <button class="btn btn-orange">LOGIN</button>
-                </div>
-
+                    <div class="control">
+                        <div class="label">Mot de passe</div>
+                        <input type="password" class="form-control" name="_password" value=""/>
+                    </div>
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            {{ error | trans }}
+                        </div>
+                    {% endif %}
+                    <div align="center">
+                        <button class="btn btn-orange" type="submit">CONNEXION</button>
+                    </div>
+                </form>
             </div>          
         </div>
     </div>

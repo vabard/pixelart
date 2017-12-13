@@ -39,8 +39,21 @@
                         <span><img src="{{ asset('images/pixelart_title_transparent.png') }}" alt="title" width="150" height="40"></span>
                     </div>
                     <div class="col-sm-3 col-sm-offset-3 text-right">
-                        <div class=""><a class="user" href="{{ path('login') }}">Connexion</a><span class="glyphicon glyphicon-user"></span></div>
-                        <div class=""><a class="user" href="">Inscription</a><span class="glyphicon glyphicon-floppy-disk"></span></div>
+                        
+                        {% if app.user %}
+
+                            <div class="brand" style="color: white;">
+                                <div>{{ app.user.username }}</div>
+                                <div class=""><a class="user" href="{{ path('logout') }}">Déconnexion</a><span class="glyphicon glyphicon-user"></span></div>
+                                
+                            </div>
+                            {% else %}
+                                <div class=""><a class="user" href="{{ path('login') }}">Connexion</a><span class="glyphicon glyphicon-user"></span></div>
+                                <div class=""><a class="user" href="">Inscription</a><span class="glyphicon glyphicon-floppy-disk"></span></div>
+                            {% endif %}
+                        </div>
+                        
+                        
                     </div>
                 </div>
             </div>

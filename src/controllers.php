@@ -9,6 +9,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 require __DIR__.'/controllers_admin.php';
 
 //Request::setTrustedProxies(array('127.0.0.1'));
+$app->before(function() use ($app) {
+    
+    $token = $app['security.token_storage']->getToken();
+    
+    if($token){
+        //var_dump($token);
+        $user = $token->getUser();
+    } else {
+        $user = null;
+    }
+    if(is_string($user)){
+        $user = null;
+    }
+    $app['user'] = $user;
+    
+});
 
 
 $app->get('/', function () use ($app) {
@@ -20,7 +36,7 @@ $app->get('/', function () use ($app) {
 
 $app->get('/login', function(Request $request) use ($app) {
     return $app['twig']->render('login.html.twig', array(
-        //'error'         => $app['security.last_error']($request),
+        'error'         => $app['security.last_error']($request),
         'last_username' => $app['session']->get('_security.last_username'),
     ));
 })
