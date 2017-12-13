@@ -43,12 +43,23 @@ $app->get('/login', function(Request $request) use ($app) {
 ->bind('login')
 ;
 
-
+// route pour apprendre 1 picture
 $app->get('/apprendre-pixelart', function () use ($app) {
-    return $app['twig']->render('apprendre-pixelart.html.twig', array());
+    
+    $picture = Propel\Propel\PicturesQuery::create()->findOneByIdPictures(1);
+    
+    // on transmet à notre template les données de $users (toujours un array!)
+    return $app['twig']->render('apprendre-pixelart.html.twig', [
+        'picture' => $picture
+    ]);
+    
+    
+    //return $app['twig']->render('apprendre-pixelart.html.twig', array());
 })
 ->bind('apprendre-pixelart')
 ;
+
+
 
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
