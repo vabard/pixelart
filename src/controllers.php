@@ -1,12 +1,10 @@
 <?php
 
+use FormType\UserType;
+use Propel\Propel\Users;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Propel\Propel\UsersQuery;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 require __DIR__.'/controllers_admin.php';
 
@@ -46,9 +44,9 @@ $app->get('/login', function(Request $request) use ($app) {
 ;
 $app->match('/register', function(Request $request) use ($app) {
     
-    $user = UsersQuery::create();
+    $user = new Users();
     
-    $form = $app['form.factory']->createBuilder(\FormType\UserType::class, $user, [
+    $form = $app['form.factory']->createBuilder(UserType::class, $user, [
         'validation_groups' => ['registration']
             ])
             ->add('submit', SubmitType::class, [
