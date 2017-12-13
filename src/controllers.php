@@ -50,6 +50,12 @@ $app->get('/apprendre-pixelart', function () use ($app) {
 ->bind('apprendre-pixelart')
 ;
 
+$app->get('/creation', function () use ($app) {
+    return $app['twig']->render('creation.html.twig', array());
+})
+->bind('creation')
+;
+
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {

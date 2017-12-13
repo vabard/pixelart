@@ -3,9 +3,38 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-                
+                <button id="petitrectangle">Petit rectangle</button>
+     	<button id="carremoyen">Carré Moyen</button>
+     	<button id="rectanglemoyen">Rectangle Moyen</button>
+     	<button id="grandcarre">Grand carré</button>
+     	<button id="grandrectangle">Grand rectangle</button>
+         <label>Combien de colonnes voulez-vous?</label><br>
+     
+     <select id="col" class="choix">
+        <option></option>
+        <script>
+            for(i=1;i<=100;i++){
+                document.write('<option>'+i+'</option>');
+            }
+        </script>
+    </select>
+    <br>
+    <label>Combien de rangées voulez-vous?</label><br>
+     <select id="row" class="choix">
+        <option></option>
+        <script>
+            for(i=1;i<=100;i++){
+                document.write('<option>'+i+'</option>');
+            }
+        </script>
+    </select><br>
+        <div>
+            <button id="zoom">Zoom</button>
+            <button id="dezoom">Dézoom</button>
+            <button id="envoi">Envoyez</button>
+        </div>
             </div>
-            <div class="col-md-9" id="cadre">
+            <div class="col-md-6" id="cadre">
                 <canvas id="canvas">Votre navigateur ne supporte pas canvas</canvas>
             </div>
             
