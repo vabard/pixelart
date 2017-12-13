@@ -1,6 +1,7 @@
 //Variables
              var canvas = document.getElementById("canvas");
              var color = 'black';
+             var cadre= document.getElementById("cadre");
              var step='';
              var step2='';
              var envoi=document.getElementById('envoi');
@@ -291,10 +292,15 @@
              });
 
              canvas.addEventListener('click', function (event) {
-               var posX = event.pageX - canvas.offsetLeft;//ne pas oublier les scrollTop et scrollLeft lors de l'intégration !
-               var posY = event.pageY - canvas.offsetTop;
+               var posX = event.pageX - canvas.offsetLeft -cadre.offsetLeft + cadre.scrollLeft;//ne pas oublier les scrollTop et scrollLeft lors de l'intégration !//- canvas.offsetLeft
+               var posY = event.pageY - canvas.offsetTop -cadre.offsetTop+ cadre.scrollTop;
+               console.log(event.pageX);
+               console.log(posX);         
+               console.log(posY);
                var cellX = parseInt(posX / (canvas.width / grid.wc));
+               console.log(cellX);
                var cellY = parseInt(posY / (canvas.height / grid.hc));
+               console.log(cellY);
                cellColor = grid.getColor(cellY, cellX);
                if (!cellColor || cellColor != color) {
                  grid.setColor(color, cellY, cellX);
