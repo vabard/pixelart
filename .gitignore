@@ -1,9 +1,7 @@
 /vendor/
 /nbproject/
 /config/db.php
-/propel.php
 /propel.php.dist
-/schema.xml
 /generated-conf/
 /generated-sql/
 /templates/sources/

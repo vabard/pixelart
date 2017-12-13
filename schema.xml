@@ -30,7 +30,7 @@
     <column name="lastname" phpName="Lastname" type="VARCHAR" size="100" required="true"/>
     <column name="email" phpName="Email" type="VARCHAR" size="100" required="true"/>
     <column name="password" phpName="Password" type="VARCHAR" size="255" required="true"/>
-    <column name="role" phpName="Role" type="CHAR" sqlType="enum('admin','membre')" required="true"/>
+    <column name="role" phpName="Role" type="VARCHAR" size="255" required="true"/>
     <column name="salt" phpName="Salt" type="VARCHAR" size="255" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
