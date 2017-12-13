@@ -18,6 +18,7 @@ Debug::enable();
 
 $app = require __DIR__.'/../src/app.php';
 require __DIR__.'/../config/dev.php';
+require __DIR__.'/../config/config-propel.php';
 require __DIR__.'/../src/controllers.php';
 require __DIR__.'/../config/config-propel.php';
 $app->run();
