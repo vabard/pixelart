@@ -15,5 +15,28 @@
     font-size: 4rem;
 }
 
+.intro-galery {
+    padding: 100px 0;
+    background-image: url(../images/shop-header.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: -90px;
+    z-index: 11;
+    position: relative;
+}
 
+.color-white{
+    color: white;
+}
 
+.shop-box-title h3 {
+    margin: 0 0 5px 0;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.shop-price {
+    margin-bottom: 0;
+    font-weight: 500;
+}
