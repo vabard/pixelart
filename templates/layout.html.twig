@@ -21,6 +21,7 @@
         <link href="{{ asset('css/ionicons.css') }}" rel="stylesheet">
         <link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('css/login.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('css/apprendre.css') }}" rel="stylesheet" type="text/css" />
 
         <!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -38,8 +39,21 @@
                         <span><img src="{{ asset('images/pixelart_title_transparent.png') }}" alt="title" width="150" height="40"></span>
                     </div>
                     <div class="col-sm-3 col-sm-offset-3 text-right">
-                        <div class=""><a class="user" href="{{ path('login') }}">Connexion</a><span class="glyphicon glyphicon-user"></span></div>
-                        <div class=""><a class="user" href="">Inscription</a><span class="glyphicon glyphicon-floppy-disk"></span></div>
+                        
+                        {% if app.user %}
+
+                            <div class="brand" style="color: white;">
+                                <div>{{ app.user.username }}</div>
+                                <div class=""><a class="user" href="{{ path('logout') }}">Déconnexion</a><span class="glyphicon glyphicon-user"></span></div>
+                                
+                            </div>
+                            {% else %}
+                                <div class=""><a class="user" href="{{ path('login') }}">Connexion</a><span class="glyphicon glyphicon-user"></span></div>
+                                <div class=""><a class="user" href="">Inscription</a><span class="glyphicon glyphicon-floppy-disk"></span></div>
+                            {% endif %}
+                        </div>
+                        
+                        
                     </div>
                 </div>
             </div>
@@ -64,7 +78,7 @@
                         <div class="collapse navbar-collapse" id="site-nav-bar">
                             <ul class="nav navbar-nav">
                                 <li class="active"><a href="{{ path('homepage') }}">Accueil</a></li>
-                                <li><a href="apprendre.html">Apprendre</a></li>
+                                <li><a href="{{ path('apprendre-pixelart') }}">Apprendre</a></li>
                                 <li><a href="creation.html">Création</a></li>
                                 <li><a href="contact.html">Contact</a></li>
                             </ul>
@@ -92,6 +106,7 @@
         <script src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
         <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
         <script src="{{ asset('js/script.js') }}"></script>
+        <script src="{{ asset('js/apprendre.js') }}"></script>
 
     </body>
 </html>
