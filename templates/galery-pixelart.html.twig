@@ -39,17 +39,18 @@
                             <div class="shop-box-title">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <h3>Categorie :</h3>
-                                        <h3>Créé par : {{ picture.idUsers }}</h3>
+                                        <p class="picture-desc">{{ picture.title }}</p>
+                                        <p>Créé par : {{ picture }} - </p>
                                     </div>
                                     <div class="col-sm-6">
-                                        <p class="shop-price">Facile</p>
+                                        <p class="text-right">{{ picture.difficulty }}</p>
                                         <div class="star">
-                                            <span class="ion-ios-star"></span>
-                                            <span class="ion-ios-star"></span>
-                                            <span class="ion-ios-star"></span>
-                                            <span class="ion-ios-star-half"></span>
-                                            <span class="ion-ios-star-outline"></span>
+                                            {% if picture.note > 0 %}
+                                                {% for i in 1..picture.note %}
+                                                     <span class="ion-ios-star"></span>
+                                                {% endfor %}
+                                            {% endif %}
+                                           
                                         </div>
                                     </div>
                                 </div>

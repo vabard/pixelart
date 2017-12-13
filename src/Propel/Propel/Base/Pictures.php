@@ -2,9 +2,14 @@
 
 namespace Propel\Propel\Base;
 
+use \DateTime;
 use \Exception;
 use \PDO;
+use Propel\Propel\Categories as ChildCategories;
+use Propel\Propel\CategoriesQuery as ChildCategoriesQuery;
 use Propel\Propel\PicturesQuery as ChildPicturesQuery;
+use Propel\Propel\Users as ChildUsers;
+use Propel\Propel\UsersQuery as ChildUsersQuery;
 use Propel\Propel\Map\PicturesTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -17,6 +22,7 @@ use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
+use Propel\Runtime\Util\PropelDateTime;
 
 /**
  * Base class that represents a row from the 'pictures' table.
@@ -74,6 +80,27 @@ abstract class Pictures implements ActiveRecordInterface
     protected $id_users;
 
     /**
+     * The value for the id_categories field.
+     *
+     * @var        int
+     */
+    protected $id_categories;
+
+    /**
+     * The value for the difficulty field.
+     *
+     * @var        string
+     */
+    protected $difficulty;
+
+    /**
+     * The value for the title field.
+     *
+     * @var        string
+     */
+    protected $title;
+
+    /**
      * The value for the canvas field.
      *
      * @var        string
@@ -88,11 +115,29 @@ abstract class Pictures implements ActiveRecordInterface
     protected $thumb;
 
     /**
-     * The value for the id_categories field.
+     * The value for the note field.
      *
      * @var        int
      */
-    protected $id_categories;
+    protected $note;
+
+    /**
+     * The value for the date_insert field.
+     *
+     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
+     * @var        DateTime
+     */
+    protected $date_insert;
+
+    /**
+     * @var        ChildUsers
+     */
+    protected $aUsers;
+
+    /**
+     * @var        ChildCategories
+     */
+    protected $aCategories;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -103,10 +148,22 @@ abstract class Pictures implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+    }
+
+    /**
      * Initializes internal state of Propel\Propel\Base\Pictures object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -348,6 +405,36 @@ abstract class Pictures implements ActiveRecordInterface
     }
 
     /**
+     * Get the [id_categories] column value.
+     *
+     * @return int
+     */
+    public function getIdCategories()
+    {
+        return $this->id_categories;
+    }
+
+    /**
+     * Get the [difficulty] column value.
+     *
+     * @return string
+     */
+    public function getDifficulty()
+    {
+        return $this->difficulty;
+    }
+
+    /**
+     * Get the [title] column value.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
      * Get the [canvas] column value.
      *
      * @return string
@@ -368,13 +455,33 @@ abstract class Pictures implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id_categories] column value.
+     * Get the [note] column value.
      *
      * @return int
      */
-    public function getIdCategories()
+    public function getNote()
     {
-        return $this->id_categories;
+        return $this->note;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [date_insert] column value.
+     *
+     *
+     * @param      string $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getDateInsert($format = NULL)
+    {
+        if ($format === null) {
+            return $this->date_insert;
+        } else {
+            return $this->date_insert instanceof \DateTimeInterface ? $this->date_insert->format($format) : null;
+        }
     }
 
     /**
@@ -414,8 +521,76 @@ abstract class Pictures implements ActiveRecordInterface
             $this->modifiedColumns[PicturesTableMap::COL_ID_USERS] = true;
         }
 
+        if ($this->aUsers !== null && $this->aUsers->getIdUsers() !== $v) {
+            $this->aUsers = null;
+        }
+
         return $this;
     } // setIdUsers()
+
+    /**
+     * Set the value of [id_categories] column.
+     *
+     * @param int $v new value
+     * @return $this|\Propel\Propel\Pictures The current object (for fluent API support)
+     */
+    public function setIdCategories($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->id_categories !== $v) {
+            $this->id_categories = $v;
+            $this->modifiedColumns[PicturesTableMap::COL_ID_CATEGORIES] = true;
+        }
+
+        if ($this->aCategories !== null && $this->aCategories->getIdCategories() !== $v) {
+            $this->aCategories = null;
+        }
+
+        return $this;
+    } // setIdCategories()
+
+    /**
+     * Set the value of [difficulty] column.
+     *
+     * @param string $v new value
+     * @return $this|\Propel\Propel\Pictures The current object (for fluent API support)
+     */
+    public function setDifficulty($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->difficulty !== $v) {
+            $this->difficulty = $v;
+            $this->modifiedColumns[PicturesTableMap::COL_DIFFICULTY] = true;
+        }
+
+        return $this;
+    } // setDifficulty()
+
+    /**
+     * Set the value of [title] column.
+     *
+     * @param string $v new value
+     * @return $this|\Propel\Propel\Pictures The current object (for fluent API support)
+     */
+    public function setTitle($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->title !== $v) {
+            $this->title = $v;
+            $this->modifiedColumns[PicturesTableMap::COL_TITLE] = true;
+        }
+
+        return $this;
+    } // setTitle()
 
     /**
      * Set the value of [canvas] column.
@@ -458,24 +633,44 @@ abstract class Pictures implements ActiveRecordInterface
     } // setThumb()
 
     /**
-     * Set the value of [id_categories] column.
+     * Set the value of [note] column.
      *
      * @param int $v new value
      * @return $this|\Propel\Propel\Pictures The current object (for fluent API support)
      */
-    public function setIdCategories($v)
+    public function setNote($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id_categories !== $v) {
-            $this->id_categories = $v;
-            $this->modifiedColumns[PicturesTableMap::COL_ID_CATEGORIES] = true;
+        if ($this->note !== $v) {
+            $this->note = $v;
+            $this->modifiedColumns[PicturesTableMap::COL_NOTE] = true;
         }
 
         return $this;
-    } // setIdCategories()
+    } // setNote()
+
+    /**
+     * Sets the value of [date_insert] column to a normalized version of the date/time value specified.
+     *
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
+     * @return $this|\Propel\Propel\Pictures The current object (for fluent API support)
+     */
+    public function setDateInsert($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->date_insert !== null || $dt !== null) {
+            if ($this->date_insert === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->date_insert->format("Y-m-d H:i:s.u")) {
+                $this->date_insert = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[PicturesTableMap::COL_DATE_INSERT] = true;
+            }
+        } // if either are not null
+
+        return $this;
+    } // setDateInsert()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -519,14 +714,29 @@ abstract class Pictures implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PicturesTableMap::translateFieldName('IdUsers', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id_users = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PicturesTableMap::translateFieldName('Canvas', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PicturesTableMap::translateFieldName('IdCategories', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id_categories = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PicturesTableMap::translateFieldName('Difficulty', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->difficulty = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PicturesTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->title = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PicturesTableMap::translateFieldName('Canvas', TableMap::TYPE_PHPNAME, $indexType)];
             $this->canvas = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PicturesTableMap::translateFieldName('Thumb', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PicturesTableMap::translateFieldName('Thumb', TableMap::TYPE_PHPNAME, $indexType)];
             $this->thumb = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PicturesTableMap::translateFieldName('IdCategories', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id_categories = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PicturesTableMap::translateFieldName('Note', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->note = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PicturesTableMap::translateFieldName('DateInsert', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->date_insert = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -535,7 +745,7 @@ abstract class Pictures implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = PicturesTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = PicturesTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Propel\\Propel\\Pictures'), 0, $e);
@@ -557,6 +767,12 @@ abstract class Pictures implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aUsers !== null && $this->id_users !== $this->aUsers->getIdUsers()) {
+            $this->aUsers = null;
+        }
+        if ($this->aCategories !== null && $this->id_categories !== $this->aCategories->getIdCategories()) {
+            $this->aCategories = null;
+        }
     } // ensureConsistency
 
     /**
@@ -596,6 +812,8 @@ abstract class Pictures implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aUsers = null;
+            $this->aCategories = null;
         } // if (deep)
     }
 
@@ -699,6 +917,25 @@ abstract class Pictures implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aUsers !== null) {
+                if ($this->aUsers->isModified() || $this->aUsers->isNew()) {
+                    $affectedRows += $this->aUsers->save($con);
+                }
+                $this->setUsers($this->aUsers);
+            }
+
+            if ($this->aCategories !== null) {
+                if ($this->aCategories->isModified() || $this->aCategories->isNew()) {
+                    $affectedRows += $this->aCategories->save($con);
+                }
+                $this->setCategories($this->aCategories);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -742,14 +979,26 @@ abstract class Pictures implements ActiveRecordInterface
         if ($this->isColumnModified(PicturesTableMap::COL_ID_USERS)) {
             $modifiedColumns[':p' . $index++]  = 'id_users';
         }
+        if ($this->isColumnModified(PicturesTableMap::COL_ID_CATEGORIES)) {
+            $modifiedColumns[':p' . $index++]  = 'id_categories';
+        }
+        if ($this->isColumnModified(PicturesTableMap::COL_DIFFICULTY)) {
+            $modifiedColumns[':p' . $index++]  = 'difficulty';
+        }
+        if ($this->isColumnModified(PicturesTableMap::COL_TITLE)) {
+            $modifiedColumns[':p' . $index++]  = 'title';
+        }
         if ($this->isColumnModified(PicturesTableMap::COL_CANVAS)) {
             $modifiedColumns[':p' . $index++]  = 'canvas';
         }
         if ($this->isColumnModified(PicturesTableMap::COL_THUMB)) {
             $modifiedColumns[':p' . $index++]  = 'thumb';
         }
-        if ($this->isColumnModified(PicturesTableMap::COL_ID_CATEGORIES)) {
-            $modifiedColumns[':p' . $index++]  = 'id_categories';
+        if ($this->isColumnModified(PicturesTableMap::COL_NOTE)) {
+            $modifiedColumns[':p' . $index++]  = 'note';
+        }
+        if ($this->isColumnModified(PicturesTableMap::COL_DATE_INSERT)) {
+            $modifiedColumns[':p' . $index++]  = 'date_insert';
         }
 
         $sql = sprintf(
@@ -768,14 +1017,26 @@ abstract class Pictures implements ActiveRecordInterface
                     case 'id_users':
                         $stmt->bindValue($identifier, $this->id_users, PDO::PARAM_INT);
                         break;
+                    case 'id_categories':
+                        $stmt->bindValue($identifier, $this->id_categories, PDO::PARAM_INT);
+                        break;
+                    case 'difficulty':
+                        $stmt->bindValue($identifier, $this->difficulty, PDO::PARAM_STR);
+                        break;
+                    case 'title':
+                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
+                        break;
                     case 'canvas':
                         $stmt->bindValue($identifier, $this->canvas, PDO::PARAM_STR);
                         break;
                     case 'thumb':
                         $stmt->bindValue($identifier, $this->thumb, PDO::PARAM_STR);
                         break;
-                    case 'id_categories':
-                        $stmt->bindValue($identifier, $this->id_categories, PDO::PARAM_INT);
+                    case 'note':
+                        $stmt->bindValue($identifier, $this->note, PDO::PARAM_INT);
+                        break;
+                    case 'date_insert':
+                        $stmt->bindValue($identifier, $this->date_insert ? $this->date_insert->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -846,13 +1107,25 @@ abstract class Pictures implements ActiveRecordInterface
                 return $this->getIdUsers();
                 break;
             case 2:
-                return $this->getCanvas();
+                return $this->getIdCategories();
                 break;
             case 3:
-                return $this->getThumb();
+                return $this->getDifficulty();
                 break;
             case 4:
-                return $this->getIdCategories();
+                return $this->getTitle();
+                break;
+            case 5:
+                return $this->getCanvas();
+                break;
+            case 6:
+                return $this->getThumb();
+                break;
+            case 7:
+                return $this->getNote();
+                break;
+            case 8:
+                return $this->getDateInsert();
                 break;
             default:
                 return null;
@@ -871,10 +1144,11 @@ abstract class Pictures implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
         if (isset($alreadyDumpedObjects['Pictures'][$this->hashCode()])) {
@@ -885,15 +1159,55 @@ abstract class Pictures implements ActiveRecordInterface
         $result = array(
             $keys[0] => $this->getIdPictures(),
             $keys[1] => $this->getIdUsers(),
-            $keys[2] => $this->getCanvas(),
-            $keys[3] => $this->getThumb(),
-            $keys[4] => $this->getIdCategories(),
+            $keys[2] => $this->getIdCategories(),
+            $keys[3] => $this->getDifficulty(),
+            $keys[4] => $this->getTitle(),
+            $keys[5] => $this->getCanvas(),
+            $keys[6] => $this->getThumb(),
+            $keys[7] => $this->getNote(),
+            $keys[8] => $this->getDateInsert(),
         );
+        if ($result[$keys[8]] instanceof \DateTimeInterface) {
+            $result[$keys[8]] = $result[$keys[8]]->format('c');
+        }
+
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aUsers) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'users';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'users';
+                        break;
+                    default:
+                        $key = 'Users';
+                }
+
+                $result[$key] = $this->aUsers->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aCategories) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'categories';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'categories';
+                        break;
+                    default:
+                        $key = 'Categories';
+                }
+
+                $result[$key] = $this->aCategories->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -934,13 +1248,25 @@ abstract class Pictures implements ActiveRecordInterface
                 $this->setIdUsers($value);
                 break;
             case 2:
-                $this->setCanvas($value);
+                $this->setIdCategories($value);
                 break;
             case 3:
-                $this->setThumb($value);
+                $this->setDifficulty($value);
                 break;
             case 4:
-                $this->setIdCategories($value);
+                $this->setTitle($value);
+                break;
+            case 5:
+                $this->setCanvas($value);
+                break;
+            case 6:
+                $this->setThumb($value);
+                break;
+            case 7:
+                $this->setNote($value);
+                break;
+            case 8:
+                $this->setDateInsert($value);
                 break;
         } // switch()
 
@@ -975,13 +1301,25 @@ abstract class Pictures implements ActiveRecordInterface
             $this->setIdUsers($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setCanvas($arr[$keys[2]]);
+            $this->setIdCategories($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setThumb($arr[$keys[3]]);
+            $this->setDifficulty($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setIdCategories($arr[$keys[4]]);
+            $this->setTitle($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setCanvas($arr[$keys[5]]);
+        }
+        if (array_key_exists($keys[6], $arr)) {
+            $this->setThumb($arr[$keys[6]]);
+        }
+        if (array_key_exists($keys[7], $arr)) {
+            $this->setNote($arr[$keys[7]]);
+        }
+        if (array_key_exists($keys[8], $arr)) {
+            $this->setDateInsert($arr[$keys[8]]);
         }
     }
 
@@ -1030,14 +1368,26 @@ abstract class Pictures implements ActiveRecordInterface
         if ($this->isColumnModified(PicturesTableMap::COL_ID_USERS)) {
             $criteria->add(PicturesTableMap::COL_ID_USERS, $this->id_users);
         }
+        if ($this->isColumnModified(PicturesTableMap::COL_ID_CATEGORIES)) {
+            $criteria->add(PicturesTableMap::COL_ID_CATEGORIES, $this->id_categories);
+        }
+        if ($this->isColumnModified(PicturesTableMap::COL_DIFFICULTY)) {
+            $criteria->add(PicturesTableMap::COL_DIFFICULTY, $this->difficulty);
+        }
+        if ($this->isColumnModified(PicturesTableMap::COL_TITLE)) {
+            $criteria->add(PicturesTableMap::COL_TITLE, $this->title);
+        }
         if ($this->isColumnModified(PicturesTableMap::COL_CANVAS)) {
             $criteria->add(PicturesTableMap::COL_CANVAS, $this->canvas);
         }
         if ($this->isColumnModified(PicturesTableMap::COL_THUMB)) {
             $criteria->add(PicturesTableMap::COL_THUMB, $this->thumb);
         }
-        if ($this->isColumnModified(PicturesTableMap::COL_ID_CATEGORIES)) {
-            $criteria->add(PicturesTableMap::COL_ID_CATEGORIES, $this->id_categories);
+        if ($this->isColumnModified(PicturesTableMap::COL_NOTE)) {
+            $criteria->add(PicturesTableMap::COL_NOTE, $this->note);
+        }
+        if ($this->isColumnModified(PicturesTableMap::COL_DATE_INSERT)) {
+            $criteria->add(PicturesTableMap::COL_DATE_INSERT, $this->date_insert);
         }
 
         return $criteria;
@@ -1126,9 +1476,13 @@ abstract class Pictures implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setIdUsers($this->getIdUsers());
+        $copyObj->setIdCategories($this->getIdCategories());
+        $copyObj->setDifficulty($this->getDifficulty());
+        $copyObj->setTitle($this->getTitle());
         $copyObj->setCanvas($this->getCanvas());
         $copyObj->setThumb($this->getThumb());
-        $copyObj->setIdCategories($this->getIdCategories());
+        $copyObj->setNote($this->getNote());
+        $copyObj->setDateInsert($this->getDateInsert());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdPictures(NULL); // this is a auto-increment column, so set to default value
@@ -1158,19 +1512,132 @@ abstract class Pictures implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildUsers object.
+     *
+     * @param  ChildUsers $v
+     * @return $this|\Propel\Propel\Pictures The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setUsers(ChildUsers $v = null)
+    {
+        if ($v === null) {
+            $this->setIdUsers(NULL);
+        } else {
+            $this->setIdUsers($v->getIdUsers());
+        }
+
+        $this->aUsers = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildUsers object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPictures($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildUsers object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildUsers The associated ChildUsers object.
+     * @throws PropelException
+     */
+    public function getUsers(ConnectionInterface $con = null)
+    {
+        if ($this->aUsers === null && ($this->id_users != 0)) {
+            $this->aUsers = ChildUsersQuery::create()->findPk($this->id_users, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aUsers->addPicturess($this);
+             */
+        }
+
+        return $this->aUsers;
+    }
+
+    /**
+     * Declares an association between this object and a ChildCategories object.
+     *
+     * @param  ChildCategories $v
+     * @return $this|\Propel\Propel\Pictures The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setCategories(ChildCategories $v = null)
+    {
+        if ($v === null) {
+            $this->setIdCategories(NULL);
+        } else {
+            $this->setIdCategories($v->getIdCategories());
+        }
+
+        $this->aCategories = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildCategories object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPictures($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildCategories object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildCategories The associated ChildCategories object.
+     * @throws PropelException
+     */
+    public function getCategories(ConnectionInterface $con = null)
+    {
+        if ($this->aCategories === null && ($this->id_categories != 0)) {
+            $this->aCategories = ChildCategoriesQuery::create()->findPk($this->id_categories, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aCategories->addPicturess($this);
+             */
+        }
+
+        return $this->aCategories;
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
+        if (null !== $this->aUsers) {
+            $this->aUsers->removePictures($this);
+        }
+        if (null !== $this->aCategories) {
+            $this->aCategories->removePictures($this);
+        }
         $this->id_pictures = null;
         $this->id_users = null;
+        $this->id_categories = null;
+        $this->difficulty = null;
+        $this->title = null;
         $this->canvas = null;
         $this->thumb = null;
-        $this->id_categories = null;
+        $this->note = null;
+        $this->date_insert = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1189,6 +1656,8 @@ abstract class Pictures implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
+        $this->aUsers = null;
+        $this->aCategories = null;
     }
 
     /**

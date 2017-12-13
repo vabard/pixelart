@@ -10,6 +10,7 @@ use Propel\Propel\Map\PicturesTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -21,15 +22,23 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildPicturesQuery orderByIdPictures($order = Criteria::ASC) Order by the id_pictures column
  * @method     ChildPicturesQuery orderByIdUsers($order = Criteria::ASC) Order by the id_users column
+ * @method     ChildPicturesQuery orderByIdCategories($order = Criteria::ASC) Order by the id_categories column
+ * @method     ChildPicturesQuery orderByDifficulty($order = Criteria::ASC) Order by the difficulty column
+ * @method     ChildPicturesQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method     ChildPicturesQuery orderByCanvas($order = Criteria::ASC) Order by the canvas column
  * @method     ChildPicturesQuery orderByThumb($order = Criteria::ASC) Order by the thumb column
- * @method     ChildPicturesQuery orderByIdCategories($order = Criteria::ASC) Order by the id_categories column
+ * @method     ChildPicturesQuery orderByNote($order = Criteria::ASC) Order by the note column
+ * @method     ChildPicturesQuery orderByDateInsert($order = Criteria::ASC) Order by the date_insert column
  *
  * @method     ChildPicturesQuery groupByIdPictures() Group by the id_pictures column
  * @method     ChildPicturesQuery groupByIdUsers() Group by the id_users column
+ * @method     ChildPicturesQuery groupByIdCategories() Group by the id_categories column
+ * @method     ChildPicturesQuery groupByDifficulty() Group by the difficulty column
+ * @method     ChildPicturesQuery groupByTitle() Group by the title column
  * @method     ChildPicturesQuery groupByCanvas() Group by the canvas column
  * @method     ChildPicturesQuery groupByThumb() Group by the thumb column
- * @method     ChildPicturesQuery groupByIdCategories() Group by the id_categories column
+ * @method     ChildPicturesQuery groupByNote() Group by the note column
+ * @method     ChildPicturesQuery groupByDateInsert() Group by the date_insert column
  *
  * @method     ChildPicturesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildPicturesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -39,30 +48,64 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPicturesQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildPicturesQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
+ * @method     ChildPicturesQuery leftJoinUsers($relationAlias = null) Adds a LEFT JOIN clause to the query using the Users relation
+ * @method     ChildPicturesQuery rightJoinUsers($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Users relation
+ * @method     ChildPicturesQuery innerJoinUsers($relationAlias = null) Adds a INNER JOIN clause to the query using the Users relation
+ *
+ * @method     ChildPicturesQuery joinWithUsers($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Users relation
+ *
+ * @method     ChildPicturesQuery leftJoinWithUsers() Adds a LEFT JOIN clause and with to the query using the Users relation
+ * @method     ChildPicturesQuery rightJoinWithUsers() Adds a RIGHT JOIN clause and with to the query using the Users relation
+ * @method     ChildPicturesQuery innerJoinWithUsers() Adds a INNER JOIN clause and with to the query using the Users relation
+ *
+ * @method     ChildPicturesQuery leftJoinCategories($relationAlias = null) Adds a LEFT JOIN clause to the query using the Categories relation
+ * @method     ChildPicturesQuery rightJoinCategories($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Categories relation
+ * @method     ChildPicturesQuery innerJoinCategories($relationAlias = null) Adds a INNER JOIN clause to the query using the Categories relation
+ *
+ * @method     ChildPicturesQuery joinWithCategories($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Categories relation
+ *
+ * @method     ChildPicturesQuery leftJoinWithCategories() Adds a LEFT JOIN clause and with to the query using the Categories relation
+ * @method     ChildPicturesQuery rightJoinWithCategories() Adds a RIGHT JOIN clause and with to the query using the Categories relation
+ * @method     ChildPicturesQuery innerJoinWithCategories() Adds a INNER JOIN clause and with to the query using the Categories relation
+ *
+ * @method     \Propel\Propel\UsersQuery|\Propel\Propel\CategoriesQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ *
  * @method     ChildPictures findOne(ConnectionInterface $con = null) Return the first ChildPictures matching the query
  * @method     ChildPictures findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPictures matching the query, or a new ChildPictures object populated from the query conditions when no match is found
  *
  * @method     ChildPictures findOneByIdPictures(int $id_pictures) Return the first ChildPictures filtered by the id_pictures column
  * @method     ChildPictures findOneByIdUsers(int $id_users) Return the first ChildPictures filtered by the id_users column
+ * @method     ChildPictures findOneByIdCategories(int $id_categories) Return the first ChildPictures filtered by the id_categories column
+ * @method     ChildPictures findOneByDifficulty(string $difficulty) Return the first ChildPictures filtered by the difficulty column
+ * @method     ChildPictures findOneByTitle(string $title) Return the first ChildPictures filtered by the title column
  * @method     ChildPictures findOneByCanvas(string $canvas) Return the first ChildPictures filtered by the canvas column
  * @method     ChildPictures findOneByThumb(string $thumb) Return the first ChildPictures filtered by the thumb column
- * @method     ChildPictures findOneByIdCategories(int $id_categories) Return the first ChildPictures filtered by the id_categories column *
+ * @method     ChildPictures findOneByNote(int $note) Return the first ChildPictures filtered by the note column
+ * @method     ChildPictures findOneByDateInsert(string $date_insert) Return the first ChildPictures filtered by the date_insert column *
 
  * @method     ChildPictures requirePk($key, ConnectionInterface $con = null) Return the ChildPictures by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPictures requireOne(ConnectionInterface $con = null) Return the first ChildPictures matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPictures requireOneByIdPictures(int $id_pictures) Return the first ChildPictures filtered by the id_pictures column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPictures requireOneByIdUsers(int $id_users) Return the first ChildPictures filtered by the id_users column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPictures requireOneByIdCategories(int $id_categories) Return the first ChildPictures filtered by the id_categories column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPictures requireOneByDifficulty(string $difficulty) Return the first ChildPictures filtered by the difficulty column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPictures requireOneByTitle(string $title) Return the first ChildPictures filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPictures requireOneByCanvas(string $canvas) Return the first ChildPictures filtered by the canvas column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPictures requireOneByThumb(string $thumb) Return the first ChildPictures filtered by the thumb column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPictures requireOneByIdCategories(int $id_categories) Return the first ChildPictures filtered by the id_categories column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPictures requireOneByNote(int $note) Return the first ChildPictures filtered by the note column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPictures requireOneByDateInsert(string $date_insert) Return the first ChildPictures filtered by the date_insert column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPictures[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPictures objects based on current ModelCriteria
  * @method     ChildPictures[]|ObjectCollection findByIdPictures(int $id_pictures) Return ChildPictures objects filtered by the id_pictures column
  * @method     ChildPictures[]|ObjectCollection findByIdUsers(int $id_users) Return ChildPictures objects filtered by the id_users column
+ * @method     ChildPictures[]|ObjectCollection findByIdCategories(int $id_categories) Return ChildPictures objects filtered by the id_categories column
+ * @method     ChildPictures[]|ObjectCollection findByDifficulty(string $difficulty) Return ChildPictures objects filtered by the difficulty column
+ * @method     ChildPictures[]|ObjectCollection findByTitle(string $title) Return ChildPictures objects filtered by the title column
  * @method     ChildPictures[]|ObjectCollection findByCanvas(string $canvas) Return ChildPictures objects filtered by the canvas column
  * @method     ChildPictures[]|ObjectCollection findByThumb(string $thumb) Return ChildPictures objects filtered by the thumb column
- * @method     ChildPictures[]|ObjectCollection findByIdCategories(int $id_categories) Return ChildPictures objects filtered by the id_categories column
+ * @method     ChildPictures[]|ObjectCollection findByNote(int $note) Return ChildPictures objects filtered by the note column
+ * @method     ChildPictures[]|ObjectCollection findByDateInsert(string $date_insert) Return ChildPictures objects filtered by the date_insert column
  * @method     ChildPictures[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -161,7 +204,7 @@ abstract class PicturesQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id_pictures, id_users, canvas, thumb, id_categories FROM pictures WHERE id_pictures = :p0';
+        $sql = 'SELECT id_pictures, id_users, id_categories, difficulty, title, canvas, thumb, note, date_insert FROM pictures WHERE id_pictures = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -302,6 +345,8 @@ abstract class PicturesQuery extends ModelCriteria
      * $query->filterByIdUsers(array('min' => 12)); // WHERE id_users > 12
      * </code>
      *
+     * @see       filterByUsers()
+     *
      * @param     mixed $idUsers The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
@@ -331,6 +376,99 @@ abstract class PicturesQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PicturesTableMap::COL_ID_USERS, $idUsers, $comparison);
+    }
+
+    /**
+     * Filter the query on the id_categories column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdCategories(1234); // WHERE id_categories = 1234
+     * $query->filterByIdCategories(array(12, 34)); // WHERE id_categories IN (12, 34)
+     * $query->filterByIdCategories(array('min' => 12)); // WHERE id_categories > 12
+     * </code>
+     *
+     * @see       filterByCategories()
+     *
+     * @param     mixed $idCategories The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPicturesQuery The current query, for fluid interface
+     */
+    public function filterByIdCategories($idCategories = null, $comparison = null)
+    {
+        if (is_array($idCategories)) {
+            $useMinMax = false;
+            if (isset($idCategories['min'])) {
+                $this->addUsingAlias(PicturesTableMap::COL_ID_CATEGORIES, $idCategories['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idCategories['max'])) {
+                $this->addUsingAlias(PicturesTableMap::COL_ID_CATEGORIES, $idCategories['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PicturesTableMap::COL_ID_CATEGORIES, $idCategories, $comparison);
+    }
+
+    /**
+     * Filter the query on the difficulty column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDifficulty('fooValue');   // WHERE difficulty = 'fooValue'
+     * $query->filterByDifficulty('%fooValue%', Criteria::LIKE); // WHERE difficulty LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $difficulty The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPicturesQuery The current query, for fluid interface
+     */
+    public function filterByDifficulty($difficulty = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($difficulty)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PicturesTableMap::COL_DIFFICULTY, $difficulty, $comparison);
+    }
+
+    /**
+     * Filter the query on the title column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTitle('fooValue');   // WHERE title = 'fooValue'
+     * $query->filterByTitle('%fooValue%', Criteria::LIKE); // WHERE title LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $title The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPicturesQuery The current query, for fluid interface
+     */
+    public function filterByTitle($title = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($title)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PicturesTableMap::COL_TITLE, $title, $comparison);
     }
 
     /**
@@ -384,16 +522,16 @@ abstract class PicturesQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the id_categories column
+     * Filter the query on the note column
      *
      * Example usage:
      * <code>
-     * $query->filterByIdCategories(1234); // WHERE id_categories = 1234
-     * $query->filterByIdCategories(array(12, 34)); // WHERE id_categories IN (12, 34)
-     * $query->filterByIdCategories(array('min' => 12)); // WHERE id_categories > 12
+     * $query->filterByNote(1234); // WHERE note = 1234
+     * $query->filterByNote(array(12, 34)); // WHERE note IN (12, 34)
+     * $query->filterByNote(array('min' => 12)); // WHERE note > 12
      * </code>
      *
-     * @param     mixed $idCategories The value to use as filter.
+     * @param     mixed $note The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -401,16 +539,16 @@ abstract class PicturesQuery extends ModelCriteria
      *
      * @return $this|ChildPicturesQuery The current query, for fluid interface
      */
-    public function filterByIdCategories($idCategories = null, $comparison = null)
+    public function filterByNote($note = null, $comparison = null)
     {
-        if (is_array($idCategories)) {
+        if (is_array($note)) {
             $useMinMax = false;
-            if (isset($idCategories['min'])) {
-                $this->addUsingAlias(PicturesTableMap::COL_ID_CATEGORIES, $idCategories['min'], Criteria::GREATER_EQUAL);
+            if (isset($note['min'])) {
+                $this->addUsingAlias(PicturesTableMap::COL_NOTE, $note['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($idCategories['max'])) {
-                $this->addUsingAlias(PicturesTableMap::COL_ID_CATEGORIES, $idCategories['max'], Criteria::LESS_EQUAL);
+            if (isset($note['max'])) {
+                $this->addUsingAlias(PicturesTableMap::COL_NOTE, $note['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -421,7 +559,204 @@ abstract class PicturesQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PicturesTableMap::COL_ID_CATEGORIES, $idCategories, $comparison);
+        return $this->addUsingAlias(PicturesTableMap::COL_NOTE, $note, $comparison);
+    }
+
+    /**
+     * Filter the query on the date_insert column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDateInsert('2011-03-14'); // WHERE date_insert = '2011-03-14'
+     * $query->filterByDateInsert('now'); // WHERE date_insert = '2011-03-14'
+     * $query->filterByDateInsert(array('max' => 'yesterday')); // WHERE date_insert > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $dateInsert The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPicturesQuery The current query, for fluid interface
+     */
+    public function filterByDateInsert($dateInsert = null, $comparison = null)
+    {
+        if (is_array($dateInsert)) {
+            $useMinMax = false;
+            if (isset($dateInsert['min'])) {
+                $this->addUsingAlias(PicturesTableMap::COL_DATE_INSERT, $dateInsert['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($dateInsert['max'])) {
+                $this->addUsingAlias(PicturesTableMap::COL_DATE_INSERT, $dateInsert['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PicturesTableMap::COL_DATE_INSERT, $dateInsert, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Propel\Propel\Users object
+     *
+     * @param \Propel\Propel\Users|ObjectCollection $users The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildPicturesQuery The current query, for fluid interface
+     */
+    public function filterByUsers($users, $comparison = null)
+    {
+        if ($users instanceof \Propel\Propel\Users) {
+            return $this
+                ->addUsingAlias(PicturesTableMap::COL_ID_USERS, $users->getIdUsers(), $comparison);
+        } elseif ($users instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PicturesTableMap::COL_ID_USERS, $users->toKeyValue('PrimaryKey', 'IdUsers'), $comparison);
+        } else {
+            throw new PropelException('filterByUsers() only accepts arguments of type \Propel\Propel\Users or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Users relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildPicturesQuery The current query, for fluid interface
+     */
+    public function joinUsers($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Users');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Users');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Users relation Users object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Propel\UsersQuery A secondary query class using the current class as primary query
+     */
+    public function useUsersQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinUsers($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Users', '\Propel\Propel\UsersQuery');
+    }
+
+    /**
+     * Filter the query by a related \Propel\Propel\Categories object
+     *
+     * @param \Propel\Propel\Categories|ObjectCollection $categories The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildPicturesQuery The current query, for fluid interface
+     */
+    public function filterByCategories($categories, $comparison = null)
+    {
+        if ($categories instanceof \Propel\Propel\Categories) {
+            return $this
+                ->addUsingAlias(PicturesTableMap::COL_ID_CATEGORIES, $categories->getIdCategories(), $comparison);
+        } elseif ($categories instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(PicturesTableMap::COL_ID_CATEGORIES, $categories->toKeyValue('PrimaryKey', 'IdCategories'), $comparison);
+        } else {
+            throw new PropelException('filterByCategories() only accepts arguments of type \Propel\Propel\Categories or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Categories relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildPicturesQuery The current query, for fluid interface
+     */
+    public function joinCategories($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Categories');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Categories');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Categories relation Categories object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Propel\CategoriesQuery A secondary query class using the current class as primary query
+     */
+    public function useCategoriesQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCategories($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Categories', '\Propel\Propel\CategoriesQuery');
     }
 
     /**

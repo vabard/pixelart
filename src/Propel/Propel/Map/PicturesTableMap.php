@@ -59,7 +59,7 @@ class PicturesTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 9;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class PicturesTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /**
      * the column name for the id_pictures field
@@ -82,6 +82,21 @@ class PicturesTableMap extends TableMap
     const COL_ID_USERS = 'pictures.id_users';
 
     /**
+     * the column name for the id_categories field
+     */
+    const COL_ID_CATEGORIES = 'pictures.id_categories';
+
+    /**
+     * the column name for the difficulty field
+     */
+    const COL_DIFFICULTY = 'pictures.difficulty';
+
+    /**
+     * the column name for the title field
+     */
+    const COL_TITLE = 'pictures.title';
+
+    /**
      * the column name for the canvas field
      */
     const COL_CANVAS = 'pictures.canvas';
@@ -92,9 +107,14 @@ class PicturesTableMap extends TableMap
     const COL_THUMB = 'pictures.thumb';
 
     /**
-     * the column name for the id_categories field
+     * the column name for the note field
      */
-    const COL_ID_CATEGORIES = 'pictures.id_categories';
+    const COL_NOTE = 'pictures.note';
+
+    /**
+     * the column name for the date_insert field
+     */
+    const COL_DATE_INSERT = 'pictures.date_insert';
 
     /**
      * The default string format for model objects of the related table
@@ -108,11 +128,11 @@ class PicturesTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('IdPictures', 'IdUsers', 'Canvas', 'Thumb', 'IdCategories', ),
-        self::TYPE_CAMELNAME     => array('idPictures', 'idUsers', 'canvas', 'thumb', 'idCategories', ),
-        self::TYPE_COLNAME       => array(PicturesTableMap::COL_ID_PICTURES, PicturesTableMap::COL_ID_USERS, PicturesTableMap::COL_CANVAS, PicturesTableMap::COL_THUMB, PicturesTableMap::COL_ID_CATEGORIES, ),
-        self::TYPE_FIELDNAME     => array('id_pictures', 'id_users', 'canvas', 'thumb', 'id_categories', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('IdPictures', 'IdUsers', 'IdCategories', 'Difficulty', 'Title', 'Canvas', 'Thumb', 'Note', 'DateInsert', ),
+        self::TYPE_CAMELNAME     => array('idPictures', 'idUsers', 'idCategories', 'difficulty', 'title', 'canvas', 'thumb', 'note', 'dateInsert', ),
+        self::TYPE_COLNAME       => array(PicturesTableMap::COL_ID_PICTURES, PicturesTableMap::COL_ID_USERS, PicturesTableMap::COL_ID_CATEGORIES, PicturesTableMap::COL_DIFFICULTY, PicturesTableMap::COL_TITLE, PicturesTableMap::COL_CANVAS, PicturesTableMap::COL_THUMB, PicturesTableMap::COL_NOTE, PicturesTableMap::COL_DATE_INSERT, ),
+        self::TYPE_FIELDNAME     => array('id_pictures', 'id_users', 'id_categories', 'difficulty', 'title', 'canvas', 'thumb', 'note', 'date_insert', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -122,11 +142,11 @@ class PicturesTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('IdPictures' => 0, 'IdUsers' => 1, 'Canvas' => 2, 'Thumb' => 3, 'IdCategories' => 4, ),
-        self::TYPE_CAMELNAME     => array('idPictures' => 0, 'idUsers' => 1, 'canvas' => 2, 'thumb' => 3, 'idCategories' => 4, ),
-        self::TYPE_COLNAME       => array(PicturesTableMap::COL_ID_PICTURES => 0, PicturesTableMap::COL_ID_USERS => 1, PicturesTableMap::COL_CANVAS => 2, PicturesTableMap::COL_THUMB => 3, PicturesTableMap::COL_ID_CATEGORIES => 4, ),
-        self::TYPE_FIELDNAME     => array('id_pictures' => 0, 'id_users' => 1, 'canvas' => 2, 'thumb' => 3, 'id_categories' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('IdPictures' => 0, 'IdUsers' => 1, 'IdCategories' => 2, 'Difficulty' => 3, 'Title' => 4, 'Canvas' => 5, 'Thumb' => 6, 'Note' => 7, 'DateInsert' => 8, ),
+        self::TYPE_CAMELNAME     => array('idPictures' => 0, 'idUsers' => 1, 'idCategories' => 2, 'difficulty' => 3, 'title' => 4, 'canvas' => 5, 'thumb' => 6, 'note' => 7, 'dateInsert' => 8, ),
+        self::TYPE_COLNAME       => array(PicturesTableMap::COL_ID_PICTURES => 0, PicturesTableMap::COL_ID_USERS => 1, PicturesTableMap::COL_ID_CATEGORIES => 2, PicturesTableMap::COL_DIFFICULTY => 3, PicturesTableMap::COL_TITLE => 4, PicturesTableMap::COL_CANVAS => 5, PicturesTableMap::COL_THUMB => 6, PicturesTableMap::COL_NOTE => 7, PicturesTableMap::COL_DATE_INSERT => 8, ),
+        self::TYPE_FIELDNAME     => array('id_pictures' => 0, 'id_users' => 1, 'id_categories' => 2, 'difficulty' => 3, 'title' => 4, 'canvas' => 5, 'thumb' => 6, 'note' => 7, 'date_insert' => 8, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -147,10 +167,14 @@ class PicturesTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id_pictures', 'IdPictures', 'INTEGER', true, null, null);
-        $this->addColumn('id_users', 'IdUsers', 'INTEGER', true, null, null);
+        $this->addForeignKey('id_users', 'IdUsers', 'INTEGER', 'users', 'id_users', true, null, null);
+        $this->addForeignKey('id_categories', 'IdCategories', 'INTEGER', 'categories', 'id_categories', true, null, null);
+        $this->addColumn('difficulty', 'Difficulty', 'CHAR', true, null, null);
+        $this->addColumn('title', 'Title', 'VARCHAR', true, 255, null);
         $this->addColumn('canvas', 'Canvas', 'LONGVARCHAR', true, null, null);
         $this->addColumn('thumb', 'Thumb', 'LONGVARCHAR', true, null, null);
-        $this->addColumn('id_categories', 'IdCategories', 'INTEGER', true, null, null);
+        $this->addColumn('note', 'Note', 'INTEGER', true, null, null);
+        $this->addColumn('date_insert', 'DateInsert', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
     } // initialize()
 
     /**
@@ -158,6 +182,20 @@ class PicturesTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Users', '\\Propel\\Propel\\Users', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':id_users',
+    1 => ':id_users',
+  ),
+), null, null, null, false);
+        $this->addRelation('Categories', '\\Propel\\Propel\\Categories', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':id_categories',
+    1 => ':id_categories',
+  ),
+), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -303,15 +341,23 @@ class PicturesTableMap extends TableMap
         if (null === $alias) {
             $criteria->addSelectColumn(PicturesTableMap::COL_ID_PICTURES);
             $criteria->addSelectColumn(PicturesTableMap::COL_ID_USERS);
+            $criteria->addSelectColumn(PicturesTableMap::COL_ID_CATEGORIES);
+            $criteria->addSelectColumn(PicturesTableMap::COL_DIFFICULTY);
+            $criteria->addSelectColumn(PicturesTableMap::COL_TITLE);
             $criteria->addSelectColumn(PicturesTableMap::COL_CANVAS);
             $criteria->addSelectColumn(PicturesTableMap::COL_THUMB);
-            $criteria->addSelectColumn(PicturesTableMap::COL_ID_CATEGORIES);
+            $criteria->addSelectColumn(PicturesTableMap::COL_NOTE);
+            $criteria->addSelectColumn(PicturesTableMap::COL_DATE_INSERT);
         } else {
             $criteria->addSelectColumn($alias . '.id_pictures');
             $criteria->addSelectColumn($alias . '.id_users');
+            $criteria->addSelectColumn($alias . '.id_categories');
+            $criteria->addSelectColumn($alias . '.difficulty');
+            $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.canvas');
             $criteria->addSelectColumn($alias . '.thumb');
-            $criteria->addSelectColumn($alias . '.id_categories');
+            $criteria->addSelectColumn($alias . '.note');
+            $criteria->addSelectColumn($alias . '.date_insert');
         }
     }
 

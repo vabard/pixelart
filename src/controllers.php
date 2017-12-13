@@ -46,12 +46,26 @@ $app->get('/login', function(Request $request) use ($app) {
 // route pour Galery - on affiche tous les Pictures
 $app->get('/galery-pixelart', function () use ($app) {
     
-    $pictures = Propel\Propel\PicturesQuery::create()->find();
+    $pictures = Propel\Propel\PicturesQuery::create()
+            ->useUsersQuery('u', 'left join')
+                ->filterByUsername('toto')
+            ->endUse()
+            ->useCategoriesQuery('c', 'left join')
+            ->endUse()
+            ->orderByDateInsert('desc')
+            ->find();
     
     // on transmet à notre template les données (toujours un array!)
     return $app['twig']->render('galery-pixelart.html.twig', [
         'pictures' => $pictures
     ]);
+
+//    $pictures = Propel\Propel\PicturesQuery::create()->find();
+//    
+//    // on transmet à notre template les données (toujours un array!)
+//    return $app['twig']->render('galery-pixelart.html.twig', [
+//        'pictures' => $pictures
+//    ]);
 
 })
 ->bind('galery-pixelart')
