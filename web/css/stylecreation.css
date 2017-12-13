@@ -2,10 +2,19 @@
                  max-width: 800px;
                  margin: 0 auto;
              }
+             
+               #cadre {
+                 overflow: scroll;
+                 height:800px;
+                 padding:0;
+                 margin:0;
+             }
+
 
              #canvas {
                  margin:10px auto;
                  display:block;
+             }
 
              #my button {
                  width: 20px;
@@ -17,10 +26,4 @@
                  width: 80px;
              }
              
-             #cadre{
-                 overflow:scroll;
-                 height:800px;
-                 padding:0;
-                 margin:0;
-             }
-
+           
