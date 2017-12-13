@@ -43,18 +43,31 @@ $app->get('/login', function(Request $request) use ($app) {
 ->bind('login')
 ;
 
+// route pour Galery - on affiche tous les Pictures
+$app->get('/galery-pixelart', function () use ($app) {
+    
+    $pictures = Propel\Propel\PicturesQuery::create()->find();
+    
+    // on transmet à notre template les données (toujours un array!)
+    return $app['twig']->render('galery-pixelart.html.twig', [
+        'pictures' => $pictures
+    ]);
+
+})
+->bind('galery-pixelart')
+;
+
+
 // route pour apprendre 1 picture
-$app->get('/apprendre-pixelart', function () use ($app) {
+$app->get('/apprendre-pixelart/{id}', function ($id) use ($app) {
     
-    $picture = Propel\Propel\PicturesQuery::create()->findOneByIdPictures(1);
+    $picture = Propel\Propel\PicturesQuery::create()->findOneByIdPictures($id);
     
-    // on transmet à notre template les données de $users (toujours un array!)
+    // on transmet à notre template les données (toujours un array!)
     return $app['twig']->render('apprendre-pixelart.html.twig', [
         'picture' => $picture
     ]);
-    
-    
-    //return $app['twig']->render('apprendre-pixelart.html.twig', array());
+
 })
 ->bind('apprendre-pixelart')
 ;

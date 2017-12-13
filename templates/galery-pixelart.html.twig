@@ -1,0 +1,107 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <main>
+{#        <div class="container-fluid">
+            <h1 class="text-center">Galery PixelArt</h1>#}
+            
+            <section class="shop">
+                <div class="container page-bgc">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="title-box">
+                                <p>apprendre</p>
+                                <h2 class="title mt0">Galery PixelArt</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="boxed">
+                            
+                            {% for picture in pictures %}
+                            <div class="col-sm-4">
+                                <div class="shop-box">
+                                    <img class="img-full img-responsive" src="{{ picture.thumb }}" alt="">
+                                    <div class="shop-box-hover text-center">
+                                        <div class="c-table">
+                                            <div class="c-cell">
+                                                <a href="{{ path('apprendre-pixelart', { id : picture.idPictures }) }}">
+                                                    <span class="glyphicon glyphicon-education" aria-hidden="true"></span> Apprendre
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="shop-box-title">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h4>Industry Robot</h4>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p class="shop-price">
+                                                $ 747
+                                            </p>
+                                            <div class="star">
+                                                <span class="ion-ios-star"></span>
+                                                <span class="ion-ios-star"></span>
+                                                <span class="ion-ios-star"></span>
+                                                <span class="ion-ios-star-half"></span>
+                                                <span class="ion-ios-star-outline"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+            
+                            <div class="col-sm-12">
+                                <nav>
+                                    <ul class="pager">
+                                        <li class="previous disabled"><a href="#"><span aria-hidden="true" class="ion-chevron-left"></span></a></li>
+                                        <li><a href="#">1</a></li>
+                                        <li><a href="#">2</a></li>
+                                        <li><a href="#">3</a></li>
+                                        <li class="next"><a href="#"><span aria-hidden="true" class="ion-chevron-right"></span></a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> 
+
+
+
+
+
+
+{#            <div class="row">
+                <div class="col-md-2">
+                    <h2>Miniature</h2>
+                    <div class="thumbnail">
+                        <img id="thumb-learn" src="{{ picture.thumb }}">
+
+                    </div>
+
+                    <h2>Palette</h2>
+                    <ul id="colors" class="list-unstyled list-inline"></ul>
+
+                    <button id="play" class="btn btn-default">Démarrer</button>
+                    <button id="stop" class="btn btn-default">Arreter</button>
+
+                </div>
+
+                <div class="col-md-8">
+                    <div id="container-learn" ><canvas id="canvas-learn"></canvas></div>
+                </div>
+
+                <div class="col-md-2">
+                    <h2>Etapes</h2>
+                    <ul id="steps" class="list-unstyled"></ul>
+                </div>                
+            </div>#}
+        </div>
+    </main>
+
+{% endblock %} 
