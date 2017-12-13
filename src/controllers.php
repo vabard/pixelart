@@ -26,11 +26,14 @@ $app->before(function() use ($app) {
     
 });
 
+
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html.twig', array());
 })
 ->bind('homepage')
 ;
+
+
 $app->get('/login', function(Request $request) use ($app) {
     return $app['twig']->render('login.html.twig', array(
         'error'         => $app['security.last_error']($request),
@@ -39,6 +42,14 @@ $app->get('/login', function(Request $request) use ($app) {
 })
 ->bind('login')
 ;
+
+
+$app->get('/apprendre-pixelart', function () use ($app) {
+    return $app['twig']->render('apprendre-pixelart.html.twig', array());
+})
+->bind('apprendre-pixelart')
+;
+
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {

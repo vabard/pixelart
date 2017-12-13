@@ -1,0 +1,28 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <main>
+        <div class="container-fluid">
+            <h1 class="text-center">Apprendre PixelArt</h1>            
+            <div class="row">
+                <div class="col-md-2">
+                    <p>Miniature</p>
+                    <div> THUMB</div>
+                    <button id="play" class="btn btn-default">Démarrer</button>
+                    <button id="stop" class="btn btn-default">Arreter</button>
+                    
+                </div>
+                
+                <div class="col-md-8">
+                    <div id="container-learn" ><canvas id="canvas-learn"></canvas></div>
+                </div>
+                
+                <div class="col-md-2">
+                    <p>Etapes</p>
+                    <ul id="steps"></ul>
+                </div>                
+            </div>
+        </div>
+    </main>
+    
+{% endblock %} 
