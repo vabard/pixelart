@@ -4,10 +4,10 @@ use Propel\Generator\Manager\MigrationManager;
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1513089243.
- * Generated on 2017-12-12 14:34:03 by apple
+ * up to version 1513244723.
+ * Generated on 2017-12-14 09:45:23 by vassilina
  */
-class PropelMigration_1513089243
+class PropelMigration_1513244723
 {
     public $comment = '';
 
@@ -45,9 +45,11 @@ class PropelMigration_1513089243
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `users`
+ALTER TABLE `pictures`
 
-  CHANGE `role` `role` enum(\'admin\',\'membre\') NOT NULL;
+  CHANGE `note` `note` INTEGER,
+
+  ADD `state` enum(\'0\',\'1\',\'2\') NOT NULL AFTER `difficulty`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -69,9 +71,11 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `users`
+ALTER TABLE `pictures`
 
-  CHANGE `role` `role` VARCHAR(255) NOT NULL;
+  CHANGE `note` `note` INTEGER NOT NULL,
+
+  DROP `state`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

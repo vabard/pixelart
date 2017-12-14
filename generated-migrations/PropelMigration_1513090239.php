@@ -4,10 +4,10 @@ use Propel\Generator\Manager\MigrationManager;
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1513090212.
- * Generated on 2017-12-12 14:50:12 by apple
+ * up to version 1513090239.
+ * Generated on 2017-12-12 14:50:39 by johandelacasiniere
  */
-class PropelMigration_1513090212
+class PropelMigration_1513090239
 {
     public $comment = '';
 
@@ -47,7 +47,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 ALTER TABLE `users`
 
-  CHANGE `role` `role` VARCHAR(255) NOT NULL;
+  CHANGE `tatataname` `lastname` VARCHAR(100) NOT NULL;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -71,7 +71,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 ALTER TABLE `users`
 
-  CHANGE `role` `role` enum(\'admin\',\'membre\') NOT NULL;
+  CHANGE `lastname` `tatataname` VARCHAR(100) NOT NULL;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

@@ -140,6 +140,13 @@ class CategoriesTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Pictures', '\\Propel\\Propel\\Pictures', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':id_categories',
+    1 => ':id_categories',
+  ),
+), null, null, 'Picturess', false);
     } // buildRelations()
 
     /**

@@ -4,13 +4,18 @@ namespace Propel\Propel\Base;
 
 use \Exception;
 use \PDO;
+use Propel\Propel\Pictures as ChildPictures;
+use Propel\Propel\PicturesQuery as ChildPicturesQuery;
+use Propel\Propel\Users as ChildUsers;
 use Propel\Propel\UsersQuery as ChildUsersQuery;
+use Propel\Propel\Map\PicturesTableMap;
 use Propel\Propel\Map\UsersTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -102,6 +107,13 @@ abstract class Users implements ActiveRecordInterface
     protected $password;
 
     /**
+     * The value for the salt field.
+     *
+     * @var        string
+     */
+    protected $salt;
+
+    /**
      * The value for the role field.
      *
      * @var        string
@@ -109,11 +121,10 @@ abstract class Users implements ActiveRecordInterface
     protected $role;
 
     /**
-     * The value for the salt field.
-     *
-     * @var        string
+     * @var        ObjectCollection|ChildPictures[] Collection to store aggregation of ChildPictures objects.
      */
-    protected $salt;
+    protected $collPicturess;
+    protected $collPicturessPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -122,6 +133,12 @@ abstract class Users implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildPictures[]
+     */
+    protected $picturessScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Propel\Propel\Base\Users object.
@@ -409,16 +426,6 @@ abstract class Users implements ActiveRecordInterface
     }
 
     /**
-     * Get the [role] column value.
-     *
-     * @return string
-     */
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    /**
      * Get the [salt] column value.
      *
      * @return string
@@ -426,6 +433,16 @@ abstract class Users implements ActiveRecordInterface
     public function getSalt()
     {
         return $this->salt;
+    }
+
+    /**
+     * Get the [role] column value.
+     *
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
     }
 
     /**
@@ -549,26 +566,6 @@ abstract class Users implements ActiveRecordInterface
     } // setPassword()
 
     /**
-     * Set the value of [role] column.
-     *
-     * @param string $v new value
-     * @return $this|\Propel\Propel\Users The current object (for fluent API support)
-     */
-    public function setRole($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->role !== $v) {
-            $this->role = $v;
-            $this->modifiedColumns[UsersTableMap::COL_ROLE] = true;
-        }
-
-        return $this;
-    } // setRole()
-
-    /**
      * Set the value of [salt] column.
      *
      * @param string $v new value
@@ -587,6 +584,26 @@ abstract class Users implements ActiveRecordInterface
 
         return $this;
     } // setSalt()
+
+    /**
+     * Set the value of [role] column.
+     *
+     * @param string $v new value
+     * @return $this|\Propel\Propel\Users The current object (for fluent API support)
+     */
+    public function setRole($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->role !== $v) {
+            $this->role = $v;
+            $this->modifiedColumns[UsersTableMap::COL_ROLE] = true;
+        }
+
+        return $this;
+    } // setRole()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -642,11 +659,11 @@ abstract class Users implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : UsersTableMap::translateFieldName('Password', TableMap::TYPE_PHPNAME, $indexType)];
             $this->password = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : UsersTableMap::translateFieldName('Role', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->role = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : UsersTableMap::translateFieldName('Salt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : UsersTableMap::translateFieldName('Salt', TableMap::TYPE_PHPNAME, $indexType)];
             $this->salt = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : UsersTableMap::translateFieldName('Role', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->role = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -715,6 +732,8 @@ abstract class Users implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->collPicturess = null;
 
         } // if (deep)
     }
@@ -830,6 +849,23 @@ abstract class Users implements ActiveRecordInterface
                 $this->resetModified();
             }
 
+            if ($this->picturessScheduledForDeletion !== null) {
+                if (!$this->picturessScheduledForDeletion->isEmpty()) {
+                    \Propel\Propel\PicturesQuery::create()
+                        ->filterByPrimaryKeys($this->picturessScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->picturessScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPicturess !== null) {
+                foreach ($this->collPicturess as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -874,11 +910,11 @@ abstract class Users implements ActiveRecordInterface
         if ($this->isColumnModified(UsersTableMap::COL_PASSWORD)) {
             $modifiedColumns[':p' . $index++]  = 'password';
         }
-        if ($this->isColumnModified(UsersTableMap::COL_ROLE)) {
-            $modifiedColumns[':p' . $index++]  = 'role';
-        }
         if ($this->isColumnModified(UsersTableMap::COL_SALT)) {
             $modifiedColumns[':p' . $index++]  = 'salt';
+        }
+        if ($this->isColumnModified(UsersTableMap::COL_ROLE)) {
+            $modifiedColumns[':p' . $index++]  = 'role';
         }
 
         $sql = sprintf(
@@ -909,11 +945,11 @@ abstract class Users implements ActiveRecordInterface
                     case 'password':
                         $stmt->bindValue($identifier, $this->password, PDO::PARAM_STR);
                         break;
-                    case 'role':
-                        $stmt->bindValue($identifier, $this->role, PDO::PARAM_STR);
-                        break;
                     case 'salt':
                         $stmt->bindValue($identifier, $this->salt, PDO::PARAM_STR);
+                        break;
+                    case 'role':
+                        $stmt->bindValue($identifier, $this->role, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -996,10 +1032,10 @@ abstract class Users implements ActiveRecordInterface
                 return $this->getPassword();
                 break;
             case 6:
-                return $this->getRole();
+                return $this->getSalt();
                 break;
             case 7:
-                return $this->getSalt();
+                return $this->getRole();
                 break;
             default:
                 return null;
@@ -1018,10 +1054,11 @@ abstract class Users implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
         if (isset($alreadyDumpedObjects['Users'][$this->hashCode()])) {
@@ -1036,14 +1073,31 @@ abstract class Users implements ActiveRecordInterface
             $keys[3] => $this->getLastname(),
             $keys[4] => $this->getEmail(),
             $keys[5] => $this->getPassword(),
-            $keys[6] => $this->getRole(),
-            $keys[7] => $this->getSalt(),
+            $keys[6] => $this->getSalt(),
+            $keys[7] => $this->getRole(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->collPicturess) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'picturess';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'picturess';
+                        break;
+                    default:
+                        $key = 'Picturess';
+                }
+
+                $result[$key] = $this->collPicturess->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -1096,10 +1150,10 @@ abstract class Users implements ActiveRecordInterface
                 $this->setPassword($value);
                 break;
             case 6:
-                $this->setRole($value);
+                $this->setSalt($value);
                 break;
             case 7:
-                $this->setSalt($value);
+                $this->setRole($value);
                 break;
         } // switch()
 
@@ -1146,10 +1200,10 @@ abstract class Users implements ActiveRecordInterface
             $this->setPassword($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setRole($arr[$keys[6]]);
+            $this->setSalt($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setSalt($arr[$keys[7]]);
+            $this->setRole($arr[$keys[7]]);
         }
     }
 
@@ -1210,11 +1264,11 @@ abstract class Users implements ActiveRecordInterface
         if ($this->isColumnModified(UsersTableMap::COL_PASSWORD)) {
             $criteria->add(UsersTableMap::COL_PASSWORD, $this->password);
         }
-        if ($this->isColumnModified(UsersTableMap::COL_ROLE)) {
-            $criteria->add(UsersTableMap::COL_ROLE, $this->role);
-        }
         if ($this->isColumnModified(UsersTableMap::COL_SALT)) {
             $criteria->add(UsersTableMap::COL_SALT, $this->salt);
+        }
+        if ($this->isColumnModified(UsersTableMap::COL_ROLE)) {
+            $criteria->add(UsersTableMap::COL_ROLE, $this->role);
         }
 
         return $criteria;
@@ -1307,8 +1361,22 @@ abstract class Users implements ActiveRecordInterface
         $copyObj->setLastname($this->getLastname());
         $copyObj->setEmail($this->getEmail());
         $copyObj->setPassword($this->getPassword());
-        $copyObj->setRole($this->getRole());
         $copyObj->setSalt($this->getSalt());
+        $copyObj->setRole($this->getRole());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getPicturess() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPictures($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdUsers(NULL); // this is a auto-increment column, so set to default value
@@ -1337,6 +1405,273 @@ abstract class Users implements ActiveRecordInterface
         return $copyObj;
     }
 
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Pictures' == $relationName) {
+            $this->initPicturess();
+            return;
+        }
+    }
+
+    /**
+     * Clears out the collPicturess collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addPicturess()
+     */
+    public function clearPicturess()
+    {
+        $this->collPicturess = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collPicturess collection loaded partially.
+     */
+    public function resetPartialPicturess($v = true)
+    {
+        $this->collPicturessPartial = $v;
+    }
+
+    /**
+     * Initializes the collPicturess collection.
+     *
+     * By default this just sets the collPicturess collection to an empty array (like clearcollPicturess());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPicturess($overrideExisting = true)
+    {
+        if (null !== $this->collPicturess && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = PicturesTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collPicturess = new $collectionClassName;
+        $this->collPicturess->setModel('\Propel\Propel\Pictures');
+    }
+
+    /**
+     * Gets an array of ChildPictures objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildUsers is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildPictures[] List of ChildPictures objects
+     * @throws PropelException
+     */
+    public function getPicturess(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collPicturessPartial && !$this->isNew();
+        if (null === $this->collPicturess || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPicturess) {
+                // return empty collection
+                $this->initPicturess();
+            } else {
+                $collPicturess = ChildPicturesQuery::create(null, $criteria)
+                    ->filterByUsers($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collPicturessPartial && count($collPicturess)) {
+                        $this->initPicturess(false);
+
+                        foreach ($collPicturess as $obj) {
+                            if (false == $this->collPicturess->contains($obj)) {
+                                $this->collPicturess->append($obj);
+                            }
+                        }
+
+                        $this->collPicturessPartial = true;
+                    }
+
+                    return $collPicturess;
+                }
+
+                if ($partial && $this->collPicturess) {
+                    foreach ($this->collPicturess as $obj) {
+                        if ($obj->isNew()) {
+                            $collPicturess[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPicturess = $collPicturess;
+                $this->collPicturessPartial = false;
+            }
+        }
+
+        return $this->collPicturess;
+    }
+
+    /**
+     * Sets a collection of ChildPictures objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $picturess A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildUsers The current object (for fluent API support)
+     */
+    public function setPicturess(Collection $picturess, ConnectionInterface $con = null)
+    {
+        /** @var ChildPictures[] $picturessToDelete */
+        $picturessToDelete = $this->getPicturess(new Criteria(), $con)->diff($picturess);
+
+
+        $this->picturessScheduledForDeletion = $picturessToDelete;
+
+        foreach ($picturessToDelete as $picturesRemoved) {
+            $picturesRemoved->setUsers(null);
+        }
+
+        $this->collPicturess = null;
+        foreach ($picturess as $pictures) {
+            $this->addPictures($pictures);
+        }
+
+        $this->collPicturess = $picturess;
+        $this->collPicturessPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Pictures objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Pictures objects.
+     * @throws PropelException
+     */
+    public function countPicturess(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collPicturessPartial && !$this->isNew();
+        if (null === $this->collPicturess || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPicturess) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPicturess());
+            }
+
+            $query = ChildPicturesQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByUsers($this)
+                ->count($con);
+        }
+
+        return count($this->collPicturess);
+    }
+
+    /**
+     * Method called to associate a ChildPictures object to this object
+     * through the ChildPictures foreign key attribute.
+     *
+     * @param  ChildPictures $l ChildPictures
+     * @return $this|\Propel\Propel\Users The current object (for fluent API support)
+     */
+    public function addPictures(ChildPictures $l)
+    {
+        if ($this->collPicturess === null) {
+            $this->initPicturess();
+            $this->collPicturessPartial = true;
+        }
+
+        if (!$this->collPicturess->contains($l)) {
+            $this->doAddPictures($l);
+
+            if ($this->picturessScheduledForDeletion and $this->picturessScheduledForDeletion->contains($l)) {
+                $this->picturessScheduledForDeletion->remove($this->picturessScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildPictures $pictures The ChildPictures object to add.
+     */
+    protected function doAddPictures(ChildPictures $pictures)
+    {
+        $this->collPicturess[]= $pictures;
+        $pictures->setUsers($this);
+    }
+
+    /**
+     * @param  ChildPictures $pictures The ChildPictures object to remove.
+     * @return $this|ChildUsers The current object (for fluent API support)
+     */
+    public function removePictures(ChildPictures $pictures)
+    {
+        if ($this->getPicturess()->contains($pictures)) {
+            $pos = $this->collPicturess->search($pictures);
+            $this->collPicturess->remove($pos);
+            if (null === $this->picturessScheduledForDeletion) {
+                $this->picturessScheduledForDeletion = clone $this->collPicturess;
+                $this->picturessScheduledForDeletion->clear();
+            }
+            $this->picturessScheduledForDeletion[]= clone $pictures;
+            $pictures->setUsers(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Users is new, it will return
+     * an empty collection; or if this Users has previously
+     * been saved, it will retrieve related Picturess from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Users.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildPictures[] List of ChildPictures objects
+     */
+    public function getPicturessJoinCategories(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildPicturesQuery::create(null, $criteria);
+        $query->joinWith('Categories', $joinBehavior);
+
+        return $this->getPicturess($query, $con);
+    }
+
     /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
@@ -1350,8 +1685,8 @@ abstract class Users implements ActiveRecordInterface
         $this->lastname = null;
         $this->email = null;
         $this->password = null;
-        $this->role = null;
         $this->salt = null;
+        $this->role = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1370,8 +1705,14 @@ abstract class Users implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collPicturess) {
+                foreach ($this->collPicturess as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collPicturess = null;
     }
 
     /**

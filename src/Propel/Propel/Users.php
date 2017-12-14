@@ -1,10 +1,7 @@
 <?php
-
 namespace Propel\Propel;
-
 use Propel\Propel\Base\Users as BaseUsers;
 use Symfony\Component\Security\Core\User\UserInterface;
-
 /**
  * Skeleton subclass for representing a row from the 'users' table.
  *
@@ -20,9 +17,10 @@ class Users extends BaseUsers implements UserInterface
     public function eraseCredentials() {
         
     }
-
     public function getRoles() {
         return explode('|', $this->getRole());
     }
-
+    public function setRole($role){
+        $this->role = $role;
+    }
 }

@@ -102,14 +102,14 @@ class UsersTableMap extends TableMap
     const COL_PASSWORD = 'users.password';
 
     /**
-     * the column name for the role field
-     */
-    const COL_ROLE = 'users.role';
-
-    /**
      * the column name for the salt field
      */
     const COL_SALT = 'users.salt';
+
+    /**
+     * the column name for the role field
+     */
+    const COL_ROLE = 'users.role';
 
     /**
      * The default string format for model objects of the related table
@@ -123,10 +123,10 @@ class UsersTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('IdUsers', 'Username', 'Firstname', 'Lastname', 'Email', 'Password', 'Role', 'Salt', ),
-        self::TYPE_CAMELNAME     => array('idUsers', 'username', 'firstname', 'lastname', 'email', 'password', 'role', 'salt', ),
-        self::TYPE_COLNAME       => array(UsersTableMap::COL_ID_USERS, UsersTableMap::COL_USERNAME, UsersTableMap::COL_FIRSTNAME, UsersTableMap::COL_LASTNAME, UsersTableMap::COL_EMAIL, UsersTableMap::COL_PASSWORD, UsersTableMap::COL_ROLE, UsersTableMap::COL_SALT, ),
-        self::TYPE_FIELDNAME     => array('id_users', 'username', 'firstname', 'lastname', 'email', 'password', 'role', 'salt', ),
+        self::TYPE_PHPNAME       => array('IdUsers', 'Username', 'Firstname', 'Lastname', 'Email', 'Password', 'Salt', 'Role', ),
+        self::TYPE_CAMELNAME     => array('idUsers', 'username', 'firstname', 'lastname', 'email', 'password', 'salt', 'role', ),
+        self::TYPE_COLNAME       => array(UsersTableMap::COL_ID_USERS, UsersTableMap::COL_USERNAME, UsersTableMap::COL_FIRSTNAME, UsersTableMap::COL_LASTNAME, UsersTableMap::COL_EMAIL, UsersTableMap::COL_PASSWORD, UsersTableMap::COL_SALT, UsersTableMap::COL_ROLE, ),
+        self::TYPE_FIELDNAME     => array('id_users', 'username', 'firstname', 'lastname', 'email', 'password', 'salt', 'role', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
@@ -137,10 +137,10 @@ class UsersTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('IdUsers' => 0, 'Username' => 1, 'Firstname' => 2, 'Lastname' => 3, 'Email' => 4, 'Password' => 5, 'Role' => 6, 'Salt' => 7, ),
-        self::TYPE_CAMELNAME     => array('idUsers' => 0, 'username' => 1, 'firstname' => 2, 'lastname' => 3, 'email' => 4, 'password' => 5, 'role' => 6, 'salt' => 7, ),
-        self::TYPE_COLNAME       => array(UsersTableMap::COL_ID_USERS => 0, UsersTableMap::COL_USERNAME => 1, UsersTableMap::COL_FIRSTNAME => 2, UsersTableMap::COL_LASTNAME => 3, UsersTableMap::COL_EMAIL => 4, UsersTableMap::COL_PASSWORD => 5, UsersTableMap::COL_ROLE => 6, UsersTableMap::COL_SALT => 7, ),
-        self::TYPE_FIELDNAME     => array('id_users' => 0, 'username' => 1, 'firstname' => 2, 'lastname' => 3, 'email' => 4, 'password' => 5, 'role' => 6, 'salt' => 7, ),
+        self::TYPE_PHPNAME       => array('IdUsers' => 0, 'Username' => 1, 'Firstname' => 2, 'Lastname' => 3, 'Email' => 4, 'Password' => 5, 'Salt' => 6, 'Role' => 7, ),
+        self::TYPE_CAMELNAME     => array('idUsers' => 0, 'username' => 1, 'firstname' => 2, 'lastname' => 3, 'email' => 4, 'password' => 5, 'salt' => 6, 'role' => 7, ),
+        self::TYPE_COLNAME       => array(UsersTableMap::COL_ID_USERS => 0, UsersTableMap::COL_USERNAME => 1, UsersTableMap::COL_FIRSTNAME => 2, UsersTableMap::COL_LASTNAME => 3, UsersTableMap::COL_EMAIL => 4, UsersTableMap::COL_PASSWORD => 5, UsersTableMap::COL_SALT => 6, UsersTableMap::COL_ROLE => 7, ),
+        self::TYPE_FIELDNAME     => array('id_users' => 0, 'username' => 1, 'firstname' => 2, 'lastname' => 3, 'email' => 4, 'password' => 5, 'salt' => 6, 'role' => 7, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
@@ -167,8 +167,8 @@ class UsersTableMap extends TableMap
         $this->addColumn('lastname', 'Lastname', 'VARCHAR', true, 100, null);
         $this->addColumn('email', 'Email', 'VARCHAR', true, 100, null);
         $this->addColumn('password', 'Password', 'VARCHAR', true, 255, null);
-        $this->addColumn('role', 'Role', 'CHAR', true, null, null);
         $this->addColumn('salt', 'Salt', 'VARCHAR', true, 255, null);
+        $this->addColumn('role', 'Role', 'VARCHAR', true, 255, null);
     } // initialize()
 
     /**
@@ -176,6 +176,13 @@ class UsersTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Pictures', '\\Propel\\Propel\\Pictures', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':id_users',
+    1 => ':id_users',
+  ),
+), null, null, 'Picturess', false);
     } // buildRelations()
 
     /**
@@ -325,8 +332,8 @@ class UsersTableMap extends TableMap
             $criteria->addSelectColumn(UsersTableMap::COL_LASTNAME);
             $criteria->addSelectColumn(UsersTableMap::COL_EMAIL);
             $criteria->addSelectColumn(UsersTableMap::COL_PASSWORD);
-            $criteria->addSelectColumn(UsersTableMap::COL_ROLE);
             $criteria->addSelectColumn(UsersTableMap::COL_SALT);
+            $criteria->addSelectColumn(UsersTableMap::COL_ROLE);
         } else {
             $criteria->addSelectColumn($alias . '.id_users');
             $criteria->addSelectColumn($alias . '.username');
@@ -334,8 +341,8 @@ class UsersTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.lastname');
             $criteria->addSelectColumn($alias . '.email');
             $criteria->addSelectColumn($alias . '.password');
-            $criteria->addSelectColumn($alias . '.role');
             $criteria->addSelectColumn($alias . '.salt');
+            $criteria->addSelectColumn($alias . '.role');
         }
     }
 
