@@ -1,12 +1,10 @@
 <?php
-
 namespace Propel\Propel;
 
 use ArrayAccess;
 use Propel\Propel\Base\UsersQuery as BaseUsersQuery;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-
 /**
  * Skeleton subclass for performing query and update operations on the 'users' table.
  *
@@ -22,7 +20,6 @@ class UsersQuery extends BaseUsersQuery implements UserProviderInterface, ArrayA
     public function loadUserByUsername($username): UserInterface {
         return self::create()->findOneByUsername($username);
     }
-
     public function refreshUser(UserInterface $user): UserInterface {
         return self::create()->findOneByUsername($user->getUsername());
     }
@@ -46,5 +43,4 @@ class UsersQuery extends BaseUsersQuery implements UserProviderInterface, ArrayA
     public function offsetUnset($offset): void {
         
     }
-
 }

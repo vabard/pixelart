@@ -1,8 +1,9 @@
 /vendor/
 /nbproject/
 /config/db.php
-/propel.php.dist
+/propel.php
 /generated-conf/
 /generated-sql/
+/generated-migrations/
 /templates/sources/
 /.DS_Store
