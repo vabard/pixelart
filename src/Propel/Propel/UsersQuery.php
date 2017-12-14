@@ -1,5 +1,6 @@
 <?php
 namespace Propel\Propel;
+
 use ArrayAccess;
 use Propel\Propel\Base\UsersQuery as BaseUsersQuery;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -22,18 +23,23 @@ class UsersQuery extends BaseUsersQuery implements UserProviderInterface, ArrayA
     public function refreshUser(UserInterface $user): UserInterface {
         return self::create()->findOneByUsername($user->getUsername());
     }
+
     public function supportsClass($class){
         return $class === 'Users';
     }
+
     public function offsetExists($offset){
         return null;
     }
+
     public function offsetGet($offset) {
         
     }
+
     public function offsetSet($offset, $value): void {
         
     }
+
     public function offsetUnset($offset): void {
         
     }
