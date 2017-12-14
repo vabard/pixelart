@@ -22,6 +22,9 @@
                 <div class="row">
                     <div class="boxed">
 
+                    {% if pictures is empty %}
+                        <p>Il n'y a pas de PixelArt à afficher</p>
+                    {% else %}
                         {% for picture in pictures %}
                         <div class="col-sm-4">
                             <div class="shop-box">
@@ -40,7 +43,9 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <p class="picture-desc">{{ picture.title }}</p>
-                                        <p>Créé par : {{ picture }} - </p>
+                                        <p class="text-lowercase">Créé par<span class="text-uppercase"> {{ picture.users.username }}</span></p>
+                                        <p class="text-lowercase">Cat. : <span class="text-uppercase"> {{ picture.categories.title }}</span></p>
+                                        
                                     </div>
                                     <div class="col-sm-6">
                                         <p class="text-right">{{ picture.difficulty }}</p>
@@ -58,9 +63,21 @@
                         </div>
                         {% endfor %}
 
-
+                        {#{% if havetopaginate %}#}                            
+   
                         <div class="col-sm-12">
-                            <nav>
+                            <p>Nombre de PixelArt : {{ paginate.results }}</p>
+                            <p>Affichés de {{ paginate.firstindex }} à {{ paginate.lastindex }}</p>
+                                              <nav>
+                                
+                                1ere page : {{ paginate.firstpage }} / 
+                                Dernière page : {{ paginate.lastpage }} / 
+                                Current page : {{ paginate.currentpage }} /  
+                                C'est la derniere page ?  {{ paginate.islastpage }} /  
+                                
+                                getNextPage  {{ paginate.getNextPage }} /  
+                                
+                                
                                 <ul class="pager">
                                     <li class="previous disabled"><a href="#"><span aria-hidden="true" class="ion-chevron-left"></span></a></li>
                                     <li><a href="#">1</a></li>
@@ -69,7 +86,11 @@
                                     <li class="next"><a href="#"><span aria-hidden="true" class="ion-chevron-right"></span></a></li>
                                 </ul>
                             </nav>
-                        </div>
+                       
+                        </div> 
+                        {#{% endif %}#}
+                    {% endif %}
+
                     </div>
                 </div>
             </div>

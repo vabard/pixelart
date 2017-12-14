@@ -47,35 +47,41 @@ $app->get('/login', function(Request $request) use ($app) {
 $app->get('/galery-pixelart', function () use ($app) {
     
     $pictures = Propel\Propel\PicturesQuery::create()
-            ->useUsersQuery('u', 'left join')
-                ->filterByUsername('toto')
-            ->endUse()
-            ->useCategoriesQuery('c', 'left join')
-            ->endUse()
+            ->joinWithUsers()
+            ->joinWithCategories()
             ->orderByDateInsert('desc')
-            ->find();
+            ->paginate($page=1, $maxPerPage=3);
+//            ->find();
     
+    //$pictures->getNbResults()
     // on transmet à notre template les données (toujours un array!)
     return $app['twig']->render('galery-pixelart.html.twig', [
-        'pictures' => $pictures
+        'pictures' => $pictures,
+        'paginate' => [
+            'results'  => $pictures->getNbResults(),
+            //'havetopaginate'  => $pictures->haveToPaginate(),
+            'firstpage' => $pictures->getFirstPage(),
+            'lastpage' => $pictures->getLastPage(),
+            'currentpage' => $pictures->getPage(),
+            'islastpage' => $pictures->isLastPage(), //return boolean true (1) if the current page is the last page
+            'firstindex' => $pictures->getFirstIndex(),
+            'lastindex' => $pictures->getLastIndex(), 
+            'getNextPage' => $pictures->getNextPage(), 
+            
+        ]
     ]);
-
-//    $pictures = Propel\Propel\PicturesQuery::create()->find();
-//    
-//    // on transmet à notre template les données (toujours un array!)
-//    return $app['twig']->render('galery-pixelart.html.twig', [
-//        'pictures' => $pictures
-//    ]);
-
 })
 ->bind('galery-pixelart')
 ;
 
 
-// route pour apprendre 1 picture
+// route pour apprendre 1 Picture
 $app->get('/apprendre-pixelart/{id}', function ($id) use ($app) {
     
-    $picture = Propel\Propel\PicturesQuery::create()->findOneByIdPictures($id);
+    $picture = Propel\Propel\PicturesQuery::create()
+            ->joinWithUsers()
+            ->joinWithCategories()
+            ->findOneByIdPictures($id);
     
     // on transmet à notre template les données (toujours un array!)
     return $app['twig']->render('apprendre-pixelart.html.twig', [
