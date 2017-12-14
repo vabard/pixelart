@@ -2,13 +2,9 @@
 /nbproject/
 /config/db.php
 /propel.php
-<<<<<<< HEAD
-
-=======
-/propel.php.dist
-/schema.xml
->>>>>>> 9592d87d6241bd382d4252ee23bac4724ab09f68
 /generated-conf/
 /generated-sql/
+/generated-migrations/
 /templates/sources/
+/.DS_Store
 
