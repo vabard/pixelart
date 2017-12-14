@@ -3,10 +3,330 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-                
+                <h2>Formats</h2>
+                <button id="petitrectangle">Petit rectangle</button><br>
+                <button id="carremoyen">Carré Moyen</button><br>
+                <button id="rectanglemoyen">Rectangle Moyen</button><br>
+                <button id="grandcarre">Grand carré</button><br>
+                <button id="grandrectangle">Grand rectangle</button><br>
+                <h2>Personnaliser</h2>
+         <label>Combien de colonnes voulez-vous?</label><br>
+         
+     <select id="col" class="choix">
+        <option></option>
+        <script>
+            for(i=1;i<=100;i++){
+                document.write('<option>'+i+'</option>');
+            }
+        </script>
+    </select>
+    <br>
+    <label>Combien de rangées voulez-vous?</label><br>
+     <select id="row" class="choix">
+        <option></option>
+        <script>
+            for(i=1;i<=100;i++){
+                document.write('<option>'+i+'</option>');
+            }
+        </script>
+    </select><br>
+        <div>
+            <h2>Actions</h2>
+            <button id="zoom">Zoom</button>
+            <button id="dezoom">Dézoom</button>
+            <button id="envoi">Envoyez</button>
+        </div>
             </div>
-            <div class="col-md-9" id="cadre">
+            <div class="col-md-6" id="cadre" style="overflow:scroll;">
                 <canvas id="canvas">Votre navigateur ne supporte pas canvas</canvas>
+            </div>
+            <div class="col-md-3" id="couleurs">
+                <div id="my">
+                    <h2>Couleurs</h2>
+             <button style="background-color: aliceblue;"
+data-color="aliceblue"></button>
+             <button style="background-color: antiquewhite;"
+data-color="antiquewhite"></button>
+             <button style="background-color: aqua;"
+data-color="aqua"></button>
+             <button style="background-color: aquamarine;"
+data-color="aquamarine"></button>
+             <button style="background-color: azure;"
+data-color="azure"></button>
+             <button style="background-color: beige;"
+data-color="beige"></button>
+             <button style="background-color: bisque;"
+data-color="bisque"></button>
+             <button style="background-color: black;"
+data-color="black"></button>
+             <button style="background-color: blanchedalmond;"
+data-color="blanchedalmond"></button>
+             <button style="background-color: blue;"
+data-color="blue"></button>
+             <button style="background-color: blueviolet;"
+data-color="blueviolet"></button>
+             <button style="background-color: brown;"
+data-color="brown"></button>
+             <button style="background-color: burlywood;"
+data-color="burlywood"></button>
+             <button style="background-color: cadetblue;"
+data-color="cadetblue"></button>
+             <button style="background-color: chartreuse;"
+data-color="chartreuse"></button>
+             <button style="background-color: chocolate;"
+data-color="chocolate"></button>
+             <button style="background-color: coral;"
+data-color="coral"></button>
+             <button style="background-color: cornflowerblue;"
+data-color="cornflowerblue"></button>
+             <button style="background-color: cornsilk;"
+data-color="cornsilk"></button>
+             <button style="background-color: crimson;"
+data-color="crimson"></button>
+             <button style="background-color: cyan;"
+data-color="cyan"></button>
+             <button style="background-color: darkblue;"
+data-color="darkblue"></button>
+             <button style="background-color: darkcyan;"
+data-color="darkcyan"></button>
+             <button style="background-color: darkgoldenrod;"
+data-color="darkgoldenrod"></button>
+             <button style="background-color: darkgray;"
+data-color="darkgray"></button>
+             <button style="background-color: darkgreen;"
+data-color="darkgreen"></button>
+             <button style="background-color: darkkhaki;"
+data-color="darkkhaki"></button>
+             <button style="background-color: darkmagenta;"
+data-color="darkmagenta"></button>
+             <button style="background-color: darkolivegreen;"
+data-color="darkolivegreen"></button>
+             <button style="background-color: darkorange;"
+data-color="darkorange"></button>
+             <button style="background-color: darkorchid;"
+data-color="darkorchid"></button>
+             <button style="background-color: darkred;"
+data-color="darkred"></button>
+             <button style="background-color: darksalmon;"
+data-color="darksalmon"></button>
+             <button style="background-color: darkseagreen;"
+data-color="darkseagreen"></button>
+             <button style="background-color: darkslateblue;"
+data-color="darkslateblue"></button>
+             <button style="background-color: darkslategray;"
+data-color="darkslategray"></button>
+             <button style="background-color: darkturquoise;"
+data-color="darkturquoise"></button>
+             <button style="background-color: darkviolet;"
+data-color="darkviolet"></button>
+             <button style="background-color: deeppink;"
+data-color="deeppink"></button>
+             <button style="background-color: deepskyblue;"
+data-color="deepskyblue"></button>
+             <button style="background-color: dimgray;"
+data-color="dimgray"></button>
+             <button style="background-color: dodgerblue;"
+data-color="dodgerblue"></button>
+             <button style="background-color: firebrick;"
+data-color="firebrick"></button>
+             <button style="background-color: floralwhite;"
+data-color="floralwhite"></button>
+             <button style="background-color: forestgreen;"
+data-color="forestgreen"></button>
+             <button style="background-color: fuchsia;"
+data-color="fuchsia"></button>
+             <button style="background-color: gainsboro;"
+data-color="gainsboro"></button>
+             <button style="background-color: ghostwhite;"
+data-color="ghostwhite"></button>
+             <button style="background-color: gold;"
+data-color="gold"></button>
+             <button style="background-color: goldenrod;"
+data-color="goldenrod"></button>
+             <button style="background-color: gray;"
+data-color="gray"></button>
+             <button style="background-color: green;"
+data-color="green"></button>
+             <button style="background-color: greenyellow;"
+data-color="greenyellow"></button>
+             <button style="background-color: honeydew;"
+data-color="honeydew"></button>
+             <button style="background-color: hotpink;"
+data-color="hotpink"></button>
+             <button style="background-color: indianred;"
+data-color="indianred"></button>
+             <button style="background-color: indigo;"
+data-color="indigo"></button>
+             <button style="background-color: ivory;"
+data-color="ivory"></button>
+             <button style="background-color: khaki;"
+data-color="khaki"></button>
+             <button style="background-color: lavender;"
+data-color="lavender"></button>
+             <button style="background-color: lavenderblush;"
+data-color="lavenderblush"></button>
+             <button style="background-color: lawngreen;"
+data-color="lawngreen"></button>
+             <button style="background-color: lemonchiffon;"
+data-color="lemonchiffon"></button>
+             <button style="background-color: lightblue;"
+data-color="lightblue"></button>
+             <button style="background-color: lightcoral;"
+data-color="lightcoral"></button>
+             <button style="background-color: lightcyan;"
+data-color="lightcyan"></button>
+             <button style="background-color: lightgoldenrodyellow;"
+data-color="lightgoldenrodyellow"></button>
+             <button style="background-color: lightgray;"
+data-color="lightgray"></button>
+             <button style="background-color: lightgreen;"
+data-color="lightgreen"></button>
+             <button style="background-color: lightpink;"
+data-color="lightpink"></button>
+             <button style="background-color: lightsalmon;"
+data-color="lightsalmon"></button>
+             <button style="background-color: lightseagreen;"
+data-color="lightseagreen"></button>
+             <button style="background-color: lightskyblue;"
+data-color="lightskyblue"></button>
+             <button style="background-color: lightslategray;"
+data-color="lightslategray"></button>
+             <button style="background-color: lightsteelblue;"
+data-color="lightsteelblue"></button>
+             <button style="background-color: lightyellow;"
+data-color="lightyellow"></button>
+             <button style="background-color: lime;"
+data-color="lime"></button>
+             <button style="background-color: limegreen;"
+data-color="limegreen"></button>
+             <button style="background-color: linen;"
+data-color="linen"></button>
+             <button style="background-color: magenta;"
+data-color="magenta"></button>
+             <button style="background-color: maroon;"
+data-color="maroon"></button>
+             <button style="background-color: mediumaquamarine;"
+data-color="mediumaquamarine"></button>
+             <button style="background-color: mediumblue;"
+data-color="mediumblue"></button>
+             <button style="background-color: mediumorchid;"
+data-color="mediumorchid"></button>
+             <button style="background-color: mediumpurple;"
+data-color="mediumpurple"></button>
+             <button style="background-color: mediumseagreen;"
+data-color="mediumseagreen"></button>
+             <button style="background-color: mediumslateblue;"
+data-color="mediumslateblue"></button>
+             <button style="background-color: mediumspringgreen;"
+data-color="mediumspringgreen"></button>
+             <button style="background-color: mediumturquoise;"
+data-color="mediumturquoise"></button>
+             <button style="background-color: mediumvioletred;"
+data-color="mediumvioletred"></button>
+             <button style="background-color: midnightblue;"
+data-color="midnightblue"></button>
+             <button style="background-color: mintcream;"
+data-color="mintcream"></button>
+             <button style="background-color: mistyrose;"
+data-color="mistyrose"></button>
+             <button style="background-color: moccasin;"
+data-color="moccasin"></button>
+             <button style="background-color: navajowhite;"
+data-color="navajowhite"></button>
+             <button style="background-color: navy;"
+data-color="navy"></button>
+             <button style="background-color: oldlace;"
+data-color="oldlace"></button>
+             <button style="background-color: olive;"
+data-color="olive"></button>
+             <button style="background-color: olivedrab;"
+data-color="olivedrab"></button>
+             <button style="background-color: orange;"
+data-color="orange"></button>
+             <button style="background-color: orangered;"
+data-color="orangered"></button>
+             <button style="background-color: orchid;"
+data-color="orchid"></button>
+             <button style="background-color: palegoldenrod;"
+data-color="palegoldenrod"></button>
+             <button style="background-color: palegreen;"
+data-color="palegreen"></button>
+             <button style="background-color: paleturquoise;"
+data-color="paleturquoise"></button>
+             <button style="background-color: palevioletred;"
+data-color="palevioletred"></button>
+             <button style="background-color: papayawhip;"
+data-color="papayawhip"></button>
+             <button style="background-color: peachpuff;"
+data-color="peachpuff"></button>
+             <button style="background-color: peru;"
+data-color="peru"></button>
+             <button style="background-color: pink;"
+data-color="pink"></button>
+             <button style="background-color: plum;"
+data-color="plum"></button>
+             <button style="background-color: powderblue;"
+data-color="powderblue"></button>
+             <button style="background-color: purple;"
+data-color="purple"></button>
+             <button style="background-color: rebeccapurple;"
+data-color="rebeccapurple"></button>
+             <button style="background-color: red;"
+data-color="red"></button>
+             <button style="background-color: rosybrown;"
+data-color="rosybrown"></button>
+             <button style="background-color: royalblue;"
+data-color="royalblue"></button>
+             <button style="background-color: saddlebrown;"
+data-color="saddlebrown"></button>
+             <button style="background-color: salmon;"
+data-color="salmon"></button>
+             <button style="background-color: sandybrown;"
+data-color="sandybrown"></button>
+             <button style="background-color: seagreen;"
+data-color="seagreen"></button>
+             <button style="background-color: seashell;"
+data-color="seashell"></button>
+             <button style="background-color: sienna;"
+data-color="sienna"></button>
+             <button style="background-color: silver;"
+data-color="silver"></button>
+             <button style="background-color: skyblue;"
+data-color="skyblue"></button>
+             <button style="background-color: slateblue;"
+data-color="slateblue"></button>
+             <button style="background-color: slategray;"
+data-color="slategray"></button>
+             <button style="background-color: snow;"
+data-color="snow"></button>
+             <button style="background-color: springgreen;"
+data-color="springgreen"></button>
+             <button style="background-color: steelblue;"
+data-color="steelblue"></button>
+             <button style="background-color: tan;"
+data-color="tan"></button>
+             <button style="background-color: teal;"
+data-color="teal"></button>
+             <button style="background-color: thistle;"
+data-color="thistle"></button>
+             <button style="background-color: tomato;"
+data-color="tomato"></button>
+             <button style="background-color: turquoise;"
+data-color="turquoise"></button>
+             <button style="background-color: violet;"
+data-color="violet"></button>
+             <button style="background-color: wheat;"
+data-color="wheat"></button>
+             <button style="background-color: white;"
+data-color="white"></button>
+             <button style="background-color: whitesmoke;"
+data-color="whitesmoke"></button>
+             <button style="background-color: yellow;"
+data-color="yellow"></button>
+             <button style="background-color: yellowgreen"
+data-color="yellowgreen"></button>
+         </div>
+         
             </div>
             
             

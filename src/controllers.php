@@ -127,6 +127,12 @@ $app->get('/apprendre-pixelart/{id}', function ($id) use ($app) {
 ->bind('apprendre-pixelart')
 ;
 
+$app->get('/creation', function () use ($app) {
+    return $app['twig']->render('creation.html.twig', array());
+})
+->bind('creation')
+;
+
 
 
 
