@@ -24,6 +24,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPicturesQuery orderByIdUsers($order = Criteria::ASC) Order by the id_users column
  * @method     ChildPicturesQuery orderByIdCategories($order = Criteria::ASC) Order by the id_categories column
  * @method     ChildPicturesQuery orderByDifficulty($order = Criteria::ASC) Order by the difficulty column
+ * @method     ChildPicturesQuery orderByState($order = Criteria::ASC) Order by the state column
  * @method     ChildPicturesQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method     ChildPicturesQuery orderByCanvas($order = Criteria::ASC) Order by the canvas column
  * @method     ChildPicturesQuery orderByThumb($order = Criteria::ASC) Order by the thumb column
@@ -34,6 +35,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPicturesQuery groupByIdUsers() Group by the id_users column
  * @method     ChildPicturesQuery groupByIdCategories() Group by the id_categories column
  * @method     ChildPicturesQuery groupByDifficulty() Group by the difficulty column
+ * @method     ChildPicturesQuery groupByState() Group by the state column
  * @method     ChildPicturesQuery groupByTitle() Group by the title column
  * @method     ChildPicturesQuery groupByCanvas() Group by the canvas column
  * @method     ChildPicturesQuery groupByThumb() Group by the thumb column
@@ -77,6 +79,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPictures findOneByIdUsers(int $id_users) Return the first ChildPictures filtered by the id_users column
  * @method     ChildPictures findOneByIdCategories(int $id_categories) Return the first ChildPictures filtered by the id_categories column
  * @method     ChildPictures findOneByDifficulty(string $difficulty) Return the first ChildPictures filtered by the difficulty column
+ * @method     ChildPictures findOneByState(string $state) Return the first ChildPictures filtered by the state column
  * @method     ChildPictures findOneByTitle(string $title) Return the first ChildPictures filtered by the title column
  * @method     ChildPictures findOneByCanvas(string $canvas) Return the first ChildPictures filtered by the canvas column
  * @method     ChildPictures findOneByThumb(string $thumb) Return the first ChildPictures filtered by the thumb column
@@ -90,6 +93,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPictures requireOneByIdUsers(int $id_users) Return the first ChildPictures filtered by the id_users column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPictures requireOneByIdCategories(int $id_categories) Return the first ChildPictures filtered by the id_categories column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPictures requireOneByDifficulty(string $difficulty) Return the first ChildPictures filtered by the difficulty column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPictures requireOneByState(string $state) Return the first ChildPictures filtered by the state column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPictures requireOneByTitle(string $title) Return the first ChildPictures filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPictures requireOneByCanvas(string $canvas) Return the first ChildPictures filtered by the canvas column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPictures requireOneByThumb(string $thumb) Return the first ChildPictures filtered by the thumb column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -101,6 +105,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPictures[]|ObjectCollection findByIdUsers(int $id_users) Return ChildPictures objects filtered by the id_users column
  * @method     ChildPictures[]|ObjectCollection findByIdCategories(int $id_categories) Return ChildPictures objects filtered by the id_categories column
  * @method     ChildPictures[]|ObjectCollection findByDifficulty(string $difficulty) Return ChildPictures objects filtered by the difficulty column
+ * @method     ChildPictures[]|ObjectCollection findByState(string $state) Return ChildPictures objects filtered by the state column
  * @method     ChildPictures[]|ObjectCollection findByTitle(string $title) Return ChildPictures objects filtered by the title column
  * @method     ChildPictures[]|ObjectCollection findByCanvas(string $canvas) Return ChildPictures objects filtered by the canvas column
  * @method     ChildPictures[]|ObjectCollection findByThumb(string $thumb) Return ChildPictures objects filtered by the thumb column
@@ -204,7 +209,7 @@ abstract class PicturesQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id_pictures, id_users, id_categories, difficulty, title, canvas, thumb, note, date_insert FROM pictures WHERE id_pictures = :p0';
+        $sql = 'SELECT id_pictures, id_users, id_categories, difficulty, state, title, canvas, thumb, note, date_insert FROM pictures WHERE id_pictures = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -444,6 +449,31 @@ abstract class PicturesQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PicturesTableMap::COL_DIFFICULTY, $difficulty, $comparison);
+    }
+
+    /**
+     * Filter the query on the state column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByState('fooValue');   // WHERE state = 'fooValue'
+     * $query->filterByState('%fooValue%', Criteria::LIKE); // WHERE state LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $state The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPicturesQuery The current query, for fluid interface
+     */
+    public function filterByState($state = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($state)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PicturesTableMap::COL_STATE, $state, $comparison);
     }
 
     /**

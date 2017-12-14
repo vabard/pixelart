@@ -94,6 +94,13 @@ abstract class Pictures implements ActiveRecordInterface
     protected $difficulty;
 
     /**
+     * The value for the state field.
+     *
+     * @var        string
+     */
+    protected $state;
+
+    /**
      * The value for the title field.
      *
      * @var        string
@@ -425,6 +432,16 @@ abstract class Pictures implements ActiveRecordInterface
     }
 
     /**
+     * Get the [state] column value.
+     *
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
      * Get the [title] column value.
      *
      * @return string
@@ -571,6 +588,26 @@ abstract class Pictures implements ActiveRecordInterface
 
         return $this;
     } // setDifficulty()
+
+    /**
+     * Set the value of [state] column.
+     *
+     * @param string $v new value
+     * @return $this|\Propel\Propel\Pictures The current object (for fluent API support)
+     */
+    public function setState($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->state !== $v) {
+            $this->state = $v;
+            $this->modifiedColumns[PicturesTableMap::COL_STATE] = true;
+        }
+
+        return $this;
+    } // setState()
 
     /**
      * Set the value of [title] column.
@@ -720,19 +757,22 @@ abstract class Pictures implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PicturesTableMap::translateFieldName('Difficulty', TableMap::TYPE_PHPNAME, $indexType)];
             $this->difficulty = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PicturesTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PicturesTableMap::translateFieldName('State', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->state = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PicturesTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
             $this->title = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PicturesTableMap::translateFieldName('Canvas', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PicturesTableMap::translateFieldName('Canvas', TableMap::TYPE_PHPNAME, $indexType)];
             $this->canvas = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PicturesTableMap::translateFieldName('Thumb', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PicturesTableMap::translateFieldName('Thumb', TableMap::TYPE_PHPNAME, $indexType)];
             $this->thumb = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PicturesTableMap::translateFieldName('Note', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PicturesTableMap::translateFieldName('Note', TableMap::TYPE_PHPNAME, $indexType)];
             $this->note = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PicturesTableMap::translateFieldName('DateInsert', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : PicturesTableMap::translateFieldName('DateInsert', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -745,7 +785,7 @@ abstract class Pictures implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 9; // 9 = PicturesTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = PicturesTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Propel\\Propel\\Pictures'), 0, $e);
@@ -985,6 +1025,9 @@ abstract class Pictures implements ActiveRecordInterface
         if ($this->isColumnModified(PicturesTableMap::COL_DIFFICULTY)) {
             $modifiedColumns[':p' . $index++]  = 'difficulty';
         }
+        if ($this->isColumnModified(PicturesTableMap::COL_STATE)) {
+            $modifiedColumns[':p' . $index++]  = 'state';
+        }
         if ($this->isColumnModified(PicturesTableMap::COL_TITLE)) {
             $modifiedColumns[':p' . $index++]  = 'title';
         }
@@ -1022,6 +1065,9 @@ abstract class Pictures implements ActiveRecordInterface
                         break;
                     case 'difficulty':
                         $stmt->bindValue($identifier, $this->difficulty, PDO::PARAM_STR);
+                        break;
+                    case 'state':
+                        $stmt->bindValue($identifier, $this->state, PDO::PARAM_STR);
                         break;
                     case 'title':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
@@ -1113,18 +1159,21 @@ abstract class Pictures implements ActiveRecordInterface
                 return $this->getDifficulty();
                 break;
             case 4:
-                return $this->getTitle();
+                return $this->getState();
                 break;
             case 5:
-                return $this->getCanvas();
+                return $this->getTitle();
                 break;
             case 6:
-                return $this->getThumb();
+                return $this->getCanvas();
                 break;
             case 7:
-                return $this->getNote();
+                return $this->getThumb();
                 break;
             case 8:
+                return $this->getNote();
+                break;
+            case 9:
                 return $this->getDateInsert();
                 break;
             default:
@@ -1161,14 +1210,15 @@ abstract class Pictures implements ActiveRecordInterface
             $keys[1] => $this->getIdUsers(),
             $keys[2] => $this->getIdCategories(),
             $keys[3] => $this->getDifficulty(),
-            $keys[4] => $this->getTitle(),
-            $keys[5] => $this->getCanvas(),
-            $keys[6] => $this->getThumb(),
-            $keys[7] => $this->getNote(),
-            $keys[8] => $this->getDateInsert(),
+            $keys[4] => $this->getState(),
+            $keys[5] => $this->getTitle(),
+            $keys[6] => $this->getCanvas(),
+            $keys[7] => $this->getThumb(),
+            $keys[8] => $this->getNote(),
+            $keys[9] => $this->getDateInsert(),
         );
-        if ($result[$keys[8]] instanceof \DateTimeInterface) {
-            $result[$keys[8]] = $result[$keys[8]]->format('c');
+        if ($result[$keys[9]] instanceof \DateTimeInterface) {
+            $result[$keys[9]] = $result[$keys[9]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1254,18 +1304,21 @@ abstract class Pictures implements ActiveRecordInterface
                 $this->setDifficulty($value);
                 break;
             case 4:
-                $this->setTitle($value);
+                $this->setState($value);
                 break;
             case 5:
-                $this->setCanvas($value);
+                $this->setTitle($value);
                 break;
             case 6:
-                $this->setThumb($value);
+                $this->setCanvas($value);
                 break;
             case 7:
-                $this->setNote($value);
+                $this->setThumb($value);
                 break;
             case 8:
+                $this->setNote($value);
+                break;
+            case 9:
                 $this->setDateInsert($value);
                 break;
         } // switch()
@@ -1307,19 +1360,22 @@ abstract class Pictures implements ActiveRecordInterface
             $this->setDifficulty($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setTitle($arr[$keys[4]]);
+            $this->setState($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setCanvas($arr[$keys[5]]);
+            $this->setTitle($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setThumb($arr[$keys[6]]);
+            $this->setCanvas($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setNote($arr[$keys[7]]);
+            $this->setThumb($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setDateInsert($arr[$keys[8]]);
+            $this->setNote($arr[$keys[8]]);
+        }
+        if (array_key_exists($keys[9], $arr)) {
+            $this->setDateInsert($arr[$keys[9]]);
         }
     }
 
@@ -1373,6 +1429,9 @@ abstract class Pictures implements ActiveRecordInterface
         }
         if ($this->isColumnModified(PicturesTableMap::COL_DIFFICULTY)) {
             $criteria->add(PicturesTableMap::COL_DIFFICULTY, $this->difficulty);
+        }
+        if ($this->isColumnModified(PicturesTableMap::COL_STATE)) {
+            $criteria->add(PicturesTableMap::COL_STATE, $this->state);
         }
         if ($this->isColumnModified(PicturesTableMap::COL_TITLE)) {
             $criteria->add(PicturesTableMap::COL_TITLE, $this->title);
@@ -1478,6 +1537,7 @@ abstract class Pictures implements ActiveRecordInterface
         $copyObj->setIdUsers($this->getIdUsers());
         $copyObj->setIdCategories($this->getIdCategories());
         $copyObj->setDifficulty($this->getDifficulty());
+        $copyObj->setState($this->getState());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setCanvas($this->getCanvas());
         $copyObj->setThumb($this->getThumb());
@@ -1630,6 +1690,7 @@ abstract class Pictures implements ActiveRecordInterface
         $this->id_users = null;
         $this->id_categories = null;
         $this->difficulty = null;
+        $this->state = null;
         $this->title = null;
         $this->canvas = null;
         $this->thumb = null;
