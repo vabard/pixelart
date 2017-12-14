@@ -4,6 +4,6 @@
 /propel.php
 /generated-conf/
 /generated-sql/
-/templates/sources/
 /generated-migrations/
-/.DS_STORE
+/templates/sources/
+/.DS_Store

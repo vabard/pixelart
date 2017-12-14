@@ -4,13 +4,18 @@ namespace Propel\Propel\Base;
 
 use \Exception;
 use \PDO;
+use Propel\Propel\Categories as ChildCategories;
 use Propel\Propel\CategoriesQuery as ChildCategoriesQuery;
+use Propel\Propel\Pictures as ChildPictures;
+use Propel\Propel\PicturesQuery as ChildPicturesQuery;
 use Propel\Propel\Map\CategoriesTableMap;
+use Propel\Propel\Map\PicturesTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -74,12 +79,24 @@ abstract class Categories implements ActiveRecordInterface
     protected $title;
 
     /**
+     * @var        ObjectCollection|ChildPictures[] Collection to store aggregation of ChildPictures objects.
+     */
+    protected $collPicturess;
+    protected $collPicturessPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildPictures[]
+     */
+    protected $picturessScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Propel\Propel\Base\Categories object.
@@ -476,6 +493,8 @@ abstract class Categories implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collPicturess = null;
+
         } // if (deep)
     }
 
@@ -588,6 +607,23 @@ abstract class Categories implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->picturessScheduledForDeletion !== null) {
+                if (!$this->picturessScheduledForDeletion->isEmpty()) {
+                    \Propel\Propel\PicturesQuery::create()
+                        ->filterByPrimaryKeys($this->picturessScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->picturessScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPicturess !== null) {
+                foreach ($this->collPicturess as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -724,10 +760,11 @@ abstract class Categories implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
         if (isset($alreadyDumpedObjects['Categories'][$this->hashCode()])) {
@@ -744,6 +781,23 @@ abstract class Categories implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->collPicturess) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'picturess';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'picturess';
+                        break;
+                    default:
+                        $key = 'Picturess';
+                }
+
+                $result[$key] = $this->collPicturess->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -949,6 +1003,20 @@ abstract class Categories implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setTitle($this->getTitle());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getPicturess() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPictures($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdCategories(NULL); // this is a auto-increment column, so set to default value
@@ -975,6 +1043,273 @@ abstract class Categories implements ActiveRecordInterface
         $this->copyInto($copyObj, $deepCopy);
 
         return $copyObj;
+    }
+
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Pictures' == $relationName) {
+            $this->initPicturess();
+            return;
+        }
+    }
+
+    /**
+     * Clears out the collPicturess collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addPicturess()
+     */
+    public function clearPicturess()
+    {
+        $this->collPicturess = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collPicturess collection loaded partially.
+     */
+    public function resetPartialPicturess($v = true)
+    {
+        $this->collPicturessPartial = $v;
+    }
+
+    /**
+     * Initializes the collPicturess collection.
+     *
+     * By default this just sets the collPicturess collection to an empty array (like clearcollPicturess());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPicturess($overrideExisting = true)
+    {
+        if (null !== $this->collPicturess && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = PicturesTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collPicturess = new $collectionClassName;
+        $this->collPicturess->setModel('\Propel\Propel\Pictures');
+    }
+
+    /**
+     * Gets an array of ChildPictures objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildCategories is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildPictures[] List of ChildPictures objects
+     * @throws PropelException
+     */
+    public function getPicturess(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collPicturessPartial && !$this->isNew();
+        if (null === $this->collPicturess || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPicturess) {
+                // return empty collection
+                $this->initPicturess();
+            } else {
+                $collPicturess = ChildPicturesQuery::create(null, $criteria)
+                    ->filterByCategories($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collPicturessPartial && count($collPicturess)) {
+                        $this->initPicturess(false);
+
+                        foreach ($collPicturess as $obj) {
+                            if (false == $this->collPicturess->contains($obj)) {
+                                $this->collPicturess->append($obj);
+                            }
+                        }
+
+                        $this->collPicturessPartial = true;
+                    }
+
+                    return $collPicturess;
+                }
+
+                if ($partial && $this->collPicturess) {
+                    foreach ($this->collPicturess as $obj) {
+                        if ($obj->isNew()) {
+                            $collPicturess[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPicturess = $collPicturess;
+                $this->collPicturessPartial = false;
+            }
+        }
+
+        return $this->collPicturess;
+    }
+
+    /**
+     * Sets a collection of ChildPictures objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $picturess A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildCategories The current object (for fluent API support)
+     */
+    public function setPicturess(Collection $picturess, ConnectionInterface $con = null)
+    {
+        /** @var ChildPictures[] $picturessToDelete */
+        $picturessToDelete = $this->getPicturess(new Criteria(), $con)->diff($picturess);
+
+
+        $this->picturessScheduledForDeletion = $picturessToDelete;
+
+        foreach ($picturessToDelete as $picturesRemoved) {
+            $picturesRemoved->setCategories(null);
+        }
+
+        $this->collPicturess = null;
+        foreach ($picturess as $pictures) {
+            $this->addPictures($pictures);
+        }
+
+        $this->collPicturess = $picturess;
+        $this->collPicturessPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Pictures objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Pictures objects.
+     * @throws PropelException
+     */
+    public function countPicturess(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collPicturessPartial && !$this->isNew();
+        if (null === $this->collPicturess || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPicturess) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPicturess());
+            }
+
+            $query = ChildPicturesQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByCategories($this)
+                ->count($con);
+        }
+
+        return count($this->collPicturess);
+    }
+
+    /**
+     * Method called to associate a ChildPictures object to this object
+     * through the ChildPictures foreign key attribute.
+     *
+     * @param  ChildPictures $l ChildPictures
+     * @return $this|\Propel\Propel\Categories The current object (for fluent API support)
+     */
+    public function addPictures(ChildPictures $l)
+    {
+        if ($this->collPicturess === null) {
+            $this->initPicturess();
+            $this->collPicturessPartial = true;
+        }
+
+        if (!$this->collPicturess->contains($l)) {
+            $this->doAddPictures($l);
+
+            if ($this->picturessScheduledForDeletion and $this->picturessScheduledForDeletion->contains($l)) {
+                $this->picturessScheduledForDeletion->remove($this->picturessScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildPictures $pictures The ChildPictures object to add.
+     */
+    protected function doAddPictures(ChildPictures $pictures)
+    {
+        $this->collPicturess[]= $pictures;
+        $pictures->setCategories($this);
+    }
+
+    /**
+     * @param  ChildPictures $pictures The ChildPictures object to remove.
+     * @return $this|ChildCategories The current object (for fluent API support)
+     */
+    public function removePictures(ChildPictures $pictures)
+    {
+        if ($this->getPicturess()->contains($pictures)) {
+            $pos = $this->collPicturess->search($pictures);
+            $this->collPicturess->remove($pos);
+            if (null === $this->picturessScheduledForDeletion) {
+                $this->picturessScheduledForDeletion = clone $this->collPicturess;
+                $this->picturessScheduledForDeletion->clear();
+            }
+            $this->picturessScheduledForDeletion[]= clone $pictures;
+            $pictures->setCategories(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Categories is new, it will return
+     * an empty collection; or if this Categories has previously
+     * been saved, it will retrieve related Picturess from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Categories.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildPictures[] List of ChildPictures objects
+     */
+    public function getPicturessJoinUsers(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildPicturesQuery::create(null, $criteria);
+        $query->joinWith('Users', $joinBehavior);
+
+        return $this->getPicturess($query, $con);
     }
 
     /**
@@ -1004,8 +1339,14 @@ abstract class Categories implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collPicturess) {
+                foreach ($this->collPicturess as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collPicturess = null;
     }
 
     /**
