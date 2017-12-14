@@ -127,14 +127,18 @@ $app->get('/apprendre-pixelart/{id}', function ($id) use ($app) {
 ->bind('apprendre-pixelart')
 ;
 
+
+$app->get('/qui-sommes-nous', function () use ($app) {
+    return $app['twig']->render('quisommesnous.html.twig', array());
+})
+->bind('qui-sommes-nous')
+;
+
 $app->get('/creation', function () use ($app) {
     return $app['twig']->render('creation.html.twig', array());
 })
 ->bind('creation')
 ;
-
-
-
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {
