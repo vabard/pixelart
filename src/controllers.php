@@ -140,6 +140,23 @@ $app->get('/creation', function () use ($app) {
 ->bind('creation')
 ;
 
+$app->get('/register_picture', function () use ($app){
+    $picture = Propel\Propel\PicturesQuery::create()
+            ->findByIdUsers($app['user']->getIdUsers())
+            ->findByTitle($titre);
+            if ($picture!=''){
+                $picture->setCanvas($dessin);
+            $picture->setState(1);}
+            else {
+                $picture=new Propel\Propel\Pictures;
+                $picture->setCanvas($dessin);
+                $picture->setState(0);
+                $picture->setIdUsers($app['user']->getIdUsers());
+                $picture->setTitle($titre);
+                }
+
+
+
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {
         return;

@@ -33,7 +33,12 @@
         <div>
             <h2>Actions</h2>
             <button id="zoom">Zoom</button>
-            <button id="dezoom">Dézoom</button>
+            <button id="dezoom"><span class="glyphicon glyphicon zoom-out" aria-hidden="true"></span></button>
+            <form id=form">
+                <label>Titre du dessin</label>
+                <input type="text" name="titre" id="titre">
+                <input type="submit" value="Envoyez">
+            </form>
             <button id="envoi">Envoyez</button>
         </div>
             </div>
@@ -332,4 +337,8 @@ data-color="yellowgreen"></button>
             
         </div>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ asset('js/creation.js') }}"></script>
 {% endblock %}

@@ -321,6 +321,32 @@
                  color = event.target.getAttribute('data-color');
                });
              });
+             
+             $('envoie').on('click', function(e) {
+    
+    e.preventDefault();
+    var dessinjson=createJson(grid);
+    var title=
+                
+
+    
+    var book_id = $(this).attr('data-book');
+    var IP = '{{ getUserIp() }}';
+
+    if ($(this).hasClass('active')) {
+        $.ajax({
+            type: 'POST',
+            url: '/registerpicture',
+            data: {'POST_type': 'vote', 'book_id': book_id, 'IP': IP},
+            success: function(html) {
+                $('button').removeClass('active').addClass('disabled');
+            },
+            error: function() {
+                alert('error');
+            }
+        });
+    };
+});
          
 
 
