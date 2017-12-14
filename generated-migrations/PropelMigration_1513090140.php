@@ -4,10 +4,10 @@ use Propel\Generator\Manager\MigrationManager;
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1513088703.
- * Generated on 2017-12-12 14:25:03 by apple
+ * up to version 1513090140.
+ * Generated on 2017-12-12 14:49:00 by johandelacasiniere
  */
-class PropelMigration_1513088703
+class PropelMigration_1513090140
 {
     public $comment = '';
 
@@ -45,13 +45,9 @@ class PropelMigration_1513088703
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `pictures` DROP FOREIGN KEY `pictures_ibfk_1`;
-
-ALTER TABLE `pictures` DROP FOREIGN KEY `pictures_ibfk_2`;
-
 ALTER TABLE `users`
 
-  CHANGE `role` `role` enum(\'admin\',\'membre\') NOT NULL;
+  CHANGE `lastname` `tatataname` VARCHAR(100) NOT NULL;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -73,17 +69,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-ALTER TABLE `pictures` ADD CONSTRAINT `pictures_ibfk_1`
-    FOREIGN KEY (`id_categories`)
-    REFERENCES `categories` (`id_categories`);
-
-ALTER TABLE `pictures` ADD CONSTRAINT `pictures_ibfk_2`
-    FOREIGN KEY (`id_users`)
-    REFERENCES `users` (`id_users`);
-
 ALTER TABLE `users`
 
-  CHANGE `role` `role` VARCHAR(255) NOT NULL;
+  CHANGE `tatataname` `lastname` VARCHAR(100) NOT NULL;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" namespace="Propel" defaultPhpNamingMethod="underscore">
+  <table name="categories" idMethod="native" phpName="Categories" namespace="Propel">
+    <column name="id_categories" phpName="IdCategories" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="50" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="pictures" idMethod="native" phpName="Pictures" namespace="Propel">
+    <column name="id_pictures" phpName="IdPictures" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="id_users" phpName="IdUsers" type="INTEGER" required="true"/>
+    <column name="id_categories" phpName="IdCategories" type="INTEGER" required="true"/>
+    <column name="difficulty" phpName="Difficulty" type="CHAR" sqlType="enum('très facile','facile','moyen','difficile')" required="true"/>
+    <column name="state" phpName="State" type="CHAR" sqlType="enum('0','1','2')" required="true"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="255" required="true"/>
+    <column name="canvas" phpName="Canvas" type="LONGVARCHAR" required="true"/>
+    <column name="thumb" phpName="Thumb" type="LONGVARCHAR" required="true"/>
+    <column name="note" phpName="Note" type="INTEGER" required="false"/>
+    <column name="date_insert" phpName="DateInsert" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <foreign-key foreignTable="users" name="pictures_ibfk_1">
+      <reference local="id_users" foreign="id_users"/>
+    </foreign-key>
+    <foreign-key foreignTable="categories" name="pictures_ibfk_2">
+      <reference local="id_categories" foreign="id_categories"/>
+    </foreign-key>
+    <index name="id_users">
+      <index-column name="id_users"/>
+    </index>
+    <index name="id_categories">
+      <index-column name="id_categories"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="users" idMethod="native" phpName="Users" namespace="Propel">
+    <column name="id_users" phpName="IdUsers" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="username" phpName="Username" type="VARCHAR" size="50" required="true"/>
+    <column name="firstname" phpName="Firstname" type="VARCHAR" size="50" required="true"/>
+    <column name="lastname" phpName="Lastname" type="VARCHAR" size="100" required="true"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="100" required="true"/>
+    <column name="password" phpName="Password" type="VARCHAR" size="255" required="true"/>
+    <column name="salt" phpName="Salt" type="VARCHAR" size="255" required="true"/>
+    <column name="role" phpName="Role" type="VARCHAR" size="255" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+</database>

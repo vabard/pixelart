@@ -63,30 +63,35 @@ function Action(x, y, color) {
 }
 
 var animation = [
-    new Action(6, 3, "pink"),
-    new Action(4, 3, "pink"),
+    new Action(0, 3, "pink"),
+    new Action(4, 3, "green"),
     new Action(4, 12, "red"),
     new Action(4, 4, "blue"),
-    new Action(6, 4, "pink"),
-    new Action(20, 20, "black")
+    new Action(6, 4, "grey"),
+    new Action(20, 20, "black"),
+    new Action(4, 6, "black"),
+    new Action(8, 4, "yellow"),
+    new Action(20, 10, "purple")
 ];
 
-// Pour definir notre grid on récupère les x et les y 
+// On récupère dans les array séparés les X, Y et les Couleurs
 var tabx = [];
 var taby = [];
+var tabColors = [];
 for (var i = 0; i < animation.length; i++) {
     tabx.push(animation[i].x);
     taby.push(animation[i].y);
+    tabColors.push(animation[i].color);
 }
 
-// on récupère les min et les max des x et des y
+// on récupère les min, les max des x et des y pour définir notre Grid
 var minX = 1 + tabx.reduce(function (a, b) {
     return Math.min(a, b);
 });
 var maxX = minX + tabx.reduce(function (a, b) {
     return Math.max(a, b);
 });
-console.log(maxX);
+//console.log(maxX);
 
 var minY = 1 + taby.reduce(function (a, b) {
     return Math.min(a, b);
@@ -94,9 +99,33 @@ var minY = 1 + taby.reduce(function (a, b) {
 var maxY = minY + taby.reduce(function (a, b) {
     return Math.max(a, b);
 });
-console.log(maxY);
+//console.log(maxY);
+
+// Function pour récupérer les valeur unique dans un array
+function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+
+// on récupère les couleurs uniques pour les afficher à l'utilisateur
+var uniqueColor = tabColors.filter( onlyUnique );
+//console.log(uniqueColor);
+
+// On affiche les couleurs
+for(var i=0; i < uniqueColor.length; i++){
+    createColor(uniqueColor[i]);
+}
+
+//THUMB
+var stopBtn = document.getElementById('stop');
+stopBtn.addEventListener('click', function(){
+    var data = canvas.toDataURL();
+    document.getElementById('thumb-learn').setAttribute("src", data);
+    console.log(data);
+});
 
 
+
+// ANIMATION
 var indexAnimation = 0;
 var playBtn = document.getElementById('play');
 speedOfAnimation = 2000;
@@ -189,6 +218,42 @@ function createStep(x, y, color){
     li.appendChild(span);
     ul.appendChild(li);
 }
+
+function createColor(color){
+    
+    // 1. Je crée un li vide et un span
+    var li = document.createElement('li');
+    var span = document.createElement('span');
+     
+    // 2. J'ajoute les classe et le style a mon span
+    span.className = "glyphicon glyphicon-stop";
+    span.style.color = color;
+
+    // 3. je selectionne un ul existant
+    var ul = document.querySelector('#colors');
+
+    // 4. j'ajoute mon span dans li et li dans ul
+    li.appendChild(span);
+    ul.appendChild(li);
+}
+//
+//function createImg(color){
+//    
+//    // 1. Je crée un li vide et un span
+//    var = document.createElement('li');
+//    var span = document.createElement('span');
+//     
+//    // 2. J'ajoute les classe et le style a mon span
+//    span.className = "glyphicon glyphicon-stop";
+//    span.style.color = color;
+//
+//    // 3. je selectionne un ul existant
+//    var ul = document.querySelector('#colors');
+//
+//    // 4. j'ajoute mon span dans li et li dans ul
+//    li.appendChild(span);
+//    ul.appendChild(li);
+//}
 
 
 

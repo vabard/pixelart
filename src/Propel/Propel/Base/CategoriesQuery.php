@@ -10,6 +10,7 @@ use Propel\Propel\Map\CategoriesTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -32,6 +33,18 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCategoriesQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
  * @method     ChildCategoriesQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildCategoriesQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
+ *
+ * @method     ChildCategoriesQuery leftJoinPictures($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pictures relation
+ * @method     ChildCategoriesQuery rightJoinPictures($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pictures relation
+ * @method     ChildCategoriesQuery innerJoinPictures($relationAlias = null) Adds a INNER JOIN clause to the query using the Pictures relation
+ *
+ * @method     ChildCategoriesQuery joinWithPictures($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Pictures relation
+ *
+ * @method     ChildCategoriesQuery leftJoinWithPictures() Adds a LEFT JOIN clause and with to the query using the Pictures relation
+ * @method     ChildCategoriesQuery rightJoinWithPictures() Adds a RIGHT JOIN clause and with to the query using the Pictures relation
+ * @method     ChildCategoriesQuery innerJoinWithPictures() Adds a INNER JOIN clause and with to the query using the Pictures relation
+ *
+ * @method     \Propel\Propel\PicturesQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildCategories findOne(ConnectionInterface $con = null) Return the first ChildCategories matching the query
  * @method     ChildCategories findOneOrCreate(ConnectionInterface $con = null) Return the first ChildCategories matching the query, or a new ChildCategories object populated from the query conditions when no match is found
@@ -300,6 +313,79 @@ abstract class CategoriesQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CategoriesTableMap::COL_TITLE, $title, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Propel\Propel\Pictures object
+     *
+     * @param \Propel\Propel\Pictures|ObjectCollection $pictures the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCategoriesQuery The current query, for fluid interface
+     */
+    public function filterByPictures($pictures, $comparison = null)
+    {
+        if ($pictures instanceof \Propel\Propel\Pictures) {
+            return $this
+                ->addUsingAlias(CategoriesTableMap::COL_ID_CATEGORIES, $pictures->getIdCategories(), $comparison);
+        } elseif ($pictures instanceof ObjectCollection) {
+            return $this
+                ->usePicturesQuery()
+                ->filterByPrimaryKeys($pictures->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPictures() only accepts arguments of type \Propel\Propel\Pictures or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Pictures relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildCategoriesQuery The current query, for fluid interface
+     */
+    public function joinPictures($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Pictures');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Pictures');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Pictures relation Pictures object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Propel\PicturesQuery A secondary query class using the current class as primary query
+     */
+    public function usePicturesQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPictures($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Pictures', '\Propel\Propel\PicturesQuery');
     }
 
     /**

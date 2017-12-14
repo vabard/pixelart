@@ -10,6 +10,7 @@ use Propel\Propel\Map\UsersTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -25,8 +26,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsersQuery orderByLastname($order = Criteria::ASC) Order by the lastname column
  * @method     ChildUsersQuery orderByEmail($order = Criteria::ASC) Order by the email column
  * @method     ChildUsersQuery orderByPassword($order = Criteria::ASC) Order by the password column
- * @method     ChildUsersQuery orderByRole($order = Criteria::ASC) Order by the role column
  * @method     ChildUsersQuery orderBySalt($order = Criteria::ASC) Order by the salt column
+ * @method     ChildUsersQuery orderByRole($order = Criteria::ASC) Order by the role column
  *
  * @method     ChildUsersQuery groupByIdUsers() Group by the id_users column
  * @method     ChildUsersQuery groupByUsername() Group by the username column
@@ -34,8 +35,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsersQuery groupByLastname() Group by the lastname column
  * @method     ChildUsersQuery groupByEmail() Group by the email column
  * @method     ChildUsersQuery groupByPassword() Group by the password column
- * @method     ChildUsersQuery groupByRole() Group by the role column
  * @method     ChildUsersQuery groupBySalt() Group by the salt column
+ * @method     ChildUsersQuery groupByRole() Group by the role column
  *
  * @method     ChildUsersQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildUsersQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -44,6 +45,18 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsersQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
  * @method     ChildUsersQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildUsersQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
+ *
+ * @method     ChildUsersQuery leftJoinPictures($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pictures relation
+ * @method     ChildUsersQuery rightJoinPictures($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pictures relation
+ * @method     ChildUsersQuery innerJoinPictures($relationAlias = null) Adds a INNER JOIN clause to the query using the Pictures relation
+ *
+ * @method     ChildUsersQuery joinWithPictures($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Pictures relation
+ *
+ * @method     ChildUsersQuery leftJoinWithPictures() Adds a LEFT JOIN clause and with to the query using the Pictures relation
+ * @method     ChildUsersQuery rightJoinWithPictures() Adds a RIGHT JOIN clause and with to the query using the Pictures relation
+ * @method     ChildUsersQuery innerJoinWithPictures() Adds a INNER JOIN clause and with to the query using the Pictures relation
+ *
+ * @method     \Propel\Propel\PicturesQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildUsers findOne(ConnectionInterface $con = null) Return the first ChildUsers matching the query
  * @method     ChildUsers findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUsers matching the query, or a new ChildUsers object populated from the query conditions when no match is found
@@ -54,8 +67,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsers findOneByLastname(string $lastname) Return the first ChildUsers filtered by the lastname column
  * @method     ChildUsers findOneByEmail(string $email) Return the first ChildUsers filtered by the email column
  * @method     ChildUsers findOneByPassword(string $password) Return the first ChildUsers filtered by the password column
- * @method     ChildUsers findOneByRole(string $role) Return the first ChildUsers filtered by the role column
- * @method     ChildUsers findOneBySalt(string $salt) Return the first ChildUsers filtered by the salt column *
+ * @method     ChildUsers findOneBySalt(string $salt) Return the first ChildUsers filtered by the salt column
+ * @method     ChildUsers findOneByRole(string $role) Return the first ChildUsers filtered by the role column *
 
  * @method     ChildUsers requirePk($key, ConnectionInterface $con = null) Return the ChildUsers by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUsers requireOne(ConnectionInterface $con = null) Return the first ChildUsers matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -66,8 +79,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsers requireOneByLastname(string $lastname) Return the first ChildUsers filtered by the lastname column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUsers requireOneByEmail(string $email) Return the first ChildUsers filtered by the email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUsers requireOneByPassword(string $password) Return the first ChildUsers filtered by the password column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUsers requireOneByRole(string $role) Return the first ChildUsers filtered by the role column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUsers requireOneBySalt(string $salt) Return the first ChildUsers filtered by the salt column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUsers requireOneByRole(string $role) Return the first ChildUsers filtered by the role column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUsers[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUsers objects based on current ModelCriteria
  * @method     ChildUsers[]|ObjectCollection findByIdUsers(int $id_users) Return ChildUsers objects filtered by the id_users column
@@ -76,8 +89,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsers[]|ObjectCollection findByLastname(string $lastname) Return ChildUsers objects filtered by the lastname column
  * @method     ChildUsers[]|ObjectCollection findByEmail(string $email) Return ChildUsers objects filtered by the email column
  * @method     ChildUsers[]|ObjectCollection findByPassword(string $password) Return ChildUsers objects filtered by the password column
- * @method     ChildUsers[]|ObjectCollection findByRole(string $role) Return ChildUsers objects filtered by the role column
  * @method     ChildUsers[]|ObjectCollection findBySalt(string $salt) Return ChildUsers objects filtered by the salt column
+ * @method     ChildUsers[]|ObjectCollection findByRole(string $role) Return ChildUsers objects filtered by the role column
  * @method     ChildUsers[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -176,7 +189,7 @@ abstract class UsersQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id_users, username, firstname, lastname, email, password, role, salt FROM users WHERE id_users = :p0';
+        $sql = 'SELECT id_users, username, firstname, lastname, email, password, salt, role FROM users WHERE id_users = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -433,6 +446,31 @@ abstract class UsersQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the salt column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySalt('fooValue');   // WHERE salt = 'fooValue'
+     * $query->filterBySalt('%fooValue%', Criteria::LIKE); // WHERE salt LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $salt The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildUsersQuery The current query, for fluid interface
+     */
+    public function filterBySalt($salt = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($salt)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(UsersTableMap::COL_SALT, $salt, $comparison);
+    }
+
+    /**
      * Filter the query on the role column
      *
      * Example usage:
@@ -458,28 +496,76 @@ abstract class UsersQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the salt column
+     * Filter the query by a related \Propel\Propel\Pictures object
      *
-     * Example usage:
-     * <code>
-     * $query->filterBySalt('fooValue');   // WHERE salt = 'fooValue'
-     * $query->filterBySalt('%fooValue%', Criteria::LIKE); // WHERE salt LIKE '%fooValue%'
-     * </code>
+     * @param \Propel\Propel\Pictures|ObjectCollection $pictures the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @param     string $salt The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @return ChildUsersQuery The current query, for fluid interface
+     */
+    public function filterByPictures($pictures, $comparison = null)
+    {
+        if ($pictures instanceof \Propel\Propel\Pictures) {
+            return $this
+                ->addUsingAlias(UsersTableMap::COL_ID_USERS, $pictures->getIdUsers(), $comparison);
+        } elseif ($pictures instanceof ObjectCollection) {
+            return $this
+                ->usePicturesQuery()
+                ->filterByPrimaryKeys($pictures->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPictures() only accepts arguments of type \Propel\Propel\Pictures or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Pictures relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildUsersQuery The current query, for fluid interface
      */
-    public function filterBySalt($salt = null, $comparison = null)
+    public function joinPictures($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
-        if (null === $comparison) {
-            if (is_array($salt)) {
-                $comparison = Criteria::IN;
-            }
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Pictures');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
         }
 
-        return $this->addUsingAlias(UsersTableMap::COL_SALT, $salt, $comparison);
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Pictures');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Pictures relation Pictures object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \Propel\Propel\PicturesQuery A secondary query class using the current class as primary query
+     */
+    public function usePicturesQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPictures($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Pictures', '\Propel\Propel\PicturesQuery');
     }
 
     /**
