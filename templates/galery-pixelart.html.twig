@@ -3,7 +3,7 @@
     <div class="intro-galery row">
         <div class="overlay"></div>
         <div class="col-sm-12">
-            <h1 class="mt0 color-white">Galery PixelArt</h1>
+            <h1 class="mt0 color-white">Apprendre PixelArt</h1>
         </div>
     </div> <!-- /.intro.row -->
 {% endblock %}
@@ -42,21 +42,21 @@
                             <div class="shop-box-title">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <p class="picture-desc">{{ picture.title }}</p>
-                                        <p class="text-lowercase">Créé par<span class="text-uppercase"> {{ picture.users.username }}</span></p>
-                                        <p class="text-lowercase">Cat. : <span class="text-uppercase"> {{ picture.categories.title }}</span></p>
+                                        <p class="gras">{{ picture.title }}</p>
+                                        <p class="text-lowercase">Cat. : <span class="text-uppercase "> {{ picture.categories.title }}</span></p>
                                         
                                     </div>
                                     <div class="col-sm-6">
-                                        <p class="text-right">{{ picture.difficulty }}</p>
-                                        <div class="star">
+                                        <p class="text-lowercase text-right">Niveau : <span class="text-uppercase ">{{ picture.difficulty }}</span></p>
+                                        <p class="text-lowercase text-right">Créé par<span class="text-uppercase gras"> {{ picture.users.username }}</span></p>
+                                         {#<div class="star">
                                             {% if picture.note > 0 %}
                                                 {% for i in 1..picture.note %}
                                                      <span class="ion-ios-star"></span>
                                                 {% endfor %}
                                             {% endif %}
                                            
-                                        </div>
+                                        </div>#}
                                     </div>
                                 </div>
                             </div>
@@ -66,24 +66,27 @@
                         {#{% if havetopaginate %}#}                            
    
                         <div class="col-sm-12">
-                            <p>Nombre de PixelArt : {{ paginate.results }}</p>
+
+{#                             <p>Nombre de PixelArt : {{ paginate.results }}</p>
                             <p>Affichés de {{ paginate.firstindex }} à {{ paginate.lastindex }}</p>
-                                              <nav>
-                                
-                                1ere page : {{ paginate.firstpage }} / 
+                                                               1ere page : {{ paginate.firstpage }} / 
                                 Dernière page : {{ paginate.lastpage }} / 
                                 Current page : {{ paginate.currentpage }} /  
                                 C'est la derniere page ?  {{ paginate.islastpage }} /  
                                 
                                 getNextPage  {{ paginate.getNextPage }} /  
                                 
-                                
-                                <ul class="pager">
-                                    <li class="previous disabled"><a href="#"><span aria-hidden="true" class="ion-chevron-left"></span></a></li>
-                                    <li><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li class="next"><a href="#"><span aria-hidden="true" class="ion-chevron-right"></span></a></li>
+                                #}
+                            <nav>    
+                                <ul class="pager" id="pager-galery">
+                                    
+                                    {% for i in 1..paginate.lastpage %}
+                                        {% if i == paginate.currentpage %}
+                                            <li><a class="pager-galery" href="{{ path('galery-pixelart', { p : i }) }}">{{ i }}</a></li>
+                                        {% else %}
+                                            <li ><a  href="{{ path('galery-pixelart', { p : i }) }}">{{ i }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
                                 </ul>
                             </nav>
                        
@@ -100,3 +103,6 @@
     </main>
 
 {% endblock %} 
+{% block script %}
+<script src="{{ asset('js/apprendre.js') }}"></script>
+{% endblock %}

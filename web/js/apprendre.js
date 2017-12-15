@@ -116,12 +116,14 @@ for(var i=0; i < uniqueColor.length; i++){
 }
 
 //THUMB
-var stopBtn = document.getElementById('stop');
-stopBtn.addEventListener('click', function(){
-    var data = canvas.toDataURL();
-    document.getElementById('thumb-learn').setAttribute("src", data);
-    console.log(data);
-});
+//var stopBtn = document.getElementById('stop');
+//stopBtn.addEventListener('click', function(){
+//    var data = canvas.toDataURL();
+//    document.getElementById('thumb-learn').setAttribute("src", data);
+//    console.log(data);
+//});
+
+
 
 
 
@@ -130,10 +132,12 @@ var indexAnimation = 0;
 var playBtn = document.getElementById('play');
 speedOfAnimation = 2000;
 
-playBtn.addEventListener('click', play);
+playBtn.addEventListener('click', play(animation));
 
-function play(){
-    var animate = setInterval(function () {
+
+
+function play(animation){
+    animate = setInterval(function () {
         var action = animation[indexAnimation++];
 
         if (typeof action === 'undefined') {
@@ -149,7 +153,6 @@ function play(){
 
     }, speedOfAnimation);    
 }
-
 
 
 /////////////////////////////
@@ -187,6 +190,22 @@ function drawGrid(grid, canvas) {
     });
 }
 
+function eraseGrid(grid, canvas) {
+    var context = canvas.getContext('2d');
+    var cellW = canvas.width / grid.wc;
+    var cellH = cellW;
+    context.clearRect(0, 0, cellW * this.wc, cellH * this.hc);
+    context.strokeWidth = '2';
+    grid.forEach(function (cell, x, y) {
+        
+       
+            context.strokeStyle = 'black';
+            context.clearRect(x * cellW, y * cellH, cellW, cellH);
+            context.strokeRect(x * cellW, y * cellH, cellW, cellH);
+        
+    });   
+}
+
 
 
 /*
@@ -206,16 +225,16 @@ function createStep(x, y, color){
     span.style.color = color;
 
     // 3. je creer du texte
-    var texte = document.createTextNode('Case : ' + (x+1) + ' - ' + (y+1));
+    var texte = document.createTextNode(' case : ' + (x+1) + ' - ' + (y+1));
 
-    // 4. j'ajoute mon texte dans mon li	
+    // 4. j'ajoute mon couleur et le texte dans mon li	
+    li.appendChild(span);
     li.appendChild(texte);
 
     // 5. je selectionne un ul existant
     var ul = document.querySelector('#steps');
 
-    // 6. j'ajoute mon span dans li et li dans ul
-    li.appendChild(span);
+    // 6. j'ajoute li dans ul 
     ul.appendChild(li);
 }
 
@@ -236,24 +255,22 @@ function createColor(color){
     li.appendChild(span);
     ul.appendChild(li);
 }
-//
-//function createImg(color){
-//    
-//    // 1. Je crée un li vide et un span
-//    var = document.createElement('li');
-//    var span = document.createElement('span');
-//     
-//    // 2. J'ajoute les classe et le style a mon span
-//    span.className = "glyphicon glyphicon-stop";
-//    span.style.color = color;
-//
-//    // 3. je selectionne un ul existant
-//    var ul = document.querySelector('#colors');
-//
-//    // 4. j'ajoute mon span dans li et li dans ul
-//    li.appendChild(span);
-//    ul.appendChild(li);
-//}
 
 
+// RECOMMENCER
+var replayBtn = document.getElementById('replay');
+replayBtn.addEventListener('click', function(){
+    document.querySelector('#steps').innerHTML=''; // je supprime les etapes affichés
+    grid = new Grid(maxX, maxY);
+    eraseGrid(grid, canvas);
+    
+    play(animation);
+});
 
+// PAUSE 
+var pauseBtn = document.getElementById('pause');
+pauseBtn.addEventListener('click', function(){
+    //document.querySelector('#steps').innerHTML=''; // je supprime les etapes affichés
+    clearInterval(animate);
+    //play();
+});

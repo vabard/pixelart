@@ -1,34 +1,58 @@
 {% extends "layout.html.twig" %}
 
-{% block content %}
-    <main>
-        <div class="container-fluid">
-            <h1 class="text-center">Apprendre PixelArt</h1>            
-            <div class="row">
-                <div class="col-md-2">
-                    <h2>Miniature</h2>
-                    <div class="thumbnail">
-                        <img id="thumb-learn" src="{{ picture.thumb }}">
-                    </div>
-                    
-                    <h2>Palette</h2>
-                    <ul id="colors" class="list-unstyled list-inline"></ul>
-                    
-                    <button id="play" class="btn btn-default">Démarrer</button>
-                    <button id="stop" class="btn btn-default">Arreter</button>
-                    
-                </div>
-                
-                <div class="col-md-8">
-                    <div id="container-learn" ><canvas id="canvas-learn"></canvas></div>
-                </div>
-                
-                <div class="col-md-2">
-                    <h2>Etapes</h2>
-                    <ul id="steps" class="list-unstyled"></ul>
-                </div>                
-            </div>
+{% block intro %}
+    <div class="intro-learn-one row">
+        <div class="overlay"></div>
+        <div class="col-sm-12">
+            <h1 class="mt0 color-white">Apprendre PixelArt</h1>
         </div>
-    </main>
-    
-{% endblock %} 
+    </div> <!-- /.intro.row -->
+{% endblock %}
+
+    {% block content %}
+        <main>
+        <section>
+            <div class="container page-bgc">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="title-box">
+                            <h2 class="title mt0">{{ picture.title }}</h2>
+                        </div>
+                    </div>
+                </div>
+                
+           
+                <div class="row">
+                    <div class="col-md-2">
+                        <h2>Miniature</h2>
+                        <div class="thumbnail">
+                            <img id="thumb-learn" src="{{ picture.thumb }}">
+                        </div>
+
+                        <h2>Palette</h2>
+                        <ul id="colors" class="list-unstyled list-inline"></ul>
+
+                        <button id="play" class="btn btn-robot btn-lg">Démarrer</button>
+                        <button id="replay" class="btn btn-robot btn-lg">Recommencer</button>
+                        <button id="pause" class="btn btn-robot btn-lg">Pause</button>
+
+                    </div>
+
+                    <div class="col-md-8">
+                        <div id="container-learn" ><canvas id="canvas-learn"></canvas></div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <h2>Etapes</h2>
+                        <ul id="steps" class="list-unstyled"></ul>
+                    </div>                
+                </div>
+            </div>
+        </section>
+        </main>
+
+    {% endblock %}
+
+{% block script %}
+    <script src="{{ asset('js/apprendre.js') }}"></script>
+{% endblock %}

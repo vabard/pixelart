@@ -22,7 +22,6 @@
         <link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('css/login.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('css/apprendre.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset('css/stylecreation.css') }}" rel="stylesheet" type="text/css" />
         
 
         <!--[if lt IE 9]>
@@ -79,8 +78,8 @@
 
                         <div class="collapse navbar-collapse" id="site-nav-bar">
                             <ul class="nav navbar-nav">
-                                <li class="active"><a href="{{ path('homepage') }}">Accueil</a></li>
-                                <li><a href="{{ path('galery-pixelart') }}">Galery</a></li>
+                                <li class="active" ><a href="{{ path('homepage') }}">Accueil</a></li>
+                                <li><a href="{{ path('galery-pixelart', { p : 1 }) }}">Galery</a></li>
                                 <li><a href="creation.html">Création</a></li>
                                 <li><a href="{{ path('qui-sommes-nous') }}">Qui sommes nous</a></li>
                                 <li><a href="contact.html">Contact</a></li>
@@ -110,8 +109,7 @@
         <script src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
         <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
         <script src="{{ asset('js/script.js') }}"></script>
-        <!--<script src="{{ asset('js/apprendre.js') }}"></script>-->
-        <script src="{{ asset('js/creation.js') }}"></script>
-
+        {#<script src="{{ asset('js/apprendre.js') }}"></script>#}
+        {% block script %}{% endblock %}
     </body>
 </html>
