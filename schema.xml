@@ -10,12 +10,12 @@
   <table name="pictures" idMethod="native" phpName="Pictures" namespace="Propel">
     <column name="id_pictures" phpName="IdPictures" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="id_users" phpName="IdUsers" type="INTEGER" required="true"/>
-    <column name="id_categories" phpName="IdCategories" type="INTEGER" required="false"/>
-    <column name="difficulty" phpName="Difficulty" type="CHAR" sqlType="enum('très facile','facile','moyen','difficile')" required="false"/>
+    <column name="id_categories" phpName="IdCategories" type="INTEGER" required="true"/>
+    <column name="difficulty" phpName="Difficulty" type="CHAR" sqlType="enum('très facile','facile','moyen','difficile')" required="true"/>
     <column name="state" phpName="State" type="CHAR" sqlType="enum('0','1','2')" required="true"/>
     <column name="title" phpName="Title" type="VARCHAR" size="255" required="true"/>
     <column name="canvas" phpName="Canvas" type="LONGVARCHAR" required="true"/>
-    <column name="thumb" phpName="Thumb" type="LONGVARCHAR" required="false"/>
+    <column name="thumb" phpName="Thumb" type="LONGVARCHAR" required="true"/>
     <column name="note" phpName="Note" type="INTEGER" required="false"/>
     <column name="date_insert" phpName="DateInsert" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <foreign-key foreignTable="users" name="pictures_ibfk_1">

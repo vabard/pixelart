@@ -92,15 +92,12 @@ $app->get('/galery-pixelart/{p}', function ($p) use ($app) {
             ->filterByState('2')
             ->orderByDateInsert('desc')
             ->paginate($page=$p, $maxPerPage=15);
-//            ->find();
     
-    //$pictures->getNbResults()
     // on transmet à notre template les données (toujours un array!)
     return $app['twig']->render('galery-pixelart.html.twig', [
         'pictures' => $pictures,
         'paginate' => [
             'results'  => $pictures->getNbResults(),
-            //'havetopaginate'  => $pictures->haveToPaginate(),
             'firstpage' => $pictures->getFirstPage(),
             'lastpage' => $pictures->getLastPage(),
             'currentpage' => $pictures->getPage(),
