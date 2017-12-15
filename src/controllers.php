@@ -6,8 +6,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-require __DIR__.'/controllers_admin.php';
-
 //Request::setTrustedProxies(array('127.0.0.1'));
 // generate a link to the stylesheets in /css/styles.css
 //$request->getBasePath().'/css/styles.css';
@@ -29,13 +27,15 @@ $app->before(function() use ($app) {
     
 });
 
+require __DIR__.'/controllers_admin.php';
 
-$app->get('/', function (Request $request) use ($app) {
-    return $app['twig']->render('index.html.twig', array());
+$app->get('/', function () use ($app) {
+    return $app['twig']->render('index.html.twig', array(
+        //'request' => $_REQUEST
+    ));
 })
 ->bind('homepage')
 ;
-
 
 $app->get('/login', function(Request $request) use ($app) {
     return $app['twig']->render('login.html.twig', array(
@@ -45,6 +45,7 @@ $app->get('/login', function(Request $request) use ($app) {
 })
 ->bind('login')
 ;
+
 $app->match('/register', function(Request $request) use ($app) {
     
     $user = new Users();
@@ -177,7 +178,10 @@ $app->get('/qui-sommes-nous', function () use ($app) {
 ;
 
 $app->get('/creation', function () use ($app) {
-    return $app['twig']->render('creation.html.twig', array());
+    $pictures = Propel\Propel\PicturesQuery::create();
+    return $app['twig']->render('creation.html.twig', array(
+        'pictures' => $pictures
+    ));
 })
 ->bind('creation')
 ;
