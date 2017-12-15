@@ -2,6 +2,11 @@
 var canvas = document.getElementById("canvas-learn");
 var color = 'black';
 
+/**
+ * 
+ * Class Grid
+ * 
+ */
 function Grid(wc, hc) {
     this.grid = this.init(wc, hc);
     this.wc = wc;
@@ -48,11 +53,9 @@ Grid.prototype.clearColor = function (x, y) {
     this.grid[x][y] = null;
 }
 
-/////////////////////////////
-
 /**
  * 
- * Animation
+ * Class Animation
  * 
  */
 
@@ -115,20 +118,40 @@ for(var i=0; i < uniqueColor.length; i++){
     createColor(uniqueColor[i]);
 }
 
+//VITESSE
+speedOfAnimation = 2000; // valeur par default
+
+var speedElts = document.getElementsByClassName('speed');
+for (var i = 0; i < speedElts.length; i++) {          
+    speedElts[i].addEventListener('click', function(){
+        //si l'annimation est en cours
+        if(typeof(animate) !== 'undefined'){ 
+            clearInterval(animate);// on supprime l'intervale s'il existe
+            speedOfAnimation = this.getAttribute("value"); // on definit la nouvelle vitesse
+            play();// on reprends l'annimation
+            return;
+        }
+        speedOfAnimation = this.getAttribute("value");
+    }); 
+}
 
 
-
-// ANIMATION
+// PLAY
 var indexAnimation = 0;
-speedOfAnimation = 2000;
 var playBtn = document.getElementById('play');
 playBtn.addEventListener('click', play);
-
+console.log(speedOfAnimation);
 function play(){
+    //console.log(speedOfAnimation);
+    console.log('click');
+    
     if(typeof(animate) !== 'undefined'){ // en cas de multiple click, on supprime l'intervale s'il existe
         clearInterval(animate);
     }
     animate = setInterval(function () {
+        console.log(speedOfAnimation);
+        
+        
         var action = animation[indexAnimation++];
 
         if (typeof action === 'undefined') {

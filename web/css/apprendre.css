@@ -64,3 +64,20 @@ bg-main-color {
 .gras{
     font-weight: 500;
 }
+
+.btn-robot2{
+	padding: 5px 8px;
+}
+.btn-robot2:hover{
+	background-color: transparent;
+	color: #fabe12;
+	border-color: #fabe12;
+}
+
+.nutral {
+    background-color: #fff;
+}
+
+.mt4{
+	margin-top: 4rem;
+}
