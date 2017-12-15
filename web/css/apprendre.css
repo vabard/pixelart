@@ -26,6 +26,17 @@
     position: relative;
 }
 
+.intro-learn-one{
+    padding: 100px 0;
+    background-image: url(../images/apprendre.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: -90px;
+    z-index: 11;
+    position: relative;  
+}
+
 .color-white{
     color: white;
 }
@@ -39,4 +50,34 @@
 .picture-desc {
     margin-bottom: 0;
     font-weight: 500;
+}
+
+bg-main-color {
+    background-color: #fabe12;
+}
+
+#pager-galery li>a.pager-galery {
+	color: #fff;
+	border-color: #fabe12;
+	background-color: #fabe12;
+}
+.gras{
+    font-weight: 500;
+}
+
+.btn-robot2{
+	padding: 5px 8px;
+}
+.btn-robot2:hover{
+	background-color: transparent;
+	color: #fabe12;
+	border-color: #fabe12;
+}
+
+.nutral {
+    background-color: #fff;
+}
+
+.mt4{
+	margin-top: 4rem;
 }
