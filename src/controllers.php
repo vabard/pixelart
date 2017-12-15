@@ -2,6 +2,7 @@
 
 use FormType\UserType;
 use Propel\Propel\Users;
+use Propel\Propel\Pictures;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -135,25 +136,47 @@ $app->get('/qui-sommes-nous', function () use ($app) {
 ;
 
 $app->get('/creation', function () use ($app) {
+    
     return $app['twig']->render('creation.html.twig', array());
 })
 ->bind('creation')
 ;
 
-$app->get('/register_picture', function () use ($app){
-    $picture = Propel\Propel\PicturesQuery::create()
-            ->findByIdUsers($app['user']->getIdUsers())
-            ->findByTitle($titre);
-            if ($picture!=''){
-                $picture->setCanvas($dessin);
-            $picture->setState(1);}
-            else {
-                $picture=new Propel\Propel\Pictures;
-                $picture->setCanvas($dessin);
+$app->match('/register_picture', function (Request $request) use ($app){
+    
+    $title = $request->request->get('title');
+    $canvas = $request->request->get('canvas');
+    $id_categories=$request->request->get('id_categories');
+    
+    var_dump($title);
+    var_dump($canvas);
+    //$app['post.titre'] = $_POST['titre'];
+    //$app['post.dessin'] = $_POST['dessin'];
+    $pictures = Propel\Propel\PicturesQuery::create();
+    
+          //  ->findByIdUsers($app['user']->getIdUsers());
+           // ->findByTitle($title);
+          //  if ($pictures!=''){
+          //      $picture = new Pictures(); 
+          //      $picture->setCanvas($canvas);}
+           // else {
+                $picture = new Pictures();
+                $picture->setTitle($title); 
+                $picture->setIdCategories($id_categories);
+                $picture->setCanvas($canvas);
                 $picture->setState(0);
                 $picture->setIdUsers($app['user']->getIdUsers());
-                $picture->setTitle($titre);
-                }
+                $picture->save();
+                
+                //}
+        return $app['twig']->render('creation.html.twig', array(
+            //'pictures' => $pictures,
+            //'aperçu' => $pictures->getThumbs()
+        ));
+})
+->method('GET|POST')
+->bind('register_picture')
+;
 
 
 

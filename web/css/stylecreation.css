@@ -3,6 +3,28 @@
                  margin: 0 auto;
              }
              
+             #form,#form2{
+                 margin-left:250px;
+             }
+             
+             #form input[name='title'],#form input[name='category'],#form2 input[name='title'],#form2 input[name='category'] {
+                 width:400px;
+             }
+             
+             #form input[type='submit'],#form2 input[type='submit'] {
+                 width:250px;
+                 margin-left:75px;
+             }
+             
+            
+             
+             
+             
+             
+             #modal{
+                // width:450px;
+             }
+             
                #cadre {
                  overflow: scroll;
                  height:800px;
@@ -25,5 +47,7 @@
              #my {
                  width: 80px;
              }
+             
+             
              
            
