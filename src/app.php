@@ -1,24 +1,28 @@
 <?php
 
-use Silex\Application;
-use Silex\Provider\AssetServiceProvider;
-use Silex\Provider\TwigServiceProvider;
-use Silex\Provider\ServiceControllerServiceProvider;
-use Silex\Provider\HttpFragmentServiceProvider;
-use Silex\Provider\SessionServiceProvider;
-use Silex\Provider\SecurityServiceProvider;
-use Silex\Provider\FormServiceProvider;
-use Silex\Provider\ValidatorServiceProvider;
+use App\CustomApp;
 use Propel\Propel\UsersQuery;
+//use Propel\Propel\PicturesQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
+use Silex\Provider\AssetServiceProvider;
+use Silex\Provider\FormServiceProvider;
+use Silex\Provider\HttpFragmentServiceProvider;
+use Silex\Provider\LocaleServiceProvider;
+use Silex\Provider\SecurityServiceProvider;
+use Silex\Provider\ServiceControllerServiceProvider;
+use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
+use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 
-$app = new \App\CustomApp();
+$app = new CustomApp();
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new AssetServiceProvider());
 $app->register(new TwigServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
-$app->register(new Silex\Provider\LocaleServiceProvider());
-$app->register(new Silex\Provider\TranslationServiceProvider(), array(
+$app->register(new LocaleServiceProvider());
+$app->register(new TranslationServiceProvider(), array(
     'locale_fallbacks' => array('fr'),
     'translator.domains' => [
         'messages' => [
@@ -56,6 +60,9 @@ $app->register(new SecurityServiceProvider(), array(
             'anonymous' => true,
             'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
             'logout' => array('logout_path' => '/logout', 'invalidate_session' => true),
+//            'pictures' => function() use ($app) {
+//               return PicturesQuery::create();
+//            },
             'users' => function() use ($app) {
                 return UsersQuery::create();
             }
@@ -67,7 +74,7 @@ $app->register(new FormServiceProvider());
 $app->register(new ValidatorServiceProvider());
 
 $app['twig'] = $app->extend('twig', function ($twig, $app) {
-    // add custom globals, filters, tags, ...
+    //$twig->addExtension(new HttpFoundationExtension($app['request_stack']));
 
     return $twig;
 });

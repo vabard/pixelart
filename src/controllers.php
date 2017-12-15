@@ -6,8 +6,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-require __DIR__.'/controllers_admin.php';
-
 //Request::setTrustedProxies(array('127.0.0.1'));
 $app->before(function() use ($app) {
     
@@ -26,9 +24,12 @@ $app->before(function() use ($app) {
     
 });
 
+require __DIR__.'/controllers_admin.php';
 
 $app->get('/', function () use ($app) {
-    return $app['twig']->render('index.html.twig', array());
+    return $app['twig']->render('index.html.twig', array(
+        //'request' => $_REQUEST
+    ));
 })
 ->bind('homepage')
 ;
@@ -135,7 +136,10 @@ $app->get('/qui-sommes-nous', function () use ($app) {
 ;
 
 $app->get('/creation', function () use ($app) {
-    return $app['twig']->render('creation.html.twig', array());
+    $pictures = Propel\Propel\PicturesQuery::create();
+    return $app['twig']->render('creation.html.twig', array(
+        'pictures' => $pictures
+    ));
 })
 ->bind('creation')
 ;
