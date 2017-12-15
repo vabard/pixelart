@@ -263,6 +263,12 @@
            $("#canvas").fadeIn(500);
            
         });
+        
+        $('#save').on('click',function(){
+            createJson(grid);
+            console.log(envoijson);
+            $('#envoicanvas').attr('value',envoijson);
+        })
 
        grandrectangle.addEventListener("click", function(e){
         
@@ -286,10 +292,10 @@
 
 
              
-             envoi.addEventListener('click', function(){
-                createJson(grid);
-                console.log(envoijson);
-             });
+          //   envoi.addEventListener('click', function(){
+          //      createJson(grid);
+          //      console.log(envoijson);
+          //   });
 
              canvas.addEventListener('click', function (event) {
                var posX = event.pageX - canvas.offsetLeft -cadre.offsetLeft + cadre.scrollLeft;//ne pas oublier les scrollTop et scrollLeft lors de l'intégration !//- canvas.offsetLeft
@@ -312,6 +318,8 @@
                console.log(grid);
                gridjson=JSON.stringify(grid);
                console.log(gridjson);
+               var dessinJson=createJson(grid);
+               console.log(dessinJson);
              });
 
              var buttons = document.querySelectorAll('button');
@@ -321,6 +329,29 @@
                  color = event.target.getAttribute('data-color');
                });
              });
+//            var form=getElementById('form');
+//           $('form').on('submit', function(e) {
+//    
+//             e.preventDefault();
+//    
+//              var dessinjson=createJson(grid);
+//              console.log(dessinjson);
+//    
+//               var title=getElementById('titre');
+ 
+                
+
+    
+                
+
+    
+       //$.ajax({
+         //  type: 'POST',
+       //    url: "{{path ('register_picture')}}",
+        //   data: 'titre='+title.value+'&dessin='+dessinjson
+        //});
+    
+//});
          
 
 
