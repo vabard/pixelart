@@ -115,28 +115,19 @@ for(var i=0; i < uniqueColor.length; i++){
     createColor(uniqueColor[i]);
 }
 
-//THUMB
-//var stopBtn = document.getElementById('stop');
-//stopBtn.addEventListener('click', function(){
-//    var data = canvas.toDataURL();
-//    document.getElementById('thumb-learn').setAttribute("src", data);
-//    console.log(data);
-//});
-
-
 
 
 
 // ANIMATION
 var indexAnimation = 0;
-var playBtn = document.getElementById('play');
 speedOfAnimation = 2000;
+var playBtn = document.getElementById('play');
+playBtn.addEventListener('click', play);
 
-playBtn.addEventListener('click', play(animation));
-
-
-
-function play(animation){
+function play(){
+    if(typeof(animate) !== 'undefined'){ // en cas de multiple click, on supprime l'intervale s'il existe
+        clearInterval(animate);
+    }
     animate = setInterval(function () {
         var action = animation[indexAnimation++];
 
@@ -155,22 +146,29 @@ function play(animation){
 }
 
 
-/////////////////////////////
 
-grid = new Grid(maxX, maxY);
+// Dès la chargement de la page on dessine un grid vide
+window.onload = function(event){ 
+    grid = new Grid(maxX, maxY);
+    adaptSize();    
+}
 
-adaptSize();
-
+// Adaptation sur le resize
 window.onresize = function (event) {
     adaptSize();
 };
 
+// DRAW GRID VIDE
 function adaptSize() {
     canvas.width = canvas.parentElement.clientWidth;
     canvas.height = canvas.width;
     drawGrid(grid, canvas);
 }
+window.onresize = function (event) {
+    adaptSize();
+};
 
+// DRAW PICTURE
 function drawGrid(grid, canvas) {
     var context = canvas.getContext('2d');
     var cellW = canvas.width / grid.wc;
@@ -190,30 +188,33 @@ function drawGrid(grid, canvas) {
     });
 }
 
-function eraseGrid(grid, canvas) {
-    var context = canvas.getContext('2d');
-    var cellW = canvas.width / grid.wc;
-    var cellH = cellW;
-    context.clearRect(0, 0, cellW * this.wc, cellH * this.hc);
-    context.strokeWidth = '2';
-    grid.forEach(function (cell, x, y) {
-        
-       
-            context.strokeStyle = 'black';
-            context.clearRect(x * cellW, y * cellH, cellW, cellH);
-            context.strokeRect(x * cellW, y * cellH, cellW, cellH);
-        
-    });   
-}
+
+// PAUSE
+var pauseBtn = document.getElementById('pause');
+pauseBtn.addEventListener('click', function(){
+    if(typeof(animate) !== 'undefined'){ // on supprime l'intervale s'il existe
+        clearInterval(animate);
+    }
+});
 
 
 
-/*
- * 
- * Affichage des étapes
- * 
- */
+// REPLAY
+var replayBtn = document.getElementById('replay');
+replayBtn.addEventListener('click', function(){
+    if(typeof(animate) !== 'undefined'){ // on supprime l'intervale s'il existe
+        clearInterval(animate);
+    }
+    document.querySelector('#steps').innerHTML=''; // supprime les étapes
+    grid = new Grid(maxX, maxY); //grid vide
+    adaptSize(); // dessine grid vide
+    indexAnimation = 0; // redemarre l'index d'annimation
+    play(); // annimation
+});
 
+
+
+// ETAPES
 function createStep(x, y, color){
     
     // 1. Je crée un li vide et un span
@@ -227,17 +228,20 @@ function createStep(x, y, color){
     // 3. je creer du texte
     var texte = document.createTextNode(' case : ' + (x+1) + ' - ' + (y+1));
 
-    // 4. j'ajoute mon couleur et le texte dans mon li	
+    // 4. j'ajoute mon span et texte dans mon li	
     li.appendChild(span);
     li.appendChild(texte);
 
     // 5. je selectionne un ul existant
     var ul = document.querySelector('#steps');
 
-    // 6. j'ajoute li dans ul 
+    // 6. j'ajoute mon span dans li et li dans ul
     ul.appendChild(li);
 }
 
+
+
+// PALETTE
 function createColor(color){
     
     // 1. Je crée un li vide et un span
@@ -255,22 +259,3 @@ function createColor(color){
     li.appendChild(span);
     ul.appendChild(li);
 }
-
-
-// RECOMMENCER
-var replayBtn = document.getElementById('replay');
-replayBtn.addEventListener('click', function(){
-    document.querySelector('#steps').innerHTML=''; // je supprime les etapes affichés
-    grid = new Grid(maxX, maxY);
-    eraseGrid(grid, canvas);
-    
-    play(animation);
-});
-
-// PAUSE 
-var pauseBtn = document.getElementById('pause');
-pauseBtn.addEventListener('click', function(){
-    //document.querySelector('#steps').innerHTML=''; // je supprime les etapes affichés
-    clearInterval(animate);
-    //play();
-});
