@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 require __DIR__.'/controllers_admin.php';
 
 //Request::setTrustedProxies(array('127.0.0.1'));
+// generate a link to the stylesheets in /css/styles.css
+//$request->getBasePath().'/css/styles.css';
+
 $app->before(function() use ($app) {
     
     $token = $app['security.token_storage']->getToken();
@@ -27,7 +30,7 @@ $app->before(function() use ($app) {
 });
 
 
-$app->get('/', function () use ($app) {
+$app->get('/', function (Request $request) use ($app) {
     return $app['twig']->render('index.html.twig', array());
 })
 ->bind('homepage')
@@ -79,13 +82,14 @@ $app->match('/register', function(Request $request) use ($app) {
 ;
 
 // route pour Galery - on affiche tous les Pictures
-$app->get('/galery-pixelart', function () use ($app) {
+$app->get('/galery-pixelart/{p}', function ($p) use ($app) {
     
     $pictures = Propel\Propel\PicturesQuery::create()
             ->joinWithUsers()
             ->joinWithCategories()
+            ->filterByState('2')
             ->orderByDateInsert('desc')
-            ->paginate($page=1, $maxPerPage=3);
+            ->paginate($page=$p, $maxPerPage=15);
 //            ->find();
     
     //$pictures->getNbResults()
@@ -101,8 +105,7 @@ $app->get('/galery-pixelart', function () use ($app) {
             'islastpage' => $pictures->isLastPage(), //return boolean true (1) if the current page is the last page
             'firstindex' => $pictures->getFirstIndex(),
             'lastindex' => $pictures->getLastIndex(), 
-            'getNextPage' => $pictures->getNextPage(), 
-            
+            'getNextPage' => $pictures->getNextPage()   
         ]
     ]);
 })
@@ -126,6 +129,45 @@ $app->get('/apprendre-pixelart/{id}', function ($id) use ($app) {
 })
 ->bind('apprendre-pixelart')
 ;
+
+// API : get all Pictures -TESTS AJAX
+$app->get('/api/pictures', function() use ($app) {
+    $pictures = Propel\Propel\PicturesQuery::create()
+            ->joinWithUsers()
+            ->joinWithCategories()
+            ->filterByState('2')
+            ->orderByDateInsert('desc')
+            ->find();
+    
+    // Convert an array of objects ($pictures) into an array of associative arrays ($responseData)
+    $responseData = array();
+    foreach ($pictures as $picture) {
+        $responseData[] = array(
+            'id' => $picture->getIdPictures(),
+            'title' => $picture->getTitle(),
+            'canvas' => $picture->getCanvas()
+            );
+    }
+    // Create and return a JSON response
+    return $app->json($responseData);
+})->bind('api_pictures');
+
+// API : get an picture -TESTS AJAX
+$app->get('/api/picture/{id}', function($id) use ($app) {
+    $picture = Propel\Propel\PicturesQuery::create()
+            ->joinWithUsers()
+            ->joinWithCategories()
+            ->findOneByIdPictures($id);
+    // Convert an object ($picture) into an associative array ($responseData)
+    $responseData = array(
+        'id' => $picture->getIdPictures(),
+        'title' => $picture->getTitle(),
+        'canvas' => $picture->getCanvas()
+        );
+    // Create and return a JSON response
+    return $app->json($responseData);
+})->bind('api_picture');
+
 
 
 $app->get('/qui-sommes-nous', function () use ($app) {

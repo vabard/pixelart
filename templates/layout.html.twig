@@ -82,8 +82,8 @@
 
                         <div class="collapse navbar-collapse" id="site-nav-bar">
                             <ul class="nav navbar-nav">
-                                <li class="active"><a href="{{ path('homepage') }}">Accueil</a></li>
-                                <li><a href="{{ path('galery-pixelart') }}">Galery</a></li>
+                                <li class="active" ><a href="{{ path('homepage') }}">Accueil</a></li>
+                                <li><a href="{{ path('galery-pixelart', { p : 1 }) }}">Apprentissage</a></li>
                                 <li><a href="{{ path('creation') }}">Création</a></li>
                                 <li><a href="{{ path('qui-sommes-nous') }}">Qui sommes nous</a></li>
                                 
@@ -112,6 +112,7 @@
         <script src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
         <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
         <script src="{{ asset('js/script.js') }}"></script>
+
         {% block script %}{% endblock %}
 
     </body>
