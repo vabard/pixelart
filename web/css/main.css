@@ -174,12 +174,15 @@ h1.header-title {
 	color: #fff;
 }
 .site-header-bg .user{
+    font-family: 'Roboto';
+    letter-spacing: 2px;
     text-decoration: none;
     color: #fabe12;
-    font-size: 14px;
+    font-size: 12px;
     padding-right: 5px;
-    font-weight: lighter;
-    text-transform: none;
+    padding-left: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 
