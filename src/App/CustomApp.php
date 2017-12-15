@@ -1,12 +1,13 @@
 <?php
 
 namespace App;
+
 /**
  * Description of CustomApp
  *
  * @author Etudiant
  */
-class CustomApp extends \Silex\Application 
+class CustomApp extends \Silex\Application
 {
     use \Silex\Application\SecurityTrait;
     use \Silex\Application\MonologTrait;

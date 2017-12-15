@@ -1,4 +1,6 @@
 {% extends "layout.html.twig" %}
+{% block style %}{% endblock %}
+
 {% block content %}
     <div class="container-fluid">
         <div class="row">
@@ -208,3 +210,4 @@ data-color="Black"></button>
 {% block script %}
     <script src="{{ asset('js/creation.js') }}"></script>
 {% endblock %}
+{% block script %}<script src="{{ asset('js/creation.js') }}"></script>{% endblock %}
