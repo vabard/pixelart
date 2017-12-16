@@ -185,7 +185,7 @@ $app->match('/register_picture', function (Request $request) use ($app){
     
     $title = $request->request->get('title');
     $canvas = $request->request->get('canvas');
-    $id_categories=$request->request->get('id_categories');
+    $id_categories = $request->request->get('id_categories');
     
     var_dump($title);
     var_dump($canvas);

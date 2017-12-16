@@ -83,6 +83,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
             'data_class' => \Propel\Propel\Users::class,
+            //'data_class' => null,
             'validation_groups' => ['edition']
         ]);
     }
