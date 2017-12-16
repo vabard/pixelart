@@ -13,9 +13,9 @@
              var dezoom=document.getElementById("dezoom");
              var petitrectangle=document.getElementById("petitrectangle");
              var carremoyen=document.getElementById("carremoyen");
-     		var rectanglemoyen=document.getElementById("rectanglemoyen");
-     		var grandcarre=document.getElementById("grandcarre");
-     		var grandrectangle=document.getElementById("grandrectangle");
+     	     var rectanglemoyen=document.getElementById("rectanglemoyen");
+             var grandcarre=document.getElementById("grandcarre");
+             var grandrectangle=document.getElementById("grandrectangle");
      	
 //fonctions
              function Grid(wc, hc) {
@@ -100,14 +100,7 @@
              
              
 
-             
-
-
-             
-
-
-             
-             function adaptSize() {
+            function adaptSize() {
                canvas.width = canvas.parentElement.clientWidth;
                if (step==''){
                canvas.height = canvas.width;
@@ -329,29 +322,24 @@
                  color = event.target.getAttribute('data-color');
                });
              });
-//            var form=getElementById('form');
-//           $('form').on('submit', function(e) {
+//            
+         $('#form').on('submit', function(e) {
 //    
-//             e.preventDefault();
+         e.preventDefault();
 //    
-//              var dessinjson=createJson(grid);
-//              console.log(dessinjson);
-//    
-//               var title=getElementById('titre');
- 
-                
-
-    
-                
-
-    
-       //$.ajax({
-         //  type: 'POST',
-       //    url: "{{path ('register_picture')}}",
-        //   data: 'titre='+title.value+'&dessin='+dessinjson
-        //});
-    
-//});
+param='title='+$("#title").val()+'&canvas='+envoijson+'&id_categories='+$("#id_categories").val();
+            $.ajax({
+            type: 'POST',
+            url: $("#form").attr('action'),
+            data: param,
+            succes:null
+            });
+            $("#modal").fadeOut(500);
+            $("#modal").removeClass('in');
+            //$("#modal").removeClass('fade');
+            
+            console.log(param);
+});
          
 
 

@@ -40,7 +40,7 @@
             <button id="save" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-md">Sauvegarder le brouillon</button><br>
 </div>
             {% if app.user %}
-    <div id="modal" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div id="modal" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <br>
@@ -134,14 +134,14 @@
     <br>
             
             <div class="col-md-6" id="cadre" style="overflow:scroll;">
-                <canvas id="canvas" style="border:1px solid grey";>Votre navigateur ne supporte pas canvas</canvas>
+                <canvas id="canvas";>Votre navigateur ne supporte pas canvas</canvas>
             </div>
             <div class="col-md-3" id="couleurs">
                 <div id="my">
                     <h2>Couleurs</h2>
-             <button style="background-color: gainsboro;"
+                    <button style="background-color: gainsboro;"
     data-color="Gainsboro"></button>
-<button style="background-color: darkgray;"
+                    <button style="background-color: darkgray;"
     data-color="darkgray"></button>
 <button style="background-color: dimgray;"
     data-color="dimgray"></button><br>
@@ -210,4 +210,4 @@ data-color="Black"></button>
 {% block script %}
     <script src="{{ asset('js/creation.js') }}"></script>
 {% endblock %}
-{% block script %}<script src="{{ asset('js/creation.js') }}"></script>{% endblock %}
+
