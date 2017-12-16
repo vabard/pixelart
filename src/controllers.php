@@ -184,6 +184,7 @@ $app->get('/creation', function () use ($app) {
 $app->match('/register_picture', function (Request $request) use ($app){
     
     $title = $request->request->get('title');
+    $state = $request->request->get('state');
     $canvas = $request->request->get('canvas');
     $id_categories=$request->request->get('id_categories');
     
@@ -203,7 +204,7 @@ $app->match('/register_picture', function (Request $request) use ($app){
                 $picture->setTitle($title); 
                 $picture->setIdCategories($id_categories);
                 $picture->setCanvas($canvas);
-                $picture->setState(0);
+                $picture->setState($state);
                 $picture->setIdUsers($app['user']->getIdUsers());
                 $picture->save();
                 
@@ -216,6 +217,7 @@ $app->match('/register_picture', function (Request $request) use ($app){
 ->method('GET|POST')
 ->bind('register_picture')
 ;
+
 
 
 

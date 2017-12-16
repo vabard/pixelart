@@ -327,7 +327,8 @@
 //    
          e.preventDefault();
 //    
-param='title='+$("#title").val()+'&canvas='+envoijson+'&id_categories='+$("#id_categories").val();
+            param='title='+$("#title").val()+'&state='+$("#state").val()+'&canvas='+envoijson+'&id_categories='+$("#id_categories").val();
+            
             $.ajax({
             type: 'POST',
             url: $("#form").attr('action'),
@@ -336,7 +337,8 @@ param='title='+$("#title").val()+'&canvas='+envoijson+'&id_categories='+$("#id_c
             });
             $("#modal").fadeOut(500);
             $("#modal").removeClass('in');
-            //$("#modal").removeClass('fade');
+            $(".modal-backdrop").attr('style','position:static');
+            $("body").removeClass('modal-open');
             
             console.log(param);
 });
