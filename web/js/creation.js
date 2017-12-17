@@ -144,6 +144,24 @@
                  }
                });
              }
+             
+
+function enregistrerCanvas(param) {   
+            
+            
+            $.ajax({
+            type: 'POST',
+            url: $("#form").attr('action'),
+            data: param,
+            succes:null
+            });
+            $("#modal").fadeOut(500);
+            $("#modal").removeClass('in');
+            $(".modal-backdrop").attr('style','position:static');
+            $("body").removeClass('modal-open');
+            
+            console.log(param);
+};
 
 //Evenements
              window.onresize = function (event) {
@@ -257,10 +275,14 @@
            
         });
         
-        $('#save').on('click',function(){
+        $('.save').on('click',function(){
             createJson(grid);
             console.log(envoijson);
             $('#envoicanvas').attr('value',envoijson);
+            var thumb=canvas.toDataURL();
+            $('#thumb').attr('value',thumb);
+            $('#thumbdef').attr('value',thumb);
+            
         })
 
        grandrectangle.addEventListener("click", function(e){
@@ -323,25 +345,18 @@
                });
              });
 //            
-         $('#form').on('submit', function(e) {
-//    
-         e.preventDefault();
-//    
-            param='title='+$("#title").val()+'&state='+$("#state").val()+'&canvas='+envoijson+'&id_categories='+$("#id_categories").val();
-            
-            $.ajax({
-            type: 'POST',
-            url: $("#form").attr('action'),
-            data: param,
-            succes:null
-            });
-            $("#modal").fadeOut(500);
-            $("#modal").removeClass('in');
-            $(".modal-backdrop").attr('style','position:static');
-            $("body").removeClass('modal-open');
-            
-            console.log(param);
-});
+         $('#form').on('submit', function(e){
+          e.preventDefault();  
+         param='title='+$("#title").val()+'&thumb='+$("#thumb").val()+'&state='+$("#state").val()+'&canvas='+envoijson+'&id_categories='+$("#id_categories").val();
+            enregistrerCanvas(param);});
+     
+         $('#form2').on('submit', function(e){
+          e.preventDefault();
+          param='title='+$("#titledef").val()+'&thumb='+$("#thumbdef").val()+'&state='+$("#statedef").val()+'&canvas='+envoijson+'&id_categories='+$("#id_categoriesdef").val();
+
+         enregistrerCanvas(param);});
+
+
          
 
 

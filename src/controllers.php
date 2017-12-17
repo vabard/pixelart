@@ -129,6 +129,17 @@ $app->get('/apprendre-pixelart/{id}', function ($id) use ($app) {
 ->bind('apprendre-pixelart')
 ;
 
+$app->get('/mes-pixelarts', function () use ($app) {
+    
+   
+    
+    // on transmet à notre template les données (toujours un array!)
+    return $app['twig']->render('space-member.html.twig');
+
+})
+->bind('mes-pixelarts')
+;
+
 // API : get all Pictures -TESTS AJAX
 $app->get('/api/pictures', function() use ($app) {
     $pictures = Propel\Propel\PicturesQuery::create()
@@ -187,6 +198,7 @@ $app->match('/register_picture', function (Request $request) use ($app){
     $state = $request->request->get('state');
     $canvas = $request->request->get('canvas');
     $id_categories=$request->request->get('id_categories');
+    $thumb=$request->request->get('thumb');
     
     var_dump($title);
     var_dump($canvas);
@@ -205,6 +217,7 @@ $app->match('/register_picture', function (Request $request) use ($app){
                 $picture->setIdCategories($id_categories);
                 $picture->setCanvas($canvas);
                 $picture->setState($state);
+                $picture->setThumb($thumb);
                 $picture->setIdUsers($app['user']->getIdUsers());
                 $picture->save();
                 

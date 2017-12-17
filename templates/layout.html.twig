@@ -23,6 +23,8 @@
         <link href="{{ asset('css/apprendre.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('css/stylecreation.css') }}" rel="stylesheet" type="text/css" />
         {% block style %}{% endblock %}
+            
+        
         
 
         <!--[if lt IE 9]>
@@ -86,6 +88,9 @@
                                 <li><a href="{{ path('galery-pixelart', { p : 1 }) }}">Apprentissage</a></li>
                                 <li><a href="{{ path('creation') }}">Création</a></li>
                                 <li><a href="{{ path('qui-sommes-nous') }}">Qui sommes nous</a></li>
+                                {% if app.user %}
+                                <li><a href="{{ path('mes-pixelarts') }}">Mes pixelarts</a></li>
+                                {% endif %}
                                 
                             </ul>
                         </div><!-- /.navbar-collapse -->
