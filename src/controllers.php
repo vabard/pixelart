@@ -30,9 +30,9 @@ $app->before(function() use ($app) {
 
 require __DIR__.'/controllers_admin.php';
 
-$app->get('/', function () use ($app) {
+$app->get('/', function (Request $request) use ($app) {
     return $app['twig']->render('index.html.twig', array(
-        //'request' => $_REQUEST
+        //$app['request'] => $request
     ));
 })
 ->bind('homepage')
