@@ -181,10 +181,21 @@
   
 
     <br>
+          
             
+                
+           {% if picture is defined %} 
             <div class="col-md-6" id="cadre" style="overflow:scroll;">
-                <canvas id="canvas";>Votre navigateur ne supporte pas canvas</canvas>
+                <canvas id="canvas">Votre navigateur ne supporte pas canvas</canvas>
+                <input type="hidden" value="{{picture.canvas}}" id="picture">
             </div>
+               
+           {%else%}
+            <div class="col-md-6" id="cadre" style="overflow:scroll;">
+                <canvas id="canvas">Votre navigateur ne supporte pas canvas</canvas>
+            </div>
+           {% endif %}
+            
             <div class="col-md-3" id="couleurs">
                 <div id="my">
                     <h2>Couleurs</h2>

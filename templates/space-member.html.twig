@@ -4,23 +4,25 @@
     <h1>Mes pixelarts</h1>
     <div class="row">
         <section class="col-md-6">
-            <h2>Mes brouillons</h2>
+            
                 <div class="row">
+                    
                     <div class="boxed">
-
-                    {% if pictures is empty %}
+                    <h2>Mes brouillons</h2>
+                    {% if brouillons is empty %}
                         <p>Il n'y a pas de PixelArt à afficher</p>
                     {% else %}
-                        {% for picture in pictures %}
+                        {% for brouillon in brouillons %}
                             
                         <div class="col-sm-4">
                             <div class="shop-box">
-                                <img class="img-full img-responsive" src="{{ picture.thumb | replace({" ":"+"}) }}" alt="">
+                                <img class="img-full img-responsive" src="{{ brouillon.thumb | replace({" ":"+"}) }}" alt="">
                                 <div class="shop-box-hover text-center">
                                     <div class="c-table">
                                         <div class="c-cell">
-                                            <a href="{{ path('creation', { id : picture.idPictures }) }}">
-                                                <span class="glyphicon glyphicon-education" aria-hidden="true"></span> Apprendre
+                                            <!--<a href="{{ path('creation',{id:brouillon.idPictures})}}"> -->
+                                            <a href="{{ path('creation', { id : brouillon.idPictures }) }}">
+                                                <span class="glyphicon glyphicon-education" aria-hidden="true"></span> Continuez votre dessin
                                             </a>
                                         </div>
                                     </div>
@@ -29,8 +31,8 @@
                             <div class="shop-box-title">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <p class="gras">{{ picture.title }}</p>
-                                        <p class="text-lowercase">Cat. : <span class="text-uppercase "> {{ picture.categories.title }}</span></p>
+                                        <p class="gras">{{ brouillon.title }}</p>
+                                        <p class="text-lowercase">Cat. : <span class="text-uppercase "> {{ brouillon.categories.title }}</span></p>
                                         
                                     </div>
          
@@ -43,7 +45,46 @@
                 </div>
         </section>
         <section class="col-md-6">
-            <h2>Mes dessins envoyés</h2>
+            
+             
+ 
+                <div class="row">
+                    
+                    <div class="boxed">
+                        <h2>Mes dessins envoyés</h2>
+                    {% if envoyes is empty %}
+                        <p>Il n'y a pas de PixelArt à afficher</p>
+                    {% else %}
+                        {% for envoye in envoyes %}
+                            
+                        <div class="col-sm-4">
+                            <div class="shop-box">
+                                <img class="img-full img-responsive" src="{{ envoye.thumb | replace({" ":"+"}) }}" alt="">
+                                <div class="shop-box-hover text-center">
+                                    <div class="c-table">
+                                        <div class="c-cell">
+                                            <a href="{{ path('view-pixelart', { id : envoye.idPictures }) }}">
+                                                <span class="glyphicon glyphicon-education" aria-hidden="true"></span> Revoir votre dessin
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="shop-box-title">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <p class="gras">{{ envoye.title }}</p>
+                                        <p class="text-lowercase">Cat. : <span class="text-uppercase "> {{ envoye.categories.title }}</span></p>
+                                        
+                                    </div>
+         
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                     {%endif%}
+                    </div>
+                </div>
                 
         </section>
     </div>

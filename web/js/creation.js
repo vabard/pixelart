@@ -16,6 +16,7 @@
      	     var rectanglemoyen=document.getElementById("rectanglemoyen");
              var grandcarre=document.getElementById("grandcarre");
              var grandrectangle=document.getElementById("grandrectangle");
+             var picture='';
      	
 //fonctions
              function Grid(wc, hc) {
@@ -94,9 +95,20 @@
           // 
              
              /////////////////////////////
+             
+             if(document.getElementById("picture")){
+              picture=(JSON.parse($("#picture").val()));
+              grid = new Grid(picture.metadata.wc, picture.metadata.hc);  
+              for(i=0;i<picture.data.length;i++) {
+                grid.setColor(picture.data[i].color,picture.data[i].y,picture.data[i].x); 
+                  }
+              adaptSize();
+             }
+             else {
              grid = new Grid(10, 10);
              
              adaptSize();
+         }
              
              
 
@@ -155,10 +167,6 @@ function enregistrerCanvas(param) {
             data: param,
             succes:null
             });
-            $("#modal").fadeOut(500);
-            $("#modal").removeClass('in');
-            $(".modal-backdrop").attr('style','position:static');
-            $("body").removeClass('modal-open');
             
             console.log(param);
 };
@@ -175,7 +183,7 @@ function enregistrerCanvas(param) {
                 drawGrid(grid,canvas);
             })
 
-              dezoom=document.getElementById("dezoom");
+             dezoom=document.getElementById("dezoom");
              dezoom.addEventListener("click",function(){
                 if(canvas.width>50){
                 canvas.width=0.9*canvas.width;
@@ -183,7 +191,7 @@ function enregistrerCanvas(param) {
                 drawGrid(grid,canvas);}
             })
 
-             for(var i=0;i<choix.length;i++){
+    for(var i=0;i<choix.length;i++){
        choix[i].addEventListener("change", function(e){
         
     
@@ -348,13 +356,20 @@ function enregistrerCanvas(param) {
          $('#form').on('submit', function(e){
           e.preventDefault();  
          param='title='+$("#title").val()+'&thumb='+$("#thumb").val()+'&state='+$("#state").val()+'&canvas='+envoijson+'&id_categories='+$("#id_categories").val();
-            enregistrerCanvas(param);});
+            enregistrerCanvas(param);
+            $("#modal").fadeOut(500);
+            $("#modal").removeClass('in');
+            $(".modal-backdrop").attr('style','position:static');
+            $("body").removeClass('modal-open');
+            });
      
          $('#form2').on('submit', function(e){
           e.preventDefault();
           param='title='+$("#titledef").val()+'&thumb='+$("#thumbdef").val()+'&state='+$("#statedef").val()+'&canvas='+envoijson+'&id_categories='+$("#id_categoriesdef").val();
-
-         enregistrerCanvas(param);});
+          
+         enregistrerCanvas(param);
+        window.location="mes-pixelarts";
+    });
 
 
          

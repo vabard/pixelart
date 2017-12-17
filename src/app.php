@@ -14,6 +14,7 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
+use Silex\Provider\UrlGeneratorServiceProvider;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 
 $app = new CustomApp();
@@ -22,6 +23,7 @@ $app->register(new AssetServiceProvider());
 $app->register(new TwigServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
 $app->register(new LocaleServiceProvider());
+//$app->register(new UrlGeneratorServiceProvider());
 $app->register(new TranslationServiceProvider(), array(
     'locale_fallbacks' => array('fr'),
     'translator.domains' => [

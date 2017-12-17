@@ -129,9 +129,29 @@ $app->get('/apprendre-pixelart/{id}', function ($id) use ($app) {
 ->bind('apprendre-pixelart')
 ;
 
+$app->get('/creation/{id}', function ($id) use ($app) {
+    
+    $picture = Propel\Propel\PicturesQuery::create()
+            ->findOneByIdPictures($id);
+    
+    // on transmet à notre template les données (toujours un array!)
+    return $app['twig']->render('creation.html.twig', [
+        'picture'=>$picture
+    ]);
+})
+->bind('creation/{id}')
+;
+
 $app->get('/mes-pixelarts', function () use ($app) {
-    $pictures = Propel\Propel\PicturesQuery::create()
+    $brouillons = Propel\Propel\PicturesQuery::create()
+            ->filterByState('0')
             ->findByIdUsers($app['user']->getIdUsers());
+            ;
+            //->find();
+     $envoyes = Propel\Propel\PicturesQuery::create()
+            ->filterByState('1')
+            ->findByIdUsers($app['user']->getIdUsers());
+           // ->find();
     
     
     
@@ -139,11 +159,32 @@ $app->get('/mes-pixelarts', function () use ($app) {
             //->filterByState('2')
             //->orderByDateInsert('desc')
             //->find();
-   return $app['twig']->render('space-member.html.twig',['pictures'=>$pictures]);
+   return $app['twig']->render('space-member.html.twig',['brouillons'=>$brouillons,'envoyes'=>$envoyes]);
 
 })
 ->bind('mes-pixelarts')
 ;
+
+$app->get('/view-pixelart/{id}', function ($id) use ($app) {
+    $picture = Propel\Propel\PicturesQuery::create()
+            ->findOneByIdPictures($id);
+            ;
+            //->find();
+     
+           // ->find();
+    
+    
+    
+            //->joinWithCategories()
+            //->filterByState('2')
+            //->orderByDateInsert('desc')
+            //->find();
+   return $app['twig']->render('view-pixelart.html.twig',['picture'=>$picture]);
+
+})
+->bind('view-pixelart')
+;
+
 
 // API : get all Pictures -TESTS AJAX
 $app->get('/api/pictures', function() use ($app) {
