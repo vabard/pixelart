@@ -130,11 +130,16 @@ $app->get('/apprendre-pixelart/{id}', function ($id) use ($app) {
 ;
 
 $app->get('/mes-pixelarts', function () use ($app) {
+    $pictures = Propel\Propel\PicturesQuery::create()
+            ->findByIdUsers($app['user']->getIdUsers());
     
-   
     
-    // on transmet à notre template les données (toujours un array!)
-    return $app['twig']->render('space-member.html.twig');
+    
+            //->joinWithCategories()
+            //->filterByState('2')
+            //->orderByDateInsert('desc')
+            //->find();
+   return $app['twig']->render('space-member.html.twig',['pictures'=>$pictures]);
 
 })
 ->bind('mes-pixelarts')
