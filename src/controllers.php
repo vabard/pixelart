@@ -129,7 +129,7 @@ $app->get('/apprendre-pixelart/{id}', function ($id) use ($app) {
 ->bind('apprendre-pixelart')
 ;
 
-$app->get('/creation/{id}', function ($id) use ($app) {
+$app->get('/edit/{id}', function ($id) use ($app) {
     
     $picture = Propel\Propel\PicturesQuery::create()
             ->findOneByIdPictures($id);
@@ -139,7 +139,7 @@ $app->get('/creation/{id}', function ($id) use ($app) {
         'picture'=>$picture
     ]);
 })
-->bind('creation/{id}')
+->bind('edit')
 ;
 
 $app->get('/mes-pixelarts', function () use ($app) {
