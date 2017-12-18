@@ -1,16 +1,21 @@
 <?php
 
 namespace App;
+
 /**
  * Description of CustomApp
  *
  * @author Etudiant
  */
-class CustomApp extends \Silex\Application 
+class CustomApp extends \Silex\Application
 {
     use \Silex\Application\SecurityTrait;
     use \Silex\Application\MonologTrait;
     use \Silex\Application\FormTrait;
     use \Silex\Application\TwigTrait;
     use \Silex\Application\UrlGeneratorTrait;
+    
+    public function request (Request $request){
+        return $request;
+    }
 }

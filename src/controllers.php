@@ -2,13 +2,15 @@
 
 use FormType\UserType;
 use Propel\Propel\Users;
+use Propel\Propel\Pictures;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-require __DIR__.'/controllers_admin.php';
-
 //Request::setTrustedProxies(array('127.0.0.1'));
+// generate a link to the stylesheets in /css/styles.css
+//$request->getBasePath().'/css/styles.css';
+
 $app->before(function() use ($app) {
     
     $token = $app['security.token_storage']->getToken();
@@ -26,13 +28,15 @@ $app->before(function() use ($app) {
     
 });
 
+require __DIR__.'/controllers_admin.php';
 
-$app->get('/', function () use ($app) {
-    return $app['twig']->render('index.html.twig', array());
+$app->get('/', function (Request $request) use ($app) {
+    return $app['twig']->render('index.html.twig', array(
+        //$app['request'] => $request
+    ));
 })
 ->bind('homepage')
 ;
-
 
 $app->get('/login', function(Request $request) use ($app) {
     return $app['twig']->render('login.html.twig', array(
@@ -42,6 +46,7 @@ $app->get('/login', function(Request $request) use ($app) {
 })
 ->bind('login')
 ;
+
 $app->match('/register', function(Request $request) use ($app) {
     
     $user = new Users();
@@ -79,30 +84,27 @@ $app->match('/register', function(Request $request) use ($app) {
 ;
 
 // route pour Galery - on affiche tous les Pictures
-$app->get('/galery-pixelart', function () use ($app) {
+$app->get('/galery-pixelart/{p}', function ($p) use ($app) {
     
     $pictures = Propel\Propel\PicturesQuery::create()
             ->joinWithUsers()
             ->joinWithCategories()
+            ->filterByState('2')
             ->orderByDateInsert('desc')
-            ->paginate($page=1, $maxPerPage=3);
-//            ->find();
+            ->paginate($page=$p, $maxPerPage=15);
     
-    //$pictures->getNbResults()
     // on transmet à notre template les données (toujours un array!)
     return $app['twig']->render('galery-pixelart.html.twig', [
         'pictures' => $pictures,
         'paginate' => [
             'results'  => $pictures->getNbResults(),
-            //'havetopaginate'  => $pictures->haveToPaginate(),
             'firstpage' => $pictures->getFirstPage(),
             'lastpage' => $pictures->getLastPage(),
             'currentpage' => $pictures->getPage(),
             'islastpage' => $pictures->isLastPage(), //return boolean true (1) if the current page is the last page
             'firstindex' => $pictures->getFirstIndex(),
             'lastindex' => $pictures->getLastIndex(), 
-            'getNextPage' => $pictures->getNextPage(), 
-            
+            'getNextPage' => $pictures->getNextPage()   
         ]
     ]);
 })
@@ -127,6 +129,102 @@ $app->get('/apprendre-pixelart/{id}', function ($id) use ($app) {
 ->bind('apprendre-pixelart')
 ;
 
+$app->get('/creation/{id}', function ($id) use ($app) {
+    
+    $picture = Propel\Propel\PicturesQuery::create()
+            ->findOneByIdPictures($id);
+    
+    // on transmet à notre template les données (toujours un array!)
+    return $app['twig']->render('creation.html.twig', [
+        'picture'=>$picture
+    ]);
+})
+->bind('creation/{id}')
+;
+
+$app->get('/mes-pixelarts', function () use ($app) {
+    $brouillons = Propel\Propel\PicturesQuery::create()
+            ->filterByState('0')
+            ->findByIdUsers($app['user']->getIdUsers());
+            ;
+            //->find();
+     $envoyes = Propel\Propel\PicturesQuery::create()
+            ->filterByState('1')
+            ->findByIdUsers($app['user']->getIdUsers());
+           // ->find();
+    
+    
+    
+            //->joinWithCategories()
+            //->filterByState('2')
+            //->orderByDateInsert('desc')
+            //->find();
+   return $app['twig']->render('space-member.html.twig',['brouillons'=>$brouillons,'envoyes'=>$envoyes]);
+
+})
+->bind('mes-pixelarts')
+;
+
+$app->get('/view-pixelart/{id}', function ($id) use ($app) {
+    $picture = Propel\Propel\PicturesQuery::create()
+            ->findOneByIdPictures($id);
+            ;
+            //->find();
+     
+           // ->find();
+    
+    
+    
+            //->joinWithCategories()
+            //->filterByState('2')
+            //->orderByDateInsert('desc')
+            //->find();
+   return $app['twig']->render('view-pixelart.html.twig',['picture'=>$picture]);
+
+})
+->bind('view-pixelart')
+;
+
+
+// API : get all Pictures -TESTS AJAX
+$app->get('/api/pictures', function() use ($app) {
+    $pictures = Propel\Propel\PicturesQuery::create()
+            ->joinWithUsers()
+            ->joinWithCategories()
+            ->filterByState('2')
+            ->orderByDateInsert('desc')
+            ->find();
+    
+    // Convert an array of objects ($pictures) into an array of associative arrays ($responseData)
+    $responseData = array();
+    foreach ($pictures as $picture) {
+        $responseData[] = array(
+            'id' => $picture->getIdPictures(),
+            'title' => $picture->getTitle(),
+            'canvas' => $picture->getCanvas()
+            );
+    }
+    // Create and return a JSON response
+    return $app->json($responseData);
+})->bind('api_pictures');
+
+// API : get an picture -TESTS AJAX
+$app->get('/api/picture/{id}', function($id) use ($app) {
+    $picture = Propel\Propel\PicturesQuery::create()
+            ->joinWithUsers()
+            ->joinWithCategories()
+            ->findOneByIdPictures($id);
+    // Convert an object ($picture) into an associative array ($responseData)
+    $responseData = array(
+        'id' => $picture->getIdPictures(),
+        'title' => $picture->getTitle(),
+        'canvas' => $picture->getCanvas()
+        );
+    // Create and return a JSON response
+    return $app->json($responseData);
+})->bind('api_picture');
+
+
 
 $app->get('/qui-sommes-nous', function () use ($app) {
     return $app['twig']->render('quisommesnous.html.twig', array());
@@ -139,6 +237,47 @@ $app->get('/creation', function () use ($app) {
 })
 ->bind('creation')
 ;
+
+$app->match('/register_picture', function (Request $request) use ($app){
+    
+    $title = $request->request->get('title');
+    $state = $request->request->get('state');
+    $canvas = $request->request->get('canvas');
+    $id_categories = $request->request->get('id_categories');
+    
+    var_dump($title);
+    var_dump($canvas);
+    //$app['post.titre'] = $_POST['titre'];
+    //$app['post.dessin'] = $_POST['dessin'];
+    $pictures = Propel\Propel\PicturesQuery::create();
+    
+          //  ->findByIdUsers($app['user']->getIdUsers());
+           // ->findByTitle($title);
+          //  if ($pictures!=''){
+          //      $picture = new Pictures(); 
+          //      $picture->setCanvas($canvas);}
+           // else {
+                $picture = new Pictures();
+                $picture->setTitle($title); 
+                $picture->setIdCategories($id_categories);
+                $picture->setCanvas($canvas);
+                $picture->setState($state);
+                $picture->setThumb($thumb);
+                $picture->setIdUsers($app['user']->getIdUsers());
+                $picture->save();
+                
+                //}
+        return $app['twig']->render('creation.html.twig', array(
+            //'pictures' => $pictures,
+            //'aperçu' => $pictures->getThumbs()
+        ));
+})
+->method('GET|POST')
+->bind('register_picture')
+;
+
+
+
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {

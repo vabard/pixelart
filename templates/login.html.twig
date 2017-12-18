@@ -1,10 +1,12 @@
 {% extends "layout.html.twig" %}
+{% block style %}<link href="{{ asset('css/login.css') }}" rel="stylesheet" type="text/css" />{% endblock %}
+
 
 {% block content %}
     <div class="container">
         <div class="row login_box">
             <div class="col-md-12 col-xs-12" align="center">
-                <div class="line"><h3>12 : 30 AM</h3></div>
+                <div class="line"><h3><script>document.write(new Date().getFullYear())</script></h3></div>
                 <div class="outter"><img src="{{ asset ('images/pixelart_avatar_login1.jpg') }}" class="image-circle"/></div>   
                 <h1>Hi Guest</h1>
                 <span>INDIAN</span>

@@ -13,9 +13,10 @@
              var dezoom=document.getElementById("dezoom");
              var petitrectangle=document.getElementById("petitrectangle");
              var carremoyen=document.getElementById("carremoyen");
-     		var rectanglemoyen=document.getElementById("rectanglemoyen");
-     		var grandcarre=document.getElementById("grandcarre");
-     		var grandrectangle=document.getElementById("grandrectangle");
+     	     var rectanglemoyen=document.getElementById("rectanglemoyen");
+             var grandcarre=document.getElementById("grandcarre");
+             var grandrectangle=document.getElementById("grandrectangle");
+             var picture='';
      	
 //fonctions
              function Grid(wc, hc) {
@@ -94,20 +95,24 @@
           // 
              
              /////////////////////////////
+             
+             if(document.getElementById("picture")){
+              picture=(JSON.parse($("#picture").val()));
+              grid = new Grid(picture.metadata.wc, picture.metadata.hc);  
+              for(i=0;i<picture.data.length;i++) {
+                grid.setColor(picture.data[i].color,picture.data[i].y,picture.data[i].x); 
+                  }
+              adaptSize();
+             }
+             else {
              grid = new Grid(10, 10);
              
              adaptSize();
+         }
              
              
 
-             
-
-
-             
-
-
-             
-             function adaptSize() {
+            function adaptSize() {
                canvas.width = canvas.parentElement.clientWidth;
                if (step==''){
                canvas.height = canvas.width;
@@ -151,6 +156,20 @@
                  }
                });
              }
+             
+
+function enregistrerCanvas(param) {   
+            
+            
+            $.ajax({
+            type: 'POST',
+            url: $("#form").attr('action'),
+            data: param,
+            succes:null
+            });
+            
+            console.log(param);
+};
 
 //Evenements
              window.onresize = function (event) {
@@ -164,7 +183,7 @@
                 drawGrid(grid,canvas);
             })
 
-              dezoom=document.getElementById("dezoom");
+             dezoom=document.getElementById("dezoom");
              dezoom.addEventListener("click",function(){
                 if(canvas.width>50){
                 canvas.width=0.9*canvas.width;
@@ -172,7 +191,7 @@
                 drawGrid(grid,canvas);}
             })
 
-             for(var i=0;i<choix.length;i++){
+    for(var i=0;i<choix.length;i++){
        choix[i].addEventListener("change", function(e){
         
     
@@ -263,6 +282,16 @@
            $("#canvas").fadeIn(500);
            
         });
+        
+        $('.save').on('click',function(){
+            createJson(grid);
+            console.log(envoijson);
+            $('#envoicanvas').attr('value',envoijson);
+            var thumb=canvas.toDataURL();
+            $('#thumb').attr('value',thumb);
+            $('#thumbdef').attr('value',thumb);
+            
+        })
 
        grandrectangle.addEventListener("click", function(e){
         
@@ -286,10 +315,10 @@
 
 
              
-             envoi.addEventListener('click', function(){
-                createJson(grid);
-                console.log(envoijson);
-             });
+          //   envoi.addEventListener('click', function(){
+          //      createJson(grid);
+          //      console.log(envoijson);
+          //   });
 
              canvas.addEventListener('click', function (event) {
                var posX = event.pageX - canvas.offsetLeft -cadre.offsetLeft + cadre.scrollLeft;//ne pas oublier les scrollTop et scrollLeft lors de l'intégration !//- canvas.offsetLeft
@@ -312,6 +341,8 @@
                console.log(grid);
                gridjson=JSON.stringify(grid);
                console.log(gridjson);
+               var dessinJson=createJson(grid);
+               console.log(dessinJson);
              });
 
              var buttons = document.querySelectorAll('button');
@@ -321,6 +352,26 @@
                  color = event.target.getAttribute('data-color');
                });
              });
+//            
+         $('#form').on('submit', function(e){
+          e.preventDefault();  
+         param='title='+$("#title").val()+'&thumb='+$("#thumb").val()+'&state='+$("#state").val()+'&canvas='+envoijson+'&id_categories='+$("#id_categories").val();
+            enregistrerCanvas(param);
+            $("#modal").fadeOut(500);
+            $("#modal").removeClass('in');
+            $(".modal-backdrop").attr('style','position:static');
+            $("body").removeClass('modal-open');
+            });
+     
+         $('#form2').on('submit', function(e){
+          e.preventDefault();
+          param='title='+$("#titledef").val()+'&thumb='+$("#thumbdef").val()+'&state='+$("#statedef").val()+'&canvas='+envoijson+'&id_categories='+$("#id_categoriesdef").val();
+          
+         enregistrerCanvas(param);
+        window.location="mes-pixelarts";
+    });
+
+
          
 
 
