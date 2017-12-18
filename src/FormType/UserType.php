@@ -61,6 +61,16 @@ class UserType extends AbstractType
             ],
             'label' => 'Prénom'
         ])
+        ->add('role', TextType::class, [
+            'constraints' => [
+                new Assert\NotBlank(),
+//                new Assert\Regex([
+//                    'pattern'     => '/^[a-z]+$/i',
+//                    'htmlPattern' => '^[a-zA-Z]+$',
+//                ])
+            ],
+            'label' => 'rôle (ex : ROLE_USER | ROLE_ADMIN)'
+        ])
         ->add('password', RepeatedType::class, [
             
                 'type' => PasswordType::class,
@@ -83,7 +93,6 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
             'data_class' => \Propel\Propel\Users::class,
-            //'data_class' => null,
             'validation_groups' => ['edition']
         ]);
     }

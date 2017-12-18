@@ -54,6 +54,7 @@ $app->match('/register', function(Request $request) use ($app) {
     $form = $app['form.factory']->createBuilder(UserType::class, $user, [
         'validation_groups' => ['registration']
             ])
+            ->remove('role')
             ->add('submit', SubmitType::class, [
                 'label' => 'Inscription'
             ])
@@ -91,7 +92,7 @@ $app->get('/galery-pixelart/{p}', function ($p) use ($app) {
             ->joinWithCategories()
             ->filterByState('2')
             ->orderByDateInsert('desc')
-            ->paginate($page=$p, $maxPerPage=15);
+            ->paginate($page=$p, $maxPerPage=3);
     
     $categories = Propel\Propel\CategoriesQuery::create()
             ->orderByTitle('asc')
