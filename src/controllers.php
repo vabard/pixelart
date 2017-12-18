@@ -92,7 +92,7 @@ $app->get('/galery-pixelart/{p}', function ($p) use ($app) {
             ->joinWithCategories()
             ->filterByState('2')
             ->orderByDateInsert('desc')
-            ->paginate($page=$p, $maxPerPage=3);
+            ->paginate($page=$p, $maxPerPage=15);
     
     $categories = Propel\Propel\CategoriesQuery::create()
             ->orderByTitle('asc')
@@ -135,27 +135,33 @@ $app->get('/apprendre-pixelart/{id}', function ($id) use ($app) {
 ->bind('apprendre-pixelart')
 ;
 
-$app->get('/creation/{id}', function ($id) use ($app) {
+$app->get('/edit/{id}', function ($id) use ($app) {
     
     $picture = Propel\Propel\PicturesQuery::create()
             ->findOneByIdPictures($id);
+    $categories = Propel\Propel\CategoriesQuery::create()
+            ->orderByTitle()
+            ->find();
     
     // on transmet à notre template les données (toujours un array!)
     return $app['twig']->render('creation.html.twig', [
-        'picture'=>$picture
+        'picture'=>$picture, 'categories'=>$categories
     ]);
 })
-->bind('creation/{id}')
+->bind('edit')
 ;
 
 $app->get('/mes-pixelarts', function () use ($app) {
     $brouillons = Propel\Propel\PicturesQuery::create()
+            
             ->filterByState('0')
             ->findByIdUsers($app['user']->getIdUsers());
             ;
             //->find();
      $envoyes = Propel\Propel\PicturesQuery::create()
-            ->filterByState('1')
+            ->filterByState((array(1,2)))
+            // ->filterByState('2')
+             
             ->findByIdUsers($app['user']->getIdUsers());
            // ->find();
     
@@ -242,7 +248,10 @@ $app->get('/qui-sommes-nous', function () use ($app) {
 ;
 
 $app->get('/creation', function () use ($app) {
-    return $app['twig']->render('creation.html.twig', array());
+    $categories = Propel\Propel\CategoriesQuery::create()
+            ->orderByTitle()
+            ->find();
+    return $app['twig']->render('creation.html.twig', array('categories'=>$categories));
 })
 ->bind('creation')
 ;
@@ -253,6 +262,8 @@ $app->match('/register_picture', function (Request $request) use ($app){
     $state = $request->request->get('state');
     $canvas = $request->request->get('canvas');
     $id_categories = $request->request->get('id_categories');
+    $thumb = $request->request->get('thumb');
+    
     
     var_dump($title);
     var_dump($canvas);
