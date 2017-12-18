@@ -49,9 +49,6 @@ $adminGroup->match('/useredit/{id}', function ($id, Request $request) use ($app)
     $form->handleRequest($request);
     
     if($form->isValid()){
-
-        $user = new Users();
-        // On doit mettre les setters ?
         $user->save();
         return $app->redirect($app['url_generator']->generate('admin_userlist'));
     }

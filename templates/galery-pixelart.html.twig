@@ -19,13 +19,45 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="boxed">
 
                     {% if pictures is empty %}
                         <p>Il n'y a pas de PixelArt à afficher</p>
-                    {% else %}
+                    {% else %}                        
+                        <div class="col-sm-6">
+                            <form>
+                            <select class="form-control" name="category">
+                                <option class="category-galery"  value="">Toutes catégories</option>
+                                {% for categorie in categories %}
+                                <option class="category-galery" value="{{ categorie.idCategories }}">{{ categorie.title }}</option>
+                                {% endfor %}
+                            </select>
+                            </form>
+                            
+                        </div>
+                        <div class="col-sm-6">
+                            <select class="form-control">
+                                <option class="difficulty-galery" value=""><a href="{{ path('galery-pixelart', { p : 1 }) }}?difficulty=">Tous niveaux</a></option>
+                                <option class="difficulty-galery" value="très facile"><a href="{{ path('galery-pixelart', { p : 1 }) }}?difficulty=">Très facile</a></option>
+                                <option class="difficulty-galery" value="facile">Facile</option>
+                                <option class="difficulty-galery" value="moyen">Moyen</option>
+                                <option class="difficulty-galery" value="difficile">Difficile</option>
+                            </select>
+                        </div>
+                       
+{#                                {% set newArray = [] %}                                
+                                {% for picture in pictures %}
+                                    {% if picture.difficulty not in newArray %}
+                                        <option class="category-galery" value="">{{ picture.difficulty }}</option>
+                                        {% set newArray = newArray|merge([picture.difficulty]) %}
+                                    {% endif %}                                
+                                
+                                {% endfor %}#}
+                            
                         {% for picture in pictures %}
+
                         <div class="col-sm-4">
                             <div class="shop-box">
                                 <img class="img-full img-responsive" src="{{ picture.thumb }}" alt="">
@@ -63,20 +95,7 @@
                         </div>
                         {% endfor %}
 
-                        {#{% if havetopaginate %}#}                            
-   
                         <div class="col-sm-12">
-
-{#                             <p>Nombre de PixelArt : {{ paginate.results }}</p>
-                            <p>Affichés de {{ paginate.firstindex }} à {{ paginate.lastindex }}</p>
-                                                               1ere page : {{ paginate.firstpage }} / 
-                                Dernière page : {{ paginate.lastpage }} / 
-                                Current page : {{ paginate.currentpage }} /  
-                                C'est la derniere page ?  {{ paginate.islastpage }} /  
-                                
-                                getNextPage  {{ paginate.getNextPage }} /  
-                                
-                                #}
                             <nav>    
                                 <ul class="pager" id="pager-galery">
                                     
@@ -91,18 +110,12 @@
                             </nav>
                        
                         </div> 
-                        {#{% endif %}#}
                     {% endif %}
 
                     </div>
                 </div>
             </div>
-        </section> 
-
-                 
+        </section>              
     </main>
 
 {% endblock %} 
-{% block script %}
-<script src="{{ asset('js/apprendre.js') }}"></script>
-{% endblock %}
