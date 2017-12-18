@@ -24,7 +24,9 @@
         <link href="{{ asset('css/stylecreation.css') }}" rel="stylesheet" type="text/css" />
         {% block style %}{% endblock %}
             
-        
+        <script>
+            var BASE_URL = "{{ path('homepage') }}";
+        </script>
         
 
         <!--[if lt IE 9]>

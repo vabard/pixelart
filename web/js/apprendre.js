@@ -284,23 +284,22 @@ function createColor(color){
 }
 
 
+
 /// AJAX TESTS
 
+function editAjax(id) { // cette fonction est declarée dans apprendre-pixelart.html.twig
 
-//$('#ajax').on('click', function () {
-//
-//    
-//    $.ajax({
-//        url: 'http://localhost:8888/DEV/pixelart/web/index_dev.php/api/picture/1', // page cible
-////        type: get, // post ou get
-//        data: 1, // les parametres
-//        dataType: "json", // le format des données de retour
-//        success: function (responseData) {
-//        
-//            console.log(responseData.title);
-//        }
-//    });
-//    
-//
-//});
-//////////////
+    
+    $.ajax({
+        url: BASE_URL + 'api/picture/' + id, // page cible avec id récupéré via template twig
+        data: 1, // les parametres
+        dataType: "json", // le format des données de retour
+        success: function (responseData) {
+        
+            console.log(responseData.title);
+        }
+    });
+    
+
+}
+////////////
