@@ -30,9 +30,9 @@ $app->before(function() use ($app) {
 
 require __DIR__.'/controllers_admin.php';
 
-$app->get('/', function () use ($app) {
+$app->get('/', function (Request $request) use ($app) {
     return $app['twig']->render('index.html.twig', array(
-        //'request' => $_REQUEST
+        //$app['request'] => $request
     ));
 })
 ->bind('homepage')
@@ -185,7 +185,7 @@ $app->match('/register_picture', function (Request $request) use ($app){
     
     $title = $request->request->get('title');
     $canvas = $request->request->get('canvas');
-    $id_categories=$request->request->get('id_categories');
+    $id_categories = $request->request->get('id_categories');
     
     var_dump($title);
     var_dump($canvas);

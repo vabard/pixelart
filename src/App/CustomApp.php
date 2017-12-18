@@ -14,4 +14,8 @@ class CustomApp extends \Silex\Application
     use \Silex\Application\FormTrait;
     use \Silex\Application\TwigTrait;
     use \Silex\Application\UrlGeneratorTrait;
+    
+    public function request (Request $request){
+        return $request;
+    }
 }

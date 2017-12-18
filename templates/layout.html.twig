@@ -82,10 +82,10 @@
 
                         <div class="collapse navbar-collapse" id="site-nav-bar">
                             <ul class="nav navbar-nav">
-                                <li class="active" ><a href="{{ path('homepage') }}">Accueil</a></li>
-                                <li><a href="{{ path('galery-pixelart', { p : 1 }) }}">Apprentissage</a></li>
-                                <li><a href="{{ path('creation') }}">Création</a></li>
-                                <li><a href="{{ path('qui-sommes-nous') }}">Qui sommes nous</a></li>
+                                <li class="{% if global.request.attributes.get('_route') == 'homepage' %}active{% endif %}" ><a href="{{ path('homepage') }}">Accueil</a></li>
+                                <li class="{% if global.request.attributes.get('_route') == 'galery-pixelart' %}active{% endif %}"><a href="{{ path('galery-pixelart', { p : 1 }) }}">Apprentissage</a></li>
+                                <li class="{% if global.request.attributes.get('_route') == 'creation' %}active{% endif %}"><a href="{{ path('creation') }}">Création</a></li>
+                                <li class="{% if global.request.attributes.get('_route') == 'qui-sommes-nous' %}active{% endif %}"><a href="{{ path('qui-sommes-nous') }}">Qui sommes nous</a></li>
                                 
                             </ul>
                         </div><!-- /.navbar-collapse -->
@@ -93,7 +93,7 @@
                 </div>
              
                  {#{{ global.request }}#}
-                
+                {#{{ dump(global.request.attributes) }}#}
                 {% block intro %}{% endblock %}
 
             </div> <!-- /.container -->
