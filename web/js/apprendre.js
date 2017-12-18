@@ -288,18 +288,21 @@ function createColor(color){
 /// AJAX TESTS
 
 function editAjax(id) { // cette fonction est declarée dans apprendre-pixelart.html.twig
-
-    
+   
     $.ajax({
         url: BASE_URL + 'api/picture/' + id, // page cible avec id récupéré via template twig
         data: 1, // les parametres
         dataType: "json", // le format des données de retour
         success: function (responseData) {
-        
-            console.log(responseData.title);
+            var obj = JSON.parse(responseData.canvas);
+            console.log(obj.data[0]);
+//            try {
+//                console.log(JSON.parse(responseData.canvas));
+//              } catch (e) {
+//                console.error("Parsing error:", e); 
+//              }
         }
     });
     
-
 }
 ////////////
