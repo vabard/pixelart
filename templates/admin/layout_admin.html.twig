@@ -46,12 +46,12 @@
             </div>
 
             <ul class="nav">
-                <li class="active">
+                <li class="{% if global.request.attributes.get('_route') == 'admin_dashboard' %}active{% endif %}"">
                     <a href="{{ path('admin_dashboard') }}">
                         <i class="pe-7s-graph"></i>
                         <p>Dashboard</p>
                     </a>
-                <li class="">
+                <li class="{% if global.request.attributes.get('_route') == 'admin_userlist' %}active{% endif %}">
                     <a href="{{ path('admin_userlist') }}">
                         <i class="pe-7s-graph"></i>
                         <p>Users</p>
@@ -109,6 +109,7 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
+                    {#{{ dump(global.request.attributes) }}#}
                     {% block content %}{% endblock %}
                 </div>
             </div>
