@@ -5,12 +5,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-                <h2>Formats</h2>
-                <button id="petitrectangle">Petit rectangle</button><br>
-                <button id="carremoyen">Carré Moyen</button><br>
-                <button id="rectanglemoyen">Rectangle Moyen</button><br>
-                <button id="grandcarre">Grand carré</button><br>
-                <button id="grandrectangle">Grand rectangle</button><br>
+                <h2>Formats</h2><br>
+                <button id="petitrectangle" class="btn btn-info">Petit rectangle</button><br><br>
+                <button id="carremoyen" class="btn btn-info">Carré Moyen</button><br><br>
+                <button id="rectanglemoyen" class="btn btn-info">Rectangle Moyen</button><br><br>
+                <button id="grandcarre" class="btn btn-info">Grand carré</button><br><br>
+                <button id="grandrectangle" class="btn btn-info">Grand rectangle</button><br><br>
                 <h2>Personnaliser</h2>
          <label>Combien de colonnes voulez-vous?</label><br>
          
@@ -63,12 +63,20 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3">
-                        <input type="text" name="id_categories" id="id_categories"><br><br>
+                        <select id="id_categories">
+                        {% for categorie in categories %}
+                            <option value="{{ categorie.idCategories }}" >{{ categorie.title }}</option>
+                        {% endfor %}
+                        </select>
+                        <br><br>
                         <input type="hidden" name="canvas" value="" id="envoicanvas">
                         <input type="hidden" name="state" value="0" id="state">
                         <input type="hidden" name="thumb" value="1" id="thumb">
                     </div>
                 </div>
+                        
+                        
+                    
                 <div class="row">
                     <div class="col-md-6 col-md-offset-6">
                         <input type="submit" value="Sauvegarder"><br>
@@ -134,7 +142,12 @@
             </div>
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
-                    <input type="text" name="category" id="id_categoriesdef"><br><br>
+                    <select id="id_categoriesdef">
+                        {% for categorie in categories %}
+                            <option value="{{ categorie.idCategories }}" >{{ categorie.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <br><br>
                 </div>
             </div>
             <div class="row">
@@ -184,7 +197,7 @@
           
             
                 
-           {% if picture is defined %} 
+           {% if picture is defined and picture %} 
             <div class="col-md-6" id="cadre" style="overflow:scroll;">
                 <canvas id="canvas">Votre navigateur ne supporte pas canvas</canvas>
                 <input type="hidden" value="{{picture.canvas}}" id="picture">
@@ -199,10 +212,12 @@
             <div class="col-md-3" id="couleurs">
                 <div id="my">
                     <h2>Couleurs</h2>
+                    <button style="background-color: black;"
+data-color="Black"></button>
+   
                     <button style="background-color: gainsboro;"
-    data-color="Gainsboro"></button>
-                    <button style="background-color: darkgray;"
-    data-color="darkgray"></button>
+                    data-color="Gainsboro"></button>
+                    
 <button style="background-color: dimgray;"
     data-color="dimgray"></button><br>
 <button style="background-color: Peru;"
@@ -247,12 +262,11 @@
     data-color="Purple"></button>
 <button style="background-color: Indigo;"
     data-color="Indigo"></button><br>
-<button style="background-color: White;"
-data-color="White"></button>
-<button style="background-color: black;"
-data-color="Black"></button>
-   
-                </div>         
+
+                </div> 
+                <br><br>
+                <div>
+                    <button id="erase">Effacer</button>
             </div>
         </div>
     </div>
