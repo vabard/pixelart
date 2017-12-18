@@ -120,6 +120,7 @@ $app->get('/apprendre-pixelart/{id}', function ($id) use ($app) {
             ->joinWithCategories()
             ->findOneByIdPictures($id);
     
+    
     // on transmet à notre template les données (toujours un array!)
     return $app['twig']->render('apprendre-pixelart.html.twig', [
         'picture' => $picture
