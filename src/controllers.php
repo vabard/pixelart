@@ -92,7 +92,7 @@ $app->get('/galery-pixelart/{p}', function ($p) use ($app) {
             ->joinWithCategories()
             ->filterByState('2')
             ->orderByDateInsert('desc')
-            ->paginate($page=$p, $maxPerPage=3);
+            ->paginate($page=$p, $maxPerPage=15);
     
     $categories = Propel\Propel\CategoriesQuery::create()
             ->orderByTitle('asc')
