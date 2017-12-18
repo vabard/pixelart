@@ -2,6 +2,11 @@
 var canvas = document.getElementById("canvas-learn");
 var color = 'black';
 
+/**
+ * 
+ * Class Grid
+ * 
+ */
 function Grid(wc, hc) {
     this.grid = this.init(wc, hc);
     this.wc = wc;
@@ -48,11 +53,9 @@ Grid.prototype.clearColor = function (x, y) {
     this.grid[x][y] = null;
 }
 
-/////////////////////////////
-
 /**
  * 
- * Animation
+ * Class Animation
  * 
  */
 
@@ -115,25 +118,40 @@ for(var i=0; i < uniqueColor.length; i++){
     createColor(uniqueColor[i]);
 }
 
-//THUMB
-var stopBtn = document.getElementById('stop');
-stopBtn.addEventListener('click', function(){
-    var data = canvas.toDataURL();
-    document.getElementById('thumb-learn').setAttribute("src", data);
-    console.log(data);
-});
+//VITESSE
+speedOfAnimation = 2000; // valeur par default
+
+var speedElts = document.getElementsByClassName('speed');
+for (var i = 0; i < speedElts.length; i++) {          
+    speedElts[i].addEventListener('click', function(){
+        //si l'annimation est en cours
+        if(typeof(animate) !== 'undefined'){ 
+            clearInterval(animate);// on supprime l'intervale s'il existe
+            speedOfAnimation = this.getAttribute("value"); // on definit la nouvelle vitesse
+            play();// on reprends l'annimation
+            return;
+        }
+        speedOfAnimation = this.getAttribute("value");
+    }); 
+}
 
 
-
-// ANIMATION
+// PLAY
 var indexAnimation = 0;
 var playBtn = document.getElementById('play');
-speedOfAnimation = 2000;
-
 playBtn.addEventListener('click', play);
-
+console.log(speedOfAnimation);
 function play(){
-    var animate = setInterval(function () {
+    //console.log(speedOfAnimation);
+    console.log('click');
+    
+    if(typeof(animate) !== 'undefined'){ // en cas de multiple click, on supprime l'intervale s'il existe
+        clearInterval(animate);
+    }
+    animate = setInterval(function () {
+        console.log(speedOfAnimation);
+        
+        
         var action = animation[indexAnimation++];
 
         if (typeof action === 'undefined') {
@@ -152,22 +170,28 @@ function play(){
 
 
 
-/////////////////////////////
+// Dès la chargement de la page on dessine un grid vide
+window.onload = function(event){ 
+    grid = new Grid(maxX, maxY);
+    adaptSize();    
+}
 
-grid = new Grid(maxX, maxY);
-
-adaptSize();
-
+// Adaptation sur le resize
 window.onresize = function (event) {
     adaptSize();
 };
 
+// DRAW GRID VIDE
 function adaptSize() {
     canvas.width = canvas.parentElement.clientWidth;
     canvas.height = canvas.width;
     drawGrid(grid, canvas);
 }
+window.onresize = function (event) {
+    adaptSize();
+};
 
+// DRAW PICTURE
 function drawGrid(grid, canvas) {
     var context = canvas.getContext('2d');
     var cellW = canvas.width / grid.wc;
@@ -188,13 +212,32 @@ function drawGrid(grid, canvas) {
 }
 
 
+// PAUSE
+var pauseBtn = document.getElementById('pause');
+pauseBtn.addEventListener('click', function(){
+    if(typeof(animate) !== 'undefined'){ // on supprime l'intervale s'il existe
+        clearInterval(animate);
+    }
+});
 
-/*
- * 
- * Affichage des étapes
- * 
- */
 
+
+// REPLAY
+var replayBtn = document.getElementById('replay');
+replayBtn.addEventListener('click', function(){
+    if(typeof(animate) !== 'undefined'){ // on supprime l'intervale s'il existe
+        clearInterval(animate);
+    }
+    document.querySelector('#steps').innerHTML=''; // supprime les étapes
+    grid = new Grid(maxX, maxY); //grid vide
+    adaptSize(); // dessine grid vide
+    indexAnimation = 0; // redemarre l'index d'annimation
+    play(); // annimation
+});
+
+
+
+// ETAPES
 function createStep(x, y, color){
     
     // 1. Je crée un li vide et un span
@@ -206,19 +249,22 @@ function createStep(x, y, color){
     span.style.color = color;
 
     // 3. je creer du texte
-    var texte = document.createTextNode('Case : ' + (x+1) + ' - ' + (y+1));
+    var texte = document.createTextNode(' case : ' + (x+1) + ' - ' + (y+1));
 
-    // 4. j'ajoute mon texte dans mon li	
+    // 4. j'ajoute mon span et texte dans mon li	
+    li.appendChild(span);
     li.appendChild(texte);
 
     // 5. je selectionne un ul existant
     var ul = document.querySelector('#steps');
 
     // 6. j'ajoute mon span dans li et li dans ul
-    li.appendChild(span);
     ul.appendChild(li);
 }
 
+
+
+// PALETTE
 function createColor(color){
     
     // 1. Je crée un li vide et un span
@@ -236,24 +282,25 @@ function createColor(color){
     li.appendChild(span);
     ul.appendChild(li);
 }
+
+
+/// AJAX TESTS
+
+
+//$('#ajax').on('click', function () {
 //
-//function createImg(color){
 //    
-//    // 1. Je crée un li vide et un span
-//    var = document.createElement('li');
-//    var span = document.createElement('span');
-//     
-//    // 2. J'ajoute les classe et le style a mon span
-//    span.className = "glyphicon glyphicon-stop";
-//    span.style.color = color;
+//    $.ajax({
+//        url: 'http://localhost:8888/DEV/pixelart/web/index_dev.php/api/picture/1', // page cible
+////        type: get, // post ou get
+//        data: 1, // les parametres
+//        dataType: "json", // le format des données de retour
+//        success: function (responseData) {
+//        
+//            console.log(responseData.title);
+//        }
+//    });
+//    
 //
-//    // 3. je selectionne un ul existant
-//    var ul = document.querySelector('#colors');
-//
-//    // 4. j'ajoute mon span dans li et li dans ul
-//    li.appendChild(span);
-//    ul.appendChild(li);
-//}
-
-
-
+//});
+//////////////

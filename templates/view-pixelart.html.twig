@@ -1,0 +1,11 @@
+{% extends "layout.html.twig" %}
+    {% block content %}
+        <div class="container-fluid">
+            <div class="row">
+                <section class="col-md-6">
+                    <h1>{{picture.title}}</h1><br>
+                    <img src=“{{picture.thumb | replace({" ":"+"})}}" alt="">
+                </section>
+            </div>
+        </div>
+    {% endblock %}
