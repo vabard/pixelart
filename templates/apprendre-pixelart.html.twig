@@ -74,5 +74,13 @@
 
 {% block script %}
     <script src="{{ asset('js/apprendre.js') }}"></script>
+    <script >
+        $(function() {
+           editAjax({{ picture.idPictures }});
+           
+
+        });
+    </script>
+    
 {% endblock %}
 
