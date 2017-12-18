@@ -47,4 +47,3 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
-</database>
