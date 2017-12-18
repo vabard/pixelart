@@ -1,0 +1,58 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 14 déc. 2017, 12:11:41
+    Author     : Julien
+*/
+
+.col-md-4 ul {
+    list-style: square;
+}
+.col-md-3 col-sm-6 mb-4 a p{
+    background: : #000;
+}
+.shop-box{
+	position: relative;
+	overflow: hidden;
+}
+.shop-box-hover{
+	position: absolute;
+	left: -90%;
+	top: -90%;
+	background-color: #fabe12;
+	width: 100%;
+	height: 100%;
+	transition: all 0.6s ease-in-out;
+}
+.shop-box:hover .shop-box-hover{
+	top: 0;
+	left: 0;
+}
+.shop-box-hover .c-cell a{
+	font-size: 25px;
+	color: #111;
+	transition: all 0.4s ease-in-out;
+	padding: 8px;
+}
+.shop-box-hover .c-cell a:hover{
+	color: #fff;
+	text-decoration: none;
+}
+.shop-box-title{
+	font-family: 'Roboto';
+	text-transform: uppercase;
+	padding: 30px 0;
+	margin-bottom: 50px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.shop-box-title h4{
+	margin: 0 0 5px 0;
+	font-weight: 700;
+}
+.shop-price{
+	margin-bottom: 0;
+	font-weight: 500;
+}
