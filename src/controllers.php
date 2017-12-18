@@ -93,6 +93,10 @@ $app->get('/galery-pixelart/{p}', function ($p) use ($app) {
             ->orderByDateInsert('desc')
             ->paginate($page=$p, $maxPerPage=15);
     
+    $categories = Propel\Propel\CategoriesQuery::create()
+            ->orderByTitle('asc')
+            ->find();
+    
     // on transmet à notre template les données (toujours un array!)
     return $app['twig']->render('galery-pixelart.html.twig', [
         'pictures' => $pictures,
@@ -105,7 +109,8 @@ $app->get('/galery-pixelart/{p}', function ($p) use ($app) {
             'firstindex' => $pictures->getFirstIndex(),
             'lastindex' => $pictures->getLastIndex(), 
             'getNextPage' => $pictures->getNextPage()   
-        ]
+        ],
+        'categories' => $categories
     ]);
 })
 ->bind('galery-pixelart')
@@ -119,8 +124,7 @@ $app->get('/apprendre-pixelart/{id}', function ($id) use ($app) {
             ->joinWithUsers()
             ->joinWithCategories()
             ->findOneByIdPictures($id);
-    
-    
+      
     // on transmet à notre template les données (toujours un array!)
     return $app['twig']->render('apprendre-pixelart.html.twig', [
         'picture' => $picture
@@ -188,7 +192,9 @@ $app->get('/view-pixelart/{id}', function ($id) use ($app) {
 
 
 // API : get all Pictures -TESTS AJAX
-$app->get('/api/pictures', function() use ($app) {
+$app->post('/api/pictures', function(Request $request) use ($app) {
+    $category = $request->request->get('category');
+    
     $pictures = Propel\Propel\PicturesQuery::create()
             ->joinWithUsers()
             ->joinWithCategories()
@@ -208,6 +214,7 @@ $app->get('/api/pictures', function() use ($app) {
     // Create and return a JSON response
     return $app->json($responseData);
 })->bind('api_pictures');
+
 
 // API : get an picture -TESTS AJAX
 $app->get('/api/picture/{id}', function($id) use ($app) {

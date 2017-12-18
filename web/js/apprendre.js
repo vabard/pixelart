@@ -2,6 +2,7 @@
 var canvas = document.getElementById("canvas-learn");
 var color = 'black';
 
+
 /**
  * 
  * Class Grid
@@ -64,45 +65,77 @@ function Action(x, y, color) {
     this.y = y;
     this.color = color;
 }
+var animation = [];
 
-//var animation = [
-//    new Action(0, 3, "pink"),
-//    new Action(4, 3, "green"),
-//    new Action(4, 12, "red"),
-//    new Action(4, 4, "blue"),
-//    new Action(6, 4, "grey"),
-//    new Action(20, 20, "black"),
-//    new Action(4, 6, "black"),
-//    new Action(8, 4, "yellow"),
-//    new Action(20, 10, "purple")
-//];
-//
-/// AJAX TESTS
 
+// Adaptation sur le resize
+window.onresize = function (event) {
+    adaptSize();
+};
+
+
+// DRAW GRID VIDE
+function adaptSize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.width;
+    drawGrid(grid, canvas);
+}
+window.onresize = function (event) {
+    adaptSize();
+};
+
+
+// DRAW PICTURE
+function drawGrid(grid, canvas) {
+    var context = canvas.getContext('2d');
+    var cellW = canvas.width / grid.wc;
+    var cellH = cellW;
+    context.clearRect(0, 0, cellW * this.wc, cellH * this.hc);
+    context.strokeWidth = '2';
+    grid.forEach(function (cell, x, y) {
+        if (cell) {
+            context.fillStyle = cell;
+            context.clearRect(x * cellW, y * cellH, cellW, cellH);
+            context.fillRect(x * cellW, y * cellH, cellW, cellH);
+        } else {
+            context.strokeStyle = 'black';
+            context.clearRect(x * cellW, y * cellH, cellW, cellH);
+            context.strokeRect(x * cellW, y * cellH, cellW, cellH);
+        }
+    });
+}
+
+
+// VALEURS UNIQUES dans un array
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+}
+
+
+// AJAX  - RECUPERATION
 function editAjax(id) { // cette fonction est declarée dans apprendre-pixelart.html.twig
 
     $.ajax({
         url: BASE_URL + 'api/picture/' + id, // page cible avec id récupéré via template twig
         data: 1, // les parametres
         dataType: "json", // le format des données de retour
-        success: act // end succes
+        success: actionAjax // on lance la fonction en cas de succes de requette ajax
     }); // end $.ajax
 
 }//end function editAjax
 
-var animation = [];
-function act(responseData) {
+
+// ACTION AJAX
+function actionAjax(responseData) {
     var obj = JSON.parse(responseData.canvas);
-
     animation = obj.data;
-    console.log(animation);
+    //console.log(animation);
     init();
-
 }
-// 
-////////////
 
+//INIT
 function init(){
+    
     // On récupère dans les array séparés les X, Y et les Couleurs
     var tabx = [];
     var taby = [];
@@ -117,6 +150,7 @@ function init(){
     var minX = 1 + tabx.reduce(function (a, b) {
         return Math.min(a, b);
     });
+    
     var maxX = minX + tabx.reduce(function (a, b) {
         return Math.max(a, b);
     });
@@ -125,6 +159,7 @@ function init(){
     var minY = 1 + taby.reduce(function (a, b) {
         return Math.min(a, b);
     });
+    
     var maxY = minY + taby.reduce(function (a, b) {
         return Math.max(a, b);
     });
@@ -132,21 +167,16 @@ function init(){
 
     // on récupère les couleurs uniques pour les afficher à l'utilisateur
     var uniqueColor = tabColors.filter(onlyUnique);
-    //console.log(uniqueColor);
+    console.log(uniqueColor);
 
     // On affiche les couleurs
     for (var i = 0; i < uniqueColor.length; i++) {
         createColor(uniqueColor[i]);
     }
     
-    grid = new Grid(maxX, maxY);
+    // on dessine un grid vide
+    grid = new Grid(maxX, maxY); 
     adaptSize();
-}
-
-
-// Function pour récupérer les valeur unique dans un array
-function onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
 }
 
 
@@ -201,47 +231,6 @@ function play() {
     }, speedOfAnimation);
 }
 
-
-
-// Dès la chargement de la page on dessine un grid vide
-//window.onload = function (event) {
-//
-//}
-
-// Adaptation sur le resize
-window.onresize = function (event) {
-    adaptSize();
-};
-
-// DRAW GRID VIDE
-function adaptSize() {
-    canvas.width = canvas.parentElement.clientWidth;
-    canvas.height = canvas.width;
-    drawGrid(grid, canvas);
-}
-window.onresize = function (event) {
-    adaptSize();
-};
-
-// DRAW PICTURE
-function drawGrid(grid, canvas) {
-    var context = canvas.getContext('2d');
-    var cellW = canvas.width / grid.wc;
-    var cellH = cellW;
-    context.clearRect(0, 0, cellW * this.wc, cellH * this.hc);
-    context.strokeWidth = '2';
-    grid.forEach(function (cell, x, y) {
-        if (cell) {
-            context.fillStyle = cell;
-            context.clearRect(x * cellW, y * cellH, cellW, cellH);
-            context.fillRect(x * cellW, y * cellH, cellW, cellH);
-        } else {
-            context.strokeStyle = 'black';
-            context.clearRect(x * cellW, y * cellH, cellW, cellH);
-            context.strokeRect(x * cellW, y * cellH, cellW, cellH);
-        }
-    });
-}
 
 
 // PAUSE

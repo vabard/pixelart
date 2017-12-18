@@ -64,11 +64,6 @@
             </div>
         </section>
         </main>
-                
-                
-                
-   <button id="ajax">AJAX</button>
-   
     
     {% endblock %}
 
@@ -76,7 +71,7 @@
     <script src="{{ asset('js/apprendre.js') }}"></script>
     <script >
         $(function() {
-           editAjax({{ picture.idPictures }});
+           editAjax({{ picture.idPictures }}); // on transfère l'id à notre fichier js
         });
     </script>
     
