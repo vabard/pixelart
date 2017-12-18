@@ -1,5 +1,6 @@
 <?php
 namespace Propel\Propel;
+use ArrayAccess;
 use Propel\Propel\Base\Users as BaseUsers;
 use Symfony\Component\Security\Core\User\UserInterface;
 /**
@@ -12,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * long as it does not already exist in the output directory.
  *
  */
-class Users extends BaseUsers implements UserInterface
+class Users extends BaseUsers implements UserInterface, ArrayAccess
 {
     public function eraseCredentials() {
         
@@ -23,4 +24,21 @@ class Users extends BaseUsers implements UserInterface
     public function setRole($role){
         $this->role = $role;
     }
+
+    public function offsetExists($offset){
+        return null;
+    }
+
+    public function offsetGet($offset) {
+        
+    }
+
+    public function offsetSet($offset, $value): void {
+        
+    }
+
+    public function offsetUnset($offset): void {
+        
+    }
+
 }

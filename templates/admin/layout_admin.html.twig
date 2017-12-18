@@ -47,12 +47,12 @@
 
             <ul class="nav">
                 <li class="active">
-                    <a href="dashboard.html">
+                    <a href="{{ path('admin_dashboard') }}">
                         <i class="pe-7s-graph"></i>
                         <p>Dashboard</p>
                     </a>
                 <li class="">
-                    <a href="dashboard.html">
+                    <a href="{{ path('admin_userlist') }}">
                         <i class="pe-7s-graph"></i>
                         <p>Users</p>
                     </a>
@@ -89,21 +89,17 @@
 
                 </div>
                 <div class="collapse navbar-collapse">
-
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                           {% if app.user %}
-                               {{ app.user.username }}
-                                <a href="{{ path('admin_logoutadmin') }}">
-                                    Déconnexion
-                                </a>                                    
-                            {% else %}
-                                <a href="{{ path('loginadmin') }}">
-                                    Connexion
-                                </a>
-                            {% endif %}
+                    <ul class="nav navbar-nav navbar-right">                        
+                    {% if app.user %}
+                        <li>                                  
+                             <a href="{{ path('admin_logoutadmin') }}">Déconnexion</a>                                
+                             <span style="margin: 5px; padding: 5px;">Admin : {{ app.user.username }}</span>
                         </li>
+                    {% else %}
+                         <li>
+                             <a href="{{ path('loginadmin') }}">Connexion</a>
+                         </li>   
+                     {% endif %}                      
                     </ul>
                 </div>
             </div>
@@ -132,7 +128,8 @@
                     </ul>
                 </nav>
                 <p class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
+                    <h3><a href="https://themewagon.com/">2017 &copy; pixelart-factory.com by vejj</a></h3>
+                    
                 </p>
             </div>
         </footer>
