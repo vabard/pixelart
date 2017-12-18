@@ -2,6 +2,7 @@
 var canvas = document.getElementById("canvas-learn");
 var color = 'black';
 
+
 /**
  * 
  * Class Grid
@@ -64,122 +65,14 @@ function Action(x, y, color) {
     this.y = y;
     this.color = color;
 }
+var animation = [];
 
-var animation = [
-    new Action(0, 3, "pink"),
-    new Action(4, 3, "green"),
-    new Action(4, 12, "red"),
-    new Action(4, 4, "blue"),
-    new Action(6, 4, "grey"),
-    new Action(20, 20, "black"),
-    new Action(4, 6, "black"),
-    new Action(8, 4, "yellow"),
-    new Action(20, 10, "purple")
-];
-
-// On récupère dans les array séparés les X, Y et les Couleurs
-var tabx = [];
-var taby = [];
-var tabColors = [];
-for (var i = 0; i < animation.length; i++) {
-    tabx.push(animation[i].x);
-    taby.push(animation[i].y);
-    tabColors.push(animation[i].color);
-}
-
-// on récupère les min, les max des x et des y pour définir notre Grid
-var minX = 1 + tabx.reduce(function (a, b) {
-    return Math.min(a, b);
-});
-var maxX = minX + tabx.reduce(function (a, b) {
-    return Math.max(a, b);
-});
-//console.log(maxX);
-
-var minY = 1 + taby.reduce(function (a, b) {
-    return Math.min(a, b);
-});
-var maxY = minY + taby.reduce(function (a, b) {
-    return Math.max(a, b);
-});
-//console.log(maxY);
-
-// Function pour récupérer les valeur unique dans un array
-function onlyUnique(value, index, self) { 
-    return self.indexOf(value) === index;
-}
-
-// on récupère les couleurs uniques pour les afficher à l'utilisateur
-var uniqueColor = tabColors.filter( onlyUnique );
-//console.log(uniqueColor);
-
-// On affiche les couleurs
-for(var i=0; i < uniqueColor.length; i++){
-    createColor(uniqueColor[i]);
-}
-
-//VITESSE
-speedOfAnimation = 2000; // valeur par default
-
-var speedElts = document.getElementsByClassName('speed');
-for (var i = 0; i < speedElts.length; i++) {          
-    speedElts[i].addEventListener('click', function(){
-        //si l'annimation est en cours
-        if(typeof(animate) !== 'undefined'){ 
-            clearInterval(animate);// on supprime l'intervale s'il existe
-            speedOfAnimation = this.getAttribute("value"); // on definit la nouvelle vitesse
-            play();// on reprends l'annimation
-            return;
-        }
-        speedOfAnimation = this.getAttribute("value");
-    }); 
-}
-
-
-// PLAY
-var indexAnimation = 0;
-var playBtn = document.getElementById('play');
-playBtn.addEventListener('click', play);
-console.log(speedOfAnimation);
-function play(){
-    //console.log(speedOfAnimation);
-    console.log('click');
-    
-    if(typeof(animate) !== 'undefined'){ // en cas de multiple click, on supprime l'intervale s'il existe
-        clearInterval(animate);
-    }
-    animate = setInterval(function () {
-        console.log(speedOfAnimation);
-        
-        
-        var action = animation[indexAnimation++];
-
-        if (typeof action === 'undefined') {
-            clearInterval(animate);
-            return;
-        }
-
-        grid.setColor(action.color, action.x, action.y);
-
-        drawGrid(grid, canvas);
-
-        createStep(action.x, action.y, action.color);
-
-    }, speedOfAnimation);    
-}
-
-
-
-// Dès la chargement de la page on dessine un grid vide
-window.onload = function(event){ 
-    grid = new Grid(maxX, maxY);
-    adaptSize();    
-}
 
 // Adaptation sur le resize
 window.onresize = function (event) {
     adaptSize();
 };
+
 
 // DRAW GRID VIDE
 function adaptSize() {
@@ -190,6 +83,7 @@ function adaptSize() {
 window.onresize = function (event) {
     adaptSize();
 };
+
 
 // DRAW PICTURE
 function drawGrid(grid, canvas) {
@@ -212,10 +106,137 @@ function drawGrid(grid, canvas) {
 }
 
 
+// VALEURS UNIQUES dans un array
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+}
+
+
+// AJAX  - RECUPERATION
+function editAjax(id) { // cette fonction est declarée dans apprendre-pixelart.html.twig
+
+    $.ajax({
+        url: BASE_URL + 'api/picture/' + id, // page cible avec id récupéré via template twig
+        data: 1, // les parametres
+        dataType: "json", // le format des données de retour
+        success: actionAjax // on lance la fonction en cas de succes de requette ajax
+    }); // end $.ajax
+
+}//end function editAjax
+
+
+// ACTION AJAX
+function actionAjax(responseData) {
+    var obj = JSON.parse(responseData.canvas);
+    animation = obj.data;
+    //console.log(animation);
+    init();
+}
+
+//INIT
+function init(){
+    
+    // On récupère dans les array séparés les X, Y et les Couleurs
+    var tabx = [];
+    var taby = [];
+    var tabColors = [];
+    for (var i = 0; i < animation.length; i++) {
+        tabx.push(animation[i].x);
+        taby.push(animation[i].y);
+        tabColors.push(animation[i].color);
+    }
+
+    // on récupère les min, les max des x et des y pour définir notre Grid
+    var minX = 1 + tabx.reduce(function (a, b) {
+        return Math.min(a, b);
+    });
+    
+    var maxX = minX + tabx.reduce(function (a, b) {
+        return Math.max(a, b);
+    });
+    //console.log(maxX);
+
+    var minY = 1 + taby.reduce(function (a, b) {
+        return Math.min(a, b);
+    });
+    
+    var maxY = minY + taby.reduce(function (a, b) {
+        return Math.max(a, b);
+    });
+    //console.log(maxY);    
+
+    // on récupère les couleurs uniques pour les afficher à l'utilisateur
+    var uniqueColor = tabColors.filter(onlyUnique);
+    console.log(uniqueColor);
+
+    // On affiche les couleurs
+    for (var i = 0; i < uniqueColor.length; i++) {
+        createColor(uniqueColor[i]);
+    }
+    
+    // on dessine un grid vide
+    grid = new Grid(maxX, maxY); 
+    adaptSize();
+}
+
+
+
+//VITESSE
+speedOfAnimation = 2000; // valeur par default
+
+var speedElts = document.getElementsByClassName('speed');
+for (var i = 0; i < speedElts.length; i++) {
+    speedElts[i].addEventListener('click', function () {
+        //si l'annimation est en cours
+        if (typeof (animate) !== 'undefined') {
+            clearInterval(animate);// on supprime l'intervale s'il existe
+            speedOfAnimation = this.getAttribute("value"); // on definit la nouvelle vitesse
+            play();// on reprends l'annimation
+            return;
+        }
+        speedOfAnimation = this.getAttribute("value");
+    });
+}
+
+
+// PLAY
+var indexAnimation = 0;
+var playBtn = document.getElementById('play');
+playBtn.addEventListener('click', play);
+
+function play() {
+    //console.log(speedOfAnimation);
+    console.log('click');
+
+    if (typeof (animate) !== 'undefined') { // en cas de multiple click, on supprime l'intervale s'il existe
+        clearInterval(animate);
+    }
+    animate = setInterval(function () {
+        console.log(speedOfAnimation);
+
+
+        var action = animation[indexAnimation++];
+
+        if (typeof action === 'undefined') {
+            clearInterval(animate);
+            return;
+        }
+
+        grid.setColor(action.color, action.x, action.y);
+
+        drawGrid(grid, canvas);
+
+        createStep(action.x, action.y, action.color);
+
+    }, speedOfAnimation);
+}
+
+
+
 // PAUSE
 var pauseBtn = document.getElementById('pause');
-pauseBtn.addEventListener('click', function(){
-    if(typeof(animate) !== 'undefined'){ // on supprime l'intervale s'il existe
+pauseBtn.addEventListener('click', function () {
+    if (typeof (animate) !== 'undefined') { // on supprime l'intervale s'il existe
         clearInterval(animate);
     }
 });
@@ -224,13 +245,12 @@ pauseBtn.addEventListener('click', function(){
 
 // REPLAY
 var replayBtn = document.getElementById('replay');
-replayBtn.addEventListener('click', function(){
-    if(typeof(animate) !== 'undefined'){ // on supprime l'intervale s'il existe
+replayBtn.addEventListener('click', function () {
+    if (typeof (animate) !== 'undefined') { // on supprime l'intervale s'il existe
         clearInterval(animate);
     }
-    document.querySelector('#steps').innerHTML=''; // supprime les étapes
-    grid = new Grid(maxX, maxY); //grid vide
-    adaptSize(); // dessine grid vide
+    document.querySelector('#steps').innerHTML = ''; // supprime les étapes
+    init();
     indexAnimation = 0; // redemarre l'index d'annimation
     play(); // annimation
 });
@@ -238,18 +258,18 @@ replayBtn.addEventListener('click', function(){
 
 
 // ETAPES
-function createStep(x, y, color){
-    
+function createStep(x, y, color) {
+
     // 1. Je crée un li vide et un span
     var li = document.createElement('li');
     var span = document.createElement('span');
-     
+
     // 2. J'ajoute les classe et le style a mon span
     span.className = "glyphicon glyphicon-stop";
     span.style.color = color;
 
     // 3. je creer du texte
-    var texte = document.createTextNode(' case : ' + (x+1) + ' - ' + (y+1));
+    var texte = document.createTextNode(' case : ' + (x + 1) + ' - ' + (y + 1));
 
     // 4. j'ajoute mon span et texte dans mon li	
     li.appendChild(span);
@@ -265,12 +285,12 @@ function createStep(x, y, color){
 
 
 // PALETTE
-function createColor(color){
-    
+function createColor(color) {
+
     // 1. Je crée un li vide et un span
     var li = document.createElement('li');
     var span = document.createElement('span');
-     
+
     // 2. J'ajoute les classe et le style a mon span
     span.className = "glyphicon glyphicon-stop";
     span.style.color = color;
@@ -284,23 +304,5 @@ function createColor(color){
 }
 
 
-/// AJAX TESTS
 
 
-//$('#ajax').on('click', function () {
-//
-//    
-//    $.ajax({
-//        url: 'http://localhost:8888/DEV/pixelart/web/index_dev.php/api/picture/1', // page cible
-////        type: get, // post ou get
-//        data: 1, // les parametres
-//        dataType: "json", // le format des données de retour
-//        success: function (responseData) {
-//        
-//            console.log(responseData.title);
-//        }
-//    });
-//    
-//
-//});
-//////////////

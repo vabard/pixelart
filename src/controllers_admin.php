@@ -37,7 +37,7 @@ $adminGroup->get('/userdelete/{id}', function ($id) use ($app) {
 ;
 
 $adminGroup->match('/useredit/{id}', function ($id, Request $request) use ($app){
-    $user = UsersQuery::create()->findByIdUsers($id);
+    $user = UsersQuery::create()->findOneByIdUsers($id);
     
     $form = $app['form.factory']->createBuilder(\FormType\UserType::class, $user)
             ->remove('password')
@@ -49,9 +49,6 @@ $adminGroup->match('/useredit/{id}', function ($id, Request $request) use ($app)
     $form->handleRequest($request);
     
     if($form->isValid()){
-
-        $user = new Users();
-        // On doit mettre les setters ?
         $user->save();
         return $app->redirect($app['url_generator']->generate('admin_userlist'));
     }

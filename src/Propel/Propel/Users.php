@@ -3,6 +3,7 @@ namespace Propel\Propel;
 use ArrayAccess;
 use Propel\Propel\Base\Users as BaseUsers;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Propel\Propel\Map\UsersTableMap;
 /**
  * Skeleton subclass for representing a row from the 'users' table.
  *
@@ -23,6 +24,7 @@ class Users extends BaseUsers implements UserInterface, ArrayAccess
     }
     public function setRole($role){
         $this->role = $role;
+        $this->modifiedColumns[UsersTableMap::COL_ROLE] = true;
     }
 
     public function offsetExists($offset){
