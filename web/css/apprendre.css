@@ -81,8 +81,11 @@ bg-main-color {
 .mt4{
 	margin-top: 4rem;
 }
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 520px) {
   .no-responsive{
     display: none;
+  }
+  .responsive-margin-bottom{
+      margin-bottom: 20px;
   }
 }

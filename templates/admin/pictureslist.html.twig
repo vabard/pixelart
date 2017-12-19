@@ -1,0 +1,70 @@
+{% extends 'admin/layout_admin.html.twig'%}
+
+{% block content %}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="header">
+                        <h4 class="title">Pictures</h4>
+                        <p class="category">Liste des pixelarts enregistrés sur le site</p>
+                    {% if pictures is empty %}
+                        <p>Il n'y a pas de PixelArt à afficher</p>
+                    {% else %}
+                    </div>
+                        <div class="content table-responsive table-full-width">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Thumb</th>
+                                    <th>State</th>                                    
+                                    <th>User</th>
+                                    <th>Valider</th>
+                                    <th>Supprimer</th>               
+                                </thead>
+                                <tbody>
+                                    {% for picture in pictures %}
+                                    <tr>
+                                            <td>{{ picture.idPictures }}</td>
+                                            <td>{{ picture.title }}</td>
+                                            <td><a href="{{ picture.thumb | replace({" ":"+"}) }}" data-toggle="lightbox"><img class="img-responsive" src="{{ picture.thumb | replace({" ":"+"}) }}" alt="" width="30" height="30"></a></td>
+                                            <td>{{ picture.state }}</td>                                            
+                                            <td>{{ picture.users.username }}</td>
+                                            
+                                            <td>
+                                                {% if picture.state == 2 %}
+                                                <img src="{{ asset('images/validate.png') }}" width="15px" height="15px">
+                                                {% elseif picture.state == 1 %}
+                                                <a href="{{ path('admin_validate', {id:picture.idPictures}) }}"><img src="{{ asset('images/isnotvalidate.png') }}" width="15px" height="15px"></a>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                            <a href="{{ path('admin_deletepicture', {id:picture.idPictures}) }}"><img src="{{ asset('images/delete.jpeg') }}" width="15px" height="15px"></a>
+                                            </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div> 
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+    
+{% endblock %}
+{% block script %}
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
+       <script>
+           $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox();
+            });
+       </script>
+{% endblock %}
