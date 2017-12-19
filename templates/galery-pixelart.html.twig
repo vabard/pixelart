@@ -41,7 +41,7 @@
                                 <label>Filtrer par difficulter</label>
                                 <select class="form-control">
                                     <option class="difficulty-galery" value=""><a href="{{ path('galery-pixelart', { p : 1 }) }}?difficulty=">Tous niveaux</a></option>
-                                    <option class="difficulty-galery" value="très facile"><a href="{{ path('galery-pixelart', { p : 1 }) }}?difficulty=">Très facile</a></option>
+                                    <option class="difficulty-galery" value="très facile"><a href="{{ path('galery-pixelart', { p : 1 }) }}?difficulty='très facile'">Très facile</a></option>
                                     <option class="difficulty-galery" value="facile">Facile</option>
                                     <option class="difficulty-galery" value="moyen">Moyen</option>
                                     <option class="difficulty-galery" value="difficile">Difficile</option>
@@ -62,7 +62,7 @@
                             
                         <div class="col-sm-6 col-md-4">
                             <div class="shop-box">
-                                <img class="img-full img-responsive" src="{{ picture.thumb | replace({" ":"+"})  }}" alt="">
+                                <div class="text-center div-img"><img class="img-galery" src="{{ picture.thumb | replace({" ":"+"})  }}" alt=""></div>
                                 <div class="shop-box-hover text-center">
                                     <div class="c-table">
                                         <div class="c-cell">
