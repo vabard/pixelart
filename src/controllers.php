@@ -85,7 +85,7 @@ $app->match('/register', function(Request $request) use ($app) {
 ;
 
 // route pour Galery - on affiche tous les Pictures
-$app->get('/galery-pixelart/{p}', function ($p) use ($app) {
+$app->get('/galery-pixelart/{p}', function ((array($p,$c))) use ($app) {
     
     $pictures = Propel\Propel\PicturesQuery::create()
             ->joinWithUsers()
@@ -116,6 +116,38 @@ $app->get('/galery-pixelart/{p}', function ($p) use ($app) {
 })
 ->bind('galery-pixelart')
 ;
+//// route pour Galery - on affiche tous les Pictures
+//$app->get('/galery-pixelart/{p}', function ($p) use ($app) {
+//    
+//    $pictures = Propel\Propel\PicturesQuery::create()
+//            ->joinWithUsers()
+//            ->joinWithCategories()
+//            ->filterByState('2')
+//            ->orderByDateInsert('desc')
+//            ->paginate($page=$p, $maxPerPage=15);
+//    
+//    $categories = Propel\Propel\CategoriesQuery::create()
+//            ->orderByTitle('asc')
+//            ->find();
+//    
+//    // on transmet à notre template les données (toujours un array!)
+//    return $app['twig']->render('galery-pixelart.html.twig', [
+//        'pictures' => $pictures,
+//        'paginate' => [
+//            'results'  => $pictures->getNbResults(),
+//            'firstpage' => $pictures->getFirstPage(),
+//            'lastpage' => $pictures->getLastPage(),
+//            'currentpage' => $pictures->getPage(),
+//            'islastpage' => $pictures->isLastPage(), //return boolean true (1) if the current page is the last page
+//            'firstindex' => $pictures->getFirstIndex(),
+//            'lastindex' => $pictures->getLastIndex(), 
+//            'getNextPage' => $pictures->getNextPage()   
+//        ],
+//        'categories' => $categories
+//    ]);
+//})
+//->bind('galery-pixelart')
+//;
 
 
 // route pour apprendre 1 Picture
