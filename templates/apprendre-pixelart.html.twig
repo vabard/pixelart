@@ -10,9 +10,30 @@
 {% endblock %}
 
     {% block content %}
-        <main>
+        
+    <div id="sideBarShareBtns" class="container-fluid">
+
+        <div class="row">
+            <ul id="shareList" class="list-unstyled">
+
+                <li>Vitesse</li>
+                <li><button class="btn btn-robot3 btn-lg speed" value="4000">1</button></li>
+                <li><button class="btn btn-robot3 btn-lg speed" value="3000">2</button></li>
+                <li><button class="btn btn-robot3 btn-lg speed" value="2000">3</button></li>
+                <li><button class="btn btn-robot3 btn-lg speed" value="1000">4</button></li>
+                <li><button class="btn btn-robot3 btn-lg speed" value="500">5</button></li><br>
+
+                <li>Navigation</li>
+                <li><button id="play" class="btn btn-robot3 btn-lg"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button></li>
+                <li><button id="pause" class="btn btn-robot3 btn-lg"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button></li>
+                <li><button id="replay" class="btn btn-robot3 btn-lg"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button></li>
+
+            </ul>
+        </div>
+    </div>
+    <main>
         <section>
-            <div class="container-fluid page-bgc">
+            <div class="container page-bgc">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="title-box">
@@ -20,20 +41,54 @@
                         </div>
                     </div>
                 </div>
-                
-           
+                          
+
                 <div class="row">
-                    <div class="col-sm-2 col-md-2">
-                        <div class="col-sm-12 col-md-12 col-xs-5">
-                            <h2>Miniature</h2>
-                            <div class="thumbnail">
-                                <img id="thumb-learn" src="{{ picture.thumb }}">
+                    <div class="col-md-3">
+                        
+                        <div>
+                            <div class="hidden-xs hidden-sm">
+                                <h2>Miniature</h2>
+                                <div class="thumbnail">
+                                    <img id="thumb-learn" src="{{ picture.thumb | replace({" ":"+"})  }}">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12 col-md-12 col-xs-7">
-                            <h2>Palette</h2>
+                            
+                            {#<h2>Vitesse</h2>
+                            <div id="speed">
+                                <button class="btn btn-robot btn-robot2 btn-lg speed" value="4000">1</button>
+                                <button class="btn btn-robot btn-robot2 btn-lg speed" value="3000">2</button>
+                                <button class="btn btn-robot btn-robot2 btn-lg speed" value="2000">3</button>
+                                <button class="btn btn-robot btn-robot2 btn-lg speed" value="1000">4</button>
+                                <button class="btn btn-robot btn-robot2 btn-lg speed" value="500">5</button>
+                            </div>
+                            
+                            <h2>Navigation</h2>
+                            <div>
+                                <button id="play" class="btn btn-robot btn-lg"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button>
+                                <button id="pause" class="btn btn-robot btn-lg"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button>
+                                <button id="replay" class="btn btn-robot btn-lg"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>                            
+                            </div>#}
+                            
+                            <h2>Palette</h2> 
                             <ul id="colors" class="list-unstyled list-inline"></ul>
+                            
+                            <div class="hidden-xs hidden-sm">
+                                <h2>Etapes</h2>
+                                <div id="divSteps">
+                                    <ul id="steps" class="list-unstyled"></ul>
+                                </div>
+                            </div>
+                            
                         </div>
+                        
+                    </div>
+                    <div class="col-md-9">
+                        <div id="container-learn" ><canvas id="canvas-learn"></canvas></div>
+                    </div>
+                    
+                    {#<div class="col-sm-2 col-md-2">
+                        
                     </div>
                     <div class="col-sm-2 col-md-2 col-md-push-8">
                         <div class="col-sm-12 col-md-12 col-xs-5">
@@ -60,7 +115,7 @@
                         
                     <div class="col-sm-8 col-md-8 col-md-pull-2">
                         <div id="container-learn" ><canvas id="canvas-learn"></canvas></div>
-                    </div>
+                    </div>#}
                 </div>
 
                 <div class="text-center mt4">

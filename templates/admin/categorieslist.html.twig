@@ -1,0 +1,45 @@
+{% extends 'admin/layout_admin.html.twig'%}
+
+{% block content %}
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Catégories</h4>
+                            <p class="category">Liste des catégories de pixelart</p>
+                        </div>
+                        <div class="content table-responsive table-full-width">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Supprimer</th>
+                                </thead>
+                                <tbody>
+                                    {% for categorie in categories %}
+                                    <tr>
+                                            <td>{{categorie.idCategories}}</td>
+                                            <td>{{categorie.title}}</td>
+                                            <td>
+                                            <a href="{{ path('admin_deletecategorie', {id : categorie.idCategories}) }}"><img src="{{ asset('images/delete.jpeg') }}" width="15px" height="15px"></a>
+                                            </td>
+
+                                    </tr>
+                                    {% endfor %}
+      
+                                </tbody>
+                                
+                            </table>
+                              <tr>
+                                        <button type="button" class="btn btn-info btn-fill pull-right" data-toggle="modal" data-target=".bs-example-modal-md">Ajouter une catégorie</button><br>
+                                    </tr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
