@@ -6,11 +6,11 @@
         <div class="row">
             <div class="col-md-3">
                 <h2>Formats</h2><br>
-                <button id="petitrectangle" class="btn btn-info">Petit rectangle</button><br><br>
-                <button id="carremoyen" class="btn btn-info">Carré Moyen</button><br><br>
-                <button id="rectanglemoyen" class="btn btn-info">Rectangle Moyen</button><br><br>
-                <button id="grandcarre" class="btn btn-info">Grand carré</button><br><br>
-                <button id="grandrectangle" class="btn btn-info">Grand rectangle</button><br><br>
+                <button id="petitrectangle" class="btn btn-robot btn-md">Petit rectangle</button><br><br>
+                <button id="carremoyen" class="btn btn-robot btn-md">Carré Moyen</button><br><br>
+                <button id="rectanglemoyen" class="btn btn-robot btn-md">Rectangle Moyen</button><br><br>
+                <button id="grandcarre" class="btn btn-robot btn-md">Grand carré</button><br><br>
+                <button id="grandrectangle" class="btn btn-robot btn-md">Grand rectangle</button><br><br>
                 <h2>Personnaliser</h2>
          <label>Combien de colonnes voulez-vous?</label><br>
          
@@ -210,6 +210,7 @@
            {% endif %}
             
             <div class="col-md-3" id="couleurs">
+                <div id="sideBarShareButtons">
                 <div id="my">
                     <h2>Couleurs</h2>
                     <button style="background-color: black;"
@@ -266,10 +267,11 @@ data-color="Black"></button>
                 </div> 
                 <br><br>
                 <div>
-                    <button id="erase">Effacer</button>
+                    <button id="erase" class="btn btn-robot btn-md">Effacer</button>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
 
 {% block script %}<script src="{{ asset('js/creation.js') }}"></script>{% endblock %}

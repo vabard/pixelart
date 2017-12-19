@@ -177,25 +177,7 @@ $app->get('/mes-pixelarts', function () use ($app) {
 ->bind('mes-pixelarts')
 ;
 
-$app->get('/view-pixelart/{id}', function ($id) use ($app) {
-    $picture = Propel\Propel\PicturesQuery::create()
-            ->findOneByIdPictures($id);
-            ;
-            //->find();
-     
-           // ->find();
-    
-    
-    
-            //->joinWithCategories()
-            //->filterByState('2')
-            //->orderByDateInsert('desc')
-            //->find();
-   return $app['twig']->render('view-pixelart.html.twig',['picture'=>$picture]);
 
-})
-->bind('view-pixelart')
-;
 
 
 // API : get all Pictures -TESTS AJAX

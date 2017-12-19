@@ -1,5 +1,6 @@
 {% extends "layout.html.twig" %}
 
+{% block style %}<link href="{{ asset('css/styleespacemembre.css') }}" rel="stylesheet" type="text/css" />{% endblock %}
 {% block intro %}
     <div class="intro-learn-one row">
         <div class="overlay"></div>
@@ -13,7 +14,7 @@
    <div class="row">
                     <div class="col-sm-12">
                         <div class="title-box">
-                            
+                                <button class="btn btn-robot btn-lg" id="buttontous">Tous</button>
                                 <button class="btn btn-robot btn-lg" id="buttonbrouillons">Brouillons</button>
                                 <button class="btn btn-robot btn-lg" id="buttonenvoyes">Dessins envoyés</button>
                         </div>
@@ -26,7 +27,7 @@
                 <div class="row">
                     
                     <div class="boxed">
-                    
+                    <h2>Mes brouillons</h2>
                     {% if brouillons is empty %}
                         <p>Il n'y a pas de PixelArt à afficher</p>
                     {% else %}
@@ -62,16 +63,17 @@
                         {% endfor %}
                      {%endif%}
                     </div>
+                </div>
                 
         </section>
         <section class="col-md-12" id="envoyes">
             
-             
+        <div class="row">
  
-                
+            
                     
                     <div class="boxed">
-                        
+                      <h2>Mes dessins envoyés</h2>  
                     {% if envoyes is empty %}
                         <p>Il n'y a pas de PixelArt à afficher</p>
                     {% else %}
@@ -108,7 +110,9 @@
             </section>
                     </div>
     </div>
-</div>
+  
+    </div
+
 {% endblock %}
 
 {% block script %}
