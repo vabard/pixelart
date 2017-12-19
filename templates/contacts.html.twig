@@ -1,0 +1,93 @@
+{% extends "layout.html.twig" %}
+
+{% block intro %}
+    <div class="intro-galery2 row">
+        <div class="overlay"></div>
+        <div class="col-sm-12">
+            <h1 class="mt0 color-white">Contacts</h1>
+        </div>
+    </div> <!-- /.intro.row -->
+{% endblock %}
+    
+{% block content%}    
+    <div class="row">
+        <div class="boxed">
+            <div class="col-sm-8">
+                <h4>Nous contacter</h4>
+                <form action="contact.php" class="contact-form" id="contactForm" method="post">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Votre prénom" id="prenom" name="prenom" required>
+                            </div> <!-- /.form-group -->
+                        </div> <!-- /.col-sm-6 -->
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Votre nom" id="nom" name="nom">
+                            </div> <!-- /.form-group -->
+                        </div> <!-- /.col-sm-6 -->
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="Votre courriel" id="courriel" name="courriel" required>
+                            </div> <!-- /.form-group -->
+                        </div> <!-- /.col-sm-6 -->
+                         <div class="col-sm-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Votre téléphone" id="phone" name="telephone">
+                            </div> <!-- /.form-group -->
+                        </div> <!-- /.col-sm-6 -->
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <textarea class="form-control" rows="6" placeholder="Votre message..." name="message"></textarea>
+                            </div> <!-- /.form-group -->
+                        </div> <!-- /.col-sm-12 -->
+                        <div class="text-center mt20 col-sm-12">
+                            <button type="submit" class="btn btn-robot pull-left" id="btnsubmit">Envoyer votre message</button>
+                        </div>
+                    </div>
+                </form>
+                <div id="contactFormResponse"></div>
+            </div> <!-- /.col-sm-8 -->
+            <div class="col-sm-4">
+                <h4>Nos coordonnées</h4>
+                <div class="row">
+                    <div class="col-xs-3">
+                        <img class="imgresponsive" src="{{ asset('images/address.png')}}" alt="logo-adresse">
+                    </div>
+                    <div class="col-xs-9">
+                        <h5>Addresse</h5>
+                        <p class="contact-detail">
+                            44 new design street, melbourne 005<br>
+                            Australia 300
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">
+                        <img class="imgresponsive" src="{{ asset('images/phone.png') }}" alt="logo-telephone">
+                    </div>
+                    <div class="col-xs-9">
+                        <h5>Téléphone</h5>
+                        <p class="contact-detail">
+                            01 (800) 433 744<br>
+                            01 (800) 433 633
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">
+                        <img class="imgresponsive" src="{{ asset('images/support.png') }}" alt="logo-courriel">
+                    </div>
+                    <div class="col-xs-9">
+                        <h5>Courriel</h5>
+                        <p class="contact-detail">
+                            support@example.com
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%endblock%}
+
+

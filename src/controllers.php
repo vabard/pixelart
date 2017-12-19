@@ -247,6 +247,12 @@ $app->get('/qui-sommes-nous', function () use ($app) {
 ->bind('qui-sommes-nous')
 ;
 
+$app->get('/contacts', function () use ($app) {
+    return $app['twig']->render('contacts.html.twig', array());
+})
+->bind('contacts')
+;
+
 $app->get('/creation', function () use ($app) {
     $categories = Propel\Propel\CategoriesQuery::create()
             ->orderByTitle()
