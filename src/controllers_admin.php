@@ -119,5 +119,11 @@ $adminGroup->get('categorieslist', function() use ($app){
 })
 ->bind('admin_categorieslist')
 ;
+$adminGroup->get('deletecategorie/{id}', function ($id) use ($app) {
+    CategoriesQuery::create()->filterByIdCategories($id)->delete();
+    return $app->redirect($app['url_generator']->generate('admin_categorieslist'));
+})
+->bind('admin_deletecategorie')
+;
 
 $app->mount('/admin', $adminGroup);
