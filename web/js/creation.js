@@ -378,7 +378,6 @@ $('#form2').on('submit', function (e) {
     e.preventDefault();
     var value=$("#id_categoriesdef").val();
     param = 'title=' + $("#titledef").val() + '&thumb=' + $("#thumbdef").val() + '&state=' + $("#statedef").val() + '&canvas=' + envoijson + '&id_categories=' + value;
-
     enregistrerCanvas(param);
     window.location = "mes-pixelarts";
 });
