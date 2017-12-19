@@ -94,7 +94,8 @@
                                 {% if app.user %}
                                 <li class="{% if global.request.attributes.get('_route') == 'mes-pixelarts' %}active{% endif %}"><a href="{{ path('mes-pixelarts') }}" id="space_member">Mes pixelarts</a></li>
                                 {% endif %} 
-                                <li class="{% if global.request.attributes.get('_route') == 'contacts' %}active{% endif %}"><a href="{{ path('contacts') }}">Contacts</a></li>
+                                <li class="{% if global.request.attributes.get('_route') == 'qui-sommes-nous' %}active{% endif %}"><a href="{{ path('qui-sommes-nous') }}">Qui sommes nous</a></li>
+                                <li class="{% if global.request.attributes.get('_route') == 'contacts' %}active{% endif %}"><a href="{{ path('contacts') }}">Contact</a></li>
                               
                             </ul>
                         </div><!-- /.navbar-collapse -->
