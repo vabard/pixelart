@@ -782,5 +782,17 @@ h1.header-title {
 		padding-left: 15px;
 		padding-right: 15px;
 	}
-}
+/*======================================================================
+##		Error Section
+=======================================================================*/        
 
+}       
+@media (max-width: 850px){
+        .img-fluid, .erreurs404{
+               height:80%;
+               width:80%;
+               margin: 10px 10px 10px 10px;
+}        
+        
+        
+}

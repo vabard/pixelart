@@ -74,6 +74,24 @@ bg-main-color {
 	border-color: #fabe12;
 }
 
+.btn-robot3{
+	border-radius: 0;
+	background-color: #fabe12;
+	color: #fff;
+	text-transform: uppercase;
+	border-color: transparent;
+	padding: 5px 10px;
+	transition: all 0.4s ease-in-out;
+	/*letter-spacing: 1px;*/
+	font-weight: 300;
+	margin-top: 2px;
+}
+.btn-robot3:hover{
+	background-color: transparent;
+	color: #fabe12;
+	border-color: #fabe12;
+}
+
 .nutral {
     background-color: #fff;
 }
@@ -81,8 +99,39 @@ bg-main-color {
 .mt4{
 	margin-top: 4rem;
 }
-@media screen and (max-width: 360px) {
-  .no-responsive{
-    display: none;
-  }
+
+#sideBarShareBtns {
+
+        background-color: rgba(255,255,255, .5);
+        text-align: center;
+        /*display: inline;*/
+        position: fixed;
+        bottom: 10vh;
+        left: 0;
+        z-index: 10;        
+}
+
+
+#divSteps {
+    overflow: scroll;
+    border: 1px solid grey;
+    height: 30vh;
+}
+
+@media (max-width: 499px) {
+    #shareList {
+            display: inline-flex;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 10;
+    }
+    .btn-robot3{
+	
+	padding: 2px 5px;
+	transition: all 0.4s ease-in-out;
+	/*letter-spacing: 1px;*/
+	font-weight: 300;
+	margin-top: 2px;
+}
 }

@@ -25,27 +25,29 @@
 
                     {% if pictures is empty %}
                         <p>Il n'y a pas de PixelArt à afficher</p>
-                    {% else %}                        
-                        <div class="col-sm-6">
-                            <form>
-                            <select class="form-control" name="category">
-                                <option class="category-galery"  value="">Toutes catégories</option>
-                                {% for categorie in categories %}
-                                <option class="category-galery" value="{{ categorie.idCategories }}">{{ categorie.title }}</option>
-                                {% endfor %}
-                            </select>
-                            </form>
-                            
-                        </div>
-                        <div class="col-sm-6">
-                            <select class="form-control">
-                                <option class="difficulty-galery" value=""><a href="{{ path('galery-pixelart', { p : 1 }) }}?difficulty=">Tous niveaux</a></option>
-                                <option class="difficulty-galery" value="très facile"><a href="{{ path('galery-pixelart', { p : 1 }) }}?difficulty=">Très facile</a></option>
-                                <option class="difficulty-galery" value="facile">Facile</option>
-                                <option class="difficulty-galery" value="moyen">Moyen</option>
-                                <option class="difficulty-galery" value="difficile">Difficile</option>
-                            </select>
-                        </div>
+                    {% else %}
+                        
+                        <form method="post" action="{{ path('register_picture') }}">             
+                            <div class="col-sm-6">
+                                <label>Filtrer par catégorie</label>
+                                <select class="form-control" name="category">
+                                    <option class="category-galery"  value="">Toutes catégories</option>
+                                    {% for categorie in categories %}
+                                    <option class="category-galery" value="{{ categorie.idCategories }}">{{ categorie.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Filtrer par difficulter</label>
+                                <select class="form-control">
+                                    <option class="difficulty-galery" value=""><a href="{{ path('galery-pixelart', { p : 1 }) }}?difficulty=">Tous niveaux</a></option>
+                                    <option class="difficulty-galery" value="très facile"><a href="{{ path('galery-pixelart', { p : 1 }) }}?difficulty=">Très facile</a></option>
+                                    <option class="difficulty-galery" value="facile">Facile</option>
+                                    <option class="difficulty-galery" value="moyen">Moyen</option>
+                                    <option class="difficulty-galery" value="difficile">Difficile</option>
+                                </select>
+                            </div>
+                        </form><br><br><br><br><br>
                        
 {#                                {% set newArray = [] %}                                
                                 {% for picture in pictures %}
@@ -57,10 +59,10 @@
                                 {% endfor %}#}
                             
                         {% for picture in pictures %}
-
+                            
                         <div class="col-sm-4">
                             <div class="shop-box">
-                                <img class="img-full img-responsive" src="{{ picture.thumb }}" alt="">
+                                <img class="img-full img-responsive" src="{{ picture.thumb | replace({" ":"+"})  }}" alt="">
                                 <div class="shop-box-hover text-center">
                                     <div class="c-table">
                                         <div class="c-cell">
