@@ -85,7 +85,7 @@ $app->match('/register', function(Request $request) use ($app) {
 ;
 
 // route pour Galery - on affiche tous les Pictures
-$app->get('/galery-pixelart/{p}', function ((array($p,$c))) use ($app) {
+$app->get('/galery-pixelart/{p}', function ($p) use ($app) {
     
     $pictures = Propel\Propel\PicturesQuery::create()
             ->joinWithUsers()
