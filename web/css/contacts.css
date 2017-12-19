@@ -1,0 +1,22 @@
+
+.intro-galery2 {
+    padding: 100px 0;
+    background-image: url(../images/contactts.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: -90px;
+    z-index: 11;
+    position: relative;
+}
+
+.intro-learn-one{
+    padding: 100px 0;
+    background-image: url(../images/apprendre.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: -90px;
+    z-index: 11;
+    position: relative;  
+}
