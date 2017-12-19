@@ -54,3 +54,23 @@ function createPicture(color) {
     li.appendChild(span);
     ul.appendChild(li);
 }
+
+
+$("#buttonenvoyes").on('click',function(){
+    if($("#envoyes").css('display')=="none"){
+       $("#brouillons").fadeOut(500);
+       $("#envoyes").fadeIn(500,function(){
+           $(this).parent().height($(this).height());
+       });
+       
+    }
+});
+
+$("#buttonbrouillons").on('click',function(){
+    if($("#brouillons").css('display')=="none"){
+       $("#envoyes").fadeOut(500);
+       $("#brouillons").fadeIn(500,function(){
+           $(this).parent().height($(this).height());
+       });
+    }
+});

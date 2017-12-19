@@ -60,7 +60,7 @@
                             
                         {% for picture in pictures %}
                             
-                        <div class="col-sm-4">
+                        <div class="col-sm-6 col-md-4">
                             <div class="shop-box">
                                 <img class="img-full img-responsive" src="{{ picture.thumb | replace({" ":"+"})  }}" alt="">
                                 <div class="shop-box-hover text-center">
@@ -75,22 +75,14 @@
                             </div>
                             <div class="shop-box-title">
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    <div class="col-xs-6">
                                         <p class="gras">{{ picture.title }}</p>
                                         <p class="text-lowercase">Cat. : <span class="text-uppercase "> {{ picture.categories.title }}</span></p>
                                         
                                     </div>
-                                    <div class="col-sm-6">
-                                        <p class="text-lowercase text-right">Niveau : <span class="text-uppercase ">{{ picture.difficulty }}</span></p>
+                                    <div class="col-xs-6">
+                                        <p class="text-lowercase text-right"><span class="text-uppercase ">{{ picture.difficulty }}</span></p>
                                         <p class="text-lowercase text-right">Créé par<span class="text-uppercase gras"> {{ picture.users.username }}</span></p>
-                                         {#<div class="star">
-                                            {% if picture.note > 0 %}
-                                                {% for i in 1..picture.note %}
-                                                     <span class="ion-ios-star"></span>
-                                                {% endfor %}
-                                            {% endif %}
-                                           
-                                        </div>#}
                                     </div>
                                 </div>
                             </div>

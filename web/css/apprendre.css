@@ -46,6 +46,9 @@
     font-weight: 700;
     font-size: 18px;
 }
+.shop-box-title p {
+    font-size: 13px;
+}
 
 .picture-desc {
     margin-bottom: 0;
@@ -117,6 +120,7 @@ bg-main-color {
     border: 1px solid grey;
     height: 30vh;
 }
+
 
 @media (max-width: 499px) {
     #shareList {

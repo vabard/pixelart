@@ -220,24 +220,30 @@ $app->post('/api/pictures', function(Request $request) use ($app) {
     }
     // Create and return a JSON response
     return $app->json($responseData);
-})->bind('api_pictures');
+})
+->bind('api_pictures')
+;
 
 
-// API : get an picture -TESTS AJAX
+// API : get an picture
 $app->get('/api/picture/{id}', function($id) use ($app) {
     $picture = Propel\Propel\PicturesQuery::create()
             ->joinWithUsers()
             ->joinWithCategories()
             ->findOneByIdPictures($id);
+    
     // Convert an object ($picture) into an associative array ($responseData)
     $responseData = array(
         'id' => $picture->getIdPictures(),
         'title' => $picture->getTitle(),
         'canvas' => $picture->getCanvas()
         );
+    
     // Create and return a JSON response
     return $app->json($responseData);
-})->bind('api_picture');
+})
+->bind('api_picture')
+;
 
 
 
