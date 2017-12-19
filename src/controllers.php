@@ -155,12 +155,13 @@ $app->get('/mes-pixelarts', function () use ($app) {
     $brouillons = Propel\Propel\PicturesQuery::create()
             
             ->filterByState('0')
+            ->orderByDateInsert('desc')
             ->findByIdUsers($app['user']->getIdUsers());
-            ;
+             
             //->find();
      $envoyes = Propel\Propel\PicturesQuery::create()
             ->filterByState((array(1,2)))
-            // ->filterByState('2')
+            ->orderByDateInsert('desc')
              
             ->findByIdUsers($app['user']->getIdUsers());
            // ->find();

@@ -12,9 +12,9 @@ $("#buttonenvoyes").on('click',function(){
        $("#brouillons").css('z-index',2);
        $("#brouillons").fadeOut(500,function(){
            
-           $("#envoyes").css('position',"absolute");
+       $("#envoyes").css('position',"absolute");
        $("#envoyes").css('z-index',1);
-       $("#envoyes").css('z-index',2);
+       $("#brouillons").css('z-index',2);
        $("#envoyes").parent().height($(this).height());
        });
        //$("#brouillons").fadeOut(200);
@@ -24,7 +24,7 @@ $("#buttonenvoyes").on('click',function(){
     }
 });
 
-$("#buttonbrouillons").on('click',function(){
+       $("#buttonbrouillons").on('click',function(){
     if($("#brouillons").css('display')=="none"){
        $("#envoyes").fadeOut(500);
        $("#brouillons").fadeIn(500,function(){
@@ -34,11 +34,11 @@ $("#buttonbrouillons").on('click',function(){
    if($("#envoyes").css('display')!="none" && $("#brouillons").css('display')!="none"){
        $("#envoyes").fadeOut(200,function(){
            //$(this).parent().height($(this).height());
-           $("#envoyes").css('position',"absolute");
+       $("#envoyes").css('position',"absolute");
        $("#envoyes").css('z-index',1);
-       $("#envoyes").css('z-index',2);
+       $("#brouillons").css('z-index',2);
        });
-       $("#brouillons").parent().height($(this).height());
+       $(this).parent().height($(this).height());
         
        
        
@@ -66,7 +66,7 @@ $("#buttontous").on('click',function(){
        $("#envoyes").css('z-index','');
        $("#brouillons").css('z-index','');
        $("#envoyes").fadeIn(500,function(){
-       $(this).parent().height($(this).height());
+       //$(this).parent().height($(this).height());
        
        
     })

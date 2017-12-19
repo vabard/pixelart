@@ -12,24 +12,25 @@
 {% block content %}
 <div class="container-fluid">
    <div class="row">
-                    <div class="col-sm-12">
-                        <div class="title-box">
-                                <button class="btn btn-robot btn-lg" id="buttontous">Tous</button>
-                                <button class="btn btn-robot btn-lg" id="buttonbrouillons">Brouillons</button>
-                                <button class="btn btn-robot btn-lg" id="buttonenvoyes">Dessins envoyés</button>
-                        </div>
-                    </div>
-                </div>
+       <!--Filter pour choisir les types de dessins(brouillons ou envoyés! -->
+        <div class="col-sm-12">
+            <div class="title-box">
+                <button class="btn btn-robot btn-lg" id="buttontous">Tous</button>
+                <button class="btn btn-robot btn-lg" id="buttonbrouillons">Brouillons</button>
+                <button class="btn btn-robot btn-lg" id="buttonenvoyes">Dessins envoyés</button>
+            </div>
+        </div>
+    </div>
     <div class="row" id="allpixelarts">
         
         <section class="col-md-12" id="brouillons">
             
                 <div class="row">
-                    
+                    <!--Les brouillons -->
                     <div class="boxed">
                     <h2>Mes brouillons</h2>
                     {% if brouillons is empty %}
-                        <p>Il n'y a pas de PixelArt à afficher</p>
+                        <p>Il n'y a pas de brouillons à afficher</p>
                     {% else %}
                         {% for brouillon in brouillons %}
                             
@@ -66,16 +67,17 @@
                 </div>
                 
         </section>
+    <div class="row">
         <section class="col-md-12" id="envoyes">
             
-        <div class="row">
+        
  
             
-                    
-                    <div class="boxed">
+        <!--Les dessins envoyés! -->
+        <div class="boxed">
                       <h2>Mes dessins envoyés</h2>  
                     {% if envoyes is empty %}
-                        <p>Il n'y a pas de PixelArt à afficher</p>
+                        <p>Il n'y a pas de dessins envoyés à afficher</p>
                     {% else %}
                         {% for envoye in envoyes %}
                             
@@ -105,13 +107,11 @@
                         </div>
                         {% endfor %}
                      {%endif%}
-                    </div>
-                
+                </div>
             </section>
-                    </div>
+        </div>
     </div>
-  
-    </div
+</div>
 
 {% endblock %}
 

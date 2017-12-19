@@ -24,7 +24,7 @@ function Grid(wc, hc) {
     this.wc = wc;
     this.hc = hc;
 }
-
+//objet grid
 Grid.prototype.init = function (wc, hc) {
     var grid = [];
     for (var i = 0; i < hc; i++) {
@@ -95,7 +95,7 @@ Grid.prototype.clearColor = function (x, y) {
 // 
 
 /////////////////////////////
-
+//Dessin du canvas de départ(si l'utilisteur reprend un brouillon, un ID est passé dans le templet
 if (document.getElementById("picture")) {
     picture = (JSON.parse($("#picture").val()));
     console.log(picture);
@@ -113,7 +113,7 @@ if (document.getElementById("picture")) {
 }
 
 
-
+//fonction du responsive
 function adaptSize() {
     canvas.width = canvas.parentElement.clientWidth;
     if (step == '') {
@@ -123,7 +123,7 @@ function adaptSize() {
     }
     drawGrid(grid, canvas);
 }
-
+//fonction qui crée la métadata envoyée dans la BDD
 function createJson(grid) {
 
 
@@ -139,7 +139,7 @@ function createJson(grid) {
     envoijson = JSON.stringify(envoijson);
 
 }
-
+//Fonction qui dessin la grille 
 function drawGrid(grid, canvas) {
     var context = canvas.getContext('2d');
     var cellW = canvas.width / grid.wc;
@@ -159,7 +159,7 @@ function drawGrid(grid, canvas) {
     });
 }
 
-
+//ajax qui envoie le canvas dans la bdd
 function enregistrerCanvas(param) {
 
     console.log('enregistrer');
@@ -178,7 +178,7 @@ function enregistrerCanvas(param) {
 window.onresize = function (event) {
     adaptSize();
 };
-
+//Zoom et dézoom
 zoom = document.getElementById("zoom");
 zoom.addEventListener("click", function () {
     canvas.width = 1.1 * canvas.width;
@@ -195,6 +195,7 @@ dezoom.addEventListener("click", function () {
     }
 })
 
+//Choix des dimensions avec le select
 for (var i = 0; i < choix.length; i++) {
     choix[i].addEventListener("change", function (e) {
 
@@ -216,7 +217,7 @@ for (var i = 0; i < choix.length; i++) {
     })
 }
 
-
+//Choix des dimensions avec les boutons sur les cotés
 petitrectangle.addEventListener("click", function (e) {
 
 
@@ -321,11 +322,7 @@ grandrectangle.addEventListener("click", function (e) {
 
 
 
-//   envoi.addEventListener('click', function(){
-//      createJson(grid);
-//      console.log(envoijson);
-//   });
-
+//remplissage du canvas avec les couleurs quand on clique dessus
 canvas.addEventListener('click', function (event) {
     var posX = event.pageX - canvas.offsetLeft - cadre.offsetLeft + cadre.scrollLeft;//ne pas oublier les scrollTop et scrollLeft lors de l'intégration !//- canvas.offsetLeft
     var posY = event.pageY - canvas.offsetTop - cadre.offsetTop + cadre.scrollTop;
@@ -350,7 +347,7 @@ canvas.addEventListener('click', function (event) {
     var dessinJson = createJson(grid);
     console.log(dessinJson);
 });
-
+//Attribution de la couleur quand on clique sur le bouton
 var buttons = document.querySelectorAll('button');
 
 buttons.forEach(function (el) {
@@ -361,7 +358,7 @@ buttons.forEach(function (el) {
 $("#erase").on('click',function(){
   color=null;  
 })
-//            
+//Quand on submit le formulaire de sauvegarde du brouillon         
 $('#form').on('submit', function (e) {
     e.preventDefault();
     var value=$("#id_categories").val();
@@ -373,7 +370,7 @@ $('#form').on('submit', function (e) {
     $(".modal-backdrop").attr('style', 'position:static');
     $("body").removeClass('modal-open');
 });
-
+//Quand on envoiue le dessin
 $('#form2').on('submit', function (e) {
     e.preventDefault();
     var value=$("#id_categoriesdef").val();
