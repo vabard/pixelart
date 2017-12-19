@@ -250,6 +250,7 @@ replayBtn.addEventListener('click', function () {
         clearInterval(animate);
     }
     document.querySelector('#steps').innerHTML = ''; // supprime les étapes
+    document.querySelector('#colors').innerHTML = ''; // supprime les couleurs;
     init();
     indexAnimation = 0; // redemarre l'index d'annimation
     play(); // annimation
@@ -297,6 +298,7 @@ function createColor(color) {
 
     // 3. je selectionne un ul existant
     var ul = document.querySelector('#colors');
+    
 
     // 4. j'ajoute mon span dans li et li dans ul
     li.appendChild(span);
