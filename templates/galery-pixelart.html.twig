@@ -29,31 +29,45 @@
                         
                         <form method="post" action="{{ path('register_picture') }}">             
                             <div class="col-sm-6">
-                                <label>Filtrer par catégorie</label>
-                                <select class="form-control" name="category">
-                                    <option class="category-galery"  value="">Toutes catégories</option>
+                                
+                                <select class="form-control" name="category" id="select-category">
+                                    <option class="category-galery"  value="">-  Filtrer par catégorie  -</option>
+                                    {#<option class="category-galery"  value="{{ path('galery-pixelart', { p : 1, d : d, c : 'all' }) }}">Toutes catégories</option>
                                     {% for categorie in categories %}
-                                    <option class="category-galery" value="{{ categorie.idCategories }}">{{ categorie.title }}</option>
-                                    {% endfor %}
+                                    <option class="category-galery" value="{{ path('galery-pixelart', { p : 1, d : d, c : categorie.idCategories }) }}">{{ categorie.title }}</option>
+                                    {% endfor %}#}
+                                    
+                                    {#{% set newArray = [] %}                                
+                                    {% for picture in pictures %}
+                                        {% if picture.categories.title not in newArray %}
+                                            <option class="category-galery" value="{{ path('galery-pixelart', { p : 1, d : d, c : picture.idCategories }) }}">{{ picture.categories.title }}</option>
+                                            {% set newArray = newArray|merge([picture.categories.title]) %}
+                                        {% endif %}                                
+
+                                    {% endfor %}#}
+                                    {#                                    {% for categorie in categories %}
+                                    <option class="category-galery" value="{{ path('galery-pixelart', { p : 1, c : categorie.idCategories }) }}">{{ categorie.title }}</option>
+                                    {% endfor %}#}
                                 </select>
                             </div>
                             <div class="col-sm-6">
-                                <label>Filtrer par difficulter</label>
-                                <select class="form-control">
-                                    <option class="difficulty-galery" value=""><a href="{{ path('galery-pixelart', { p : 1 }) }}?difficulty=">Tous niveaux</a></option>
-                                    <option class="difficulty-galery" value="très facile"><a href="{{ path('galery-pixelart', { p : 1 }) }}?difficulty='très facile'">Très facile</a></option>
-                                    <option class="difficulty-galery" value="facile">Facile</option>
-                                    <option class="difficulty-galery" value="moyen">Moyen</option>
-                                    <option class="difficulty-galery" value="difficile">Difficile</option>
-                                </select>
+                                
+                        {#        <select id='select-difficulty' class="form-control">
+                                    <option class="difficulty-galery" value="">- Filtrer par difficulter -</option>
+                                    <option class="difficulty-galery" value="{{ path('galery-pixelart', { p : 1, d : 'all', c : c  }) }}">Tous niveaux</option>
+                                    <option class="difficulty-galery" value="{{ path('galery-pixelart', { p : 1, d : 'très facile', c : c }) }}">Très facile</option>
+                                    <option class="difficulty-galery" value="{{ path('galery-pixelart', { p : 1, d : 'facile', c : c }) }}">Facile</option>
+                                    <option class="difficulty-galery" value="{{ path('galery-pixelart', { p : 1, d : 'moyen', c : c }) }}">Moyen</option>
+                                    <option class="difficulty-galery" value="{{ path('galery-pixelart', { p : 1, d : 'difficile', c : c }) }}">Difficile</option>
+                                </select>#}
                             </div>
                         </form><br><br><br><br><br>
                        
 {#                                {% set newArray = [] %}                                
                                 {% for picture in pictures %}
-                                    {% if picture.difficulty not in newArray %}
-                                        <option class="category-galery" value="">{{ picture.difficulty }}</option>
-                                        {% set newArray = newArray|merge([picture.difficulty]) %}
+                                    {% if picture.categories.title not in newArray %}
+                                        <option class="category-galery" value="{{ path('galery-pixelart', { p : 1, c : picture.idCategories }) }}">>{{ picture.categories.title }}</option>
+                                        {% set newArray = newArray|merge([picture.categories.title]) %}
                                     {% endif %}                                
                                 
                                 {% endfor %}#}
@@ -113,3 +127,9 @@
     </main>
 
 {% endblock %} 
+{% block script %}
+    <script src="{{ asset('js/galery.js') }}"></script>
+
+
+{% endblock %}
+

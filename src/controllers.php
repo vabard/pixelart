@@ -85,14 +85,23 @@ $app->match('/register', function(Request $request) use ($app) {
 ;
 
 // route pour Galery - on affiche tous les Pictures
-$app->get('/galery-pixelart/{p}', function ($p) use ($app) {
+$app->get('/galery-pixelart/{p}/{d}/{c}', function ($p, $d, $c) use ($app) {
     
-    $pictures = Propel\Propel\PicturesQuery::create()
+    $picturesQ = Propel\Propel\PicturesQuery::create()
             ->joinWithUsers()
             ->joinWithCategories()
             ->filterByState('2')
-            ->orderByDateInsert('desc')
-            ->paginate($page=$p, $maxPerPage=15);
+            ->orderByDateInsert('desc');
+    
+    if($d !== 'all') { // filtre par difficulty
+        $picturesQ->filterByDifficulty($d) ;
+    };
+    
+    if($c !== 'all') { // filtre par catégories
+        $picturesQ->filterByIdCategories($c) ;
+    };
+            
+    $pictures = $picturesQ->paginate($page=$p, $maxPerPage=15);
     
     $categories = Propel\Propel\CategoriesQuery::create()
             ->orderByTitle('asc')
@@ -111,9 +120,15 @@ $app->get('/galery-pixelart/{p}', function ($p) use ($app) {
             'lastindex' => $pictures->getLastIndex(), 
             'getNextPage' => $pictures->getNextPage()   
         ],
-        'categories' => $categories
+        'categories' => $categories,
+        'c'=>$c,
+        'd'=>$d
     ]);
 })
+->value('p', 1)
+->value('d', 'all')
+->value('c', 'all')
+        
 ->bind('galery-pixelart')
 ;
 //// route pour Galery - on affiche tous les Pictures
@@ -230,29 +245,75 @@ $app->get('/view-pixelart/{id}', function ($id) use ($app) {
 ;
 
 
-// API : get all Pictures -TESTS AJAX
-$app->post('/api/pictures', function(Request $request) use ($app) {
-    $category = $request->request->get('category');
+
+// route pour Galery - on affiche tous les Pictures
+$app->get('/apprentissage-pixelart', function () use ($app) {
     
     $pictures = Propel\Propel\PicturesQuery::create()
             ->joinWithUsers()
             ->joinWithCategories()
             ->filterByState('2')
             ->orderByDateInsert('desc')
+            ->paginate($page=1, $maxPerPage=15);
+    
+    $categories = Propel\Propel\CategoriesQuery::create()
+            ->orderByTitle('asc')
             ->find();
+    
+    // on transmet à notre template les données (toujours un array!)
+    return $app['twig']->render('apprentissage-pixelart.html.twig', [
+        'pictures' => $pictures,
+        'paginate' => [
+            'results'  => $pictures->getNbResults(),
+            'firstpage' => $pictures->getFirstPage(),
+            'lastpage' => $pictures->getLastPage(),
+            'currentpage' => $pictures->getPage(),
+            'islastpage' => $pictures->isLastPage(), //return boolean true (1) if the current page is the last page
+            'firstindex' => $pictures->getFirstIndex(),
+            'lastindex' => $pictures->getLastIndex(), 
+            'getNextPage' => $pictures->getNextPage()   
+        ],
+        'categories' => $categories
+    ]);
+})
+->bind('apprentissage-pixelart')
+;
+
+// API : get all Pictures 
+$app->match('/api/pictures', function(Request $request) use ($app) {
+    $difficulty = $request->request->get('difficulty', 'all');
+    $category = $request->request->get('category', 'all');
+    
+    $picturesQuery = Propel\Propel\PicturesQuery::create()
+            ->joinWithUsers()
+            ->joinWithCategories()
+            ->filterByState('2')
+            ->orderByDateInsert('desc');
+    
+    
+    if($difficulty !== 'all'){
+        $picturesQuery ->filterByDifficulty($difficulty);
+    }
+    
+    if($category !== 'all'){
+        $picturesQuery ->filterByIdCategories($category);
+    }
+    
+    $pictures = $picturesQuery->find();
     
     // Convert an array of objects ($pictures) into an array of associative arrays ($responseData)
     $responseData = array();
+    
     foreach ($pictures as $picture) {
-        $responseData[] = array(
-            'id' => $picture->getIdPictures(),
-            'title' => $picture->getTitle(),
-            'canvas' => $picture->getCanvas()
-            );
+        $responseData[] = array_merge($picture->toArray(), [
+            'categories' => $picture->getCategories()->toArray(), 
+            'user' => $picture->getUsers()->toArray()
+            ]);
     }
     // Create and return a JSON response
     return $app->json($responseData);
 })
+->method('GET|POST')
 ->bind('api_pictures')
 ;
 

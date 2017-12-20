@@ -1,0 +1,115 @@
+{% extends "layout.html.twig" %}
+{% block intro %}
+    <div class="intro-galery row">
+        <div class="overlay"></div>
+        <div class="col-sm-12">
+            <h1 class="mt0 color-white">Apprendre PixelArt</h1>
+        </div>
+    </div> <!-- /.intro.row -->
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section class="shop">
+            <div class="container page-bgc">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="title-box">
+                            <h2 class="title mt0">Nos PixelArt</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="boxed">
+
+                    {% if pictures is empty %}
+                        <p>Il n'y a pas de PixelArt à afficher</p>
+                    {% else %}
+
+                        <div class="col-sm-3 col-md-2">
+                            
+                             
+                            <h2>Difficulté</h2>
+                            <ul id="filterByDifficulty" class="list-unstyled">
+                                <li class="filterDifficulty btn btn-robot btn-block" value="all">Tous</li>
+                                <li class="filterDifficulty btn btn-robot btn-block" value="très facile">Très facile</li>
+                                <li class="filterDifficulty btn btn-robot btn-block" value="facile">Facile</li>
+                                <li class="filterDifficulty btn btn-robot btn-block" value="moyen">Moyen</li>
+                                <li class="filterDifficulty btn btn-robot btn-block" value="difficile">Difficile</li>
+                            </ul> 
+                            
+                            <h2>Catégories</h2>
+                            
+                            <ul id="filterCategory" class="list-unstyled">
+                                <li class="filterCategory btn btn-robot btn-block" value="all">Toutes</li>
+                                {% for categorie in categories %}
+                                <li class="filterCategory btn btn-robot btn-block" value="{{ categorie.idCategories }}">{{ categorie.title }}</li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                            
+                        <div id="galery-section" class="col-sm-9 col-md-10">
+                            {% for picture in pictures %}
+
+                                <div class="col-sm-6 col-md-4" >
+                                    <div class="shop-box">
+                                        <div class="text-center div-img"><img class="img-galery" src="{{ picture.thumb | replace({" ":"+"})  }}" alt=""></div>
+                                        <div class="shop-box-hover text-center">
+                                            <div class="c-table">
+                                                <div class="c-cell">
+                                                    <a class="linkLearnPicture" href="{{ path('apprendre-pixelart', { id : picture.idPictures }) }}">
+                                                        <span class="glyphicon glyphicon-education" aria-hidden="true"></span> Apprendre
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="shop-box-title">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <p class="gras titlePicture">{{ picture.title | slice(0, 10) }}</p>
+{#                                                <p class="text-uppercase "> {{ picture.categories.title }}</p>#}
+
+                                            {#</div>
+                                            <div class="col-xs-6">#}
+{#                                                <p class="text-lowercase ">{{ picture.difficulty }}</p>#}
+                                                <p class="text-lowercase  gras"> par {{ picture.users.username }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        {#<div class="col-sm-12">
+                            <nav>    
+                                <ul class="pager" id="pager-galery">
+                                    
+                                    {% for i in 1..paginate.lastpage %}
+                                        {% if i == paginate.currentpage %}
+                                            <li><a class="pager-galery" href="{{ path('galery-pixelart', { p : i }) }}">{{ i }}</a></li>
+                                        {% else %}
+                                            <li ><a  href="{{ path('galery-pixelart', { p : i }) }}">{{ i }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </nav>
+                       
+                        </div> #}
+                    {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </section>              
+    </main>
+
+{% endblock %} 
+{% block script %}
+    <script src="{{ asset('js/apprentissage.js') }}"></script>
+
+
+{% endblock %}
+
