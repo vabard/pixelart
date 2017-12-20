@@ -24,6 +24,7 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="{{ asset('admin/css/pe-icon-7-stroke.css') }}" rel="stylesheet" />
+    <link href="{{ asset('admin/css/style.css') }}" rel="stylesheet" />
 
 </head>
 <body>
@@ -82,10 +83,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Dashboard</a>
-                    <a class="navbar-brand" href="#">Add user</a>
-                    <a class="navbar-brand" href="#">Validate Picture</a>
-                    <a class="navbar-brand" href="#">Add Category</a>
+                    <a class="navbar-brand" href="{{ path('admin_dashboard') }}">Dashboard</a>
 
                 </div>
                 <div class="collapse navbar-collapse">

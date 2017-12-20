@@ -5,6 +5,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Propel\Propel\Base\UsersQuery;
 use Propel\Propel\Base\PicturesQuery;
 use Propel\Propel\Base\CategoriesQuery;
+use Propel\Propel\Categories;
 
 $app->get('/loginadmin', function(Request $request) use ($app) {
     return $app['twig']->render('admin/login_admin.html.twig', array(
@@ -68,10 +69,8 @@ $adminGroup->get('pictureslist', function () use ($app) {
     $pictures = Propel\Propel\PicturesQuery::create()
             ->joinWithUsers()
             ->joinWithCategories()
-            //->filterByState('2')
             ->orderByState()
             ->orderByDateInsert('desc')
-            //->paginate($page=$p, $maxPerPage=15);
             ->find();
     
     $categories = Propel\Propel\CategoriesQuery::create()
@@ -81,16 +80,6 @@ $adminGroup->get('pictureslist', function () use ($app) {
     // on transmet à notre template les données (toujours un array!)
     return $app['twig']->render('admin/pictureslist.html.twig', [
         'pictures' => $pictures,
-//        'paginate' => [
-//            'results'  => $pictures->getNbResults(),
-//            'firstpage' => $pictures->getFirstPage(),
-//            'lastpage' => $pictures->getLastPage(),
-//            'currentpage' => $pictures->getPage(),
-//            'islastpage' => $pictures->isLastPage(), //return boolean true (1) if the current page is the last page
-//            'firstindex' => $pictures->getFirstIndex(),
-//            'lastindex' => $pictures->getLastIndex(), 
-//            'getNextPage' => $pictures->getNextPage()   
-//        ],
         'categories' => $categories
     ]);
 })
@@ -125,5 +114,15 @@ $adminGroup->get('deletecategorie/{id}', function ($id) use ($app) {
 })
 ->bind('admin_deletecategorie')
 ;
+$adminGroup->post('newcategory', function (Request $request) use ($app) {
+    $title = $request->request->get('title');
+    //var_dump($title);
+    $categorie = new Categories();
+    $categorie->setTitle($title);
+    $categorie->save();
+    return $app->redirect($app['url_generator']->generate('admin_categorieslist'));
+       
+})
+->bind('newcategory');
 
 $app->mount('/admin', $adminGroup);

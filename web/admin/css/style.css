@@ -1,0 +1,9 @@
+.close{
+    margin-top: 5px;
+}
+.btn-neutral{
+    border: 1px solid orange;  
+}
+.btn-neutral:hover{
+    border: 1px solid black;
+}
