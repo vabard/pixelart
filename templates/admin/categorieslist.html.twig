@@ -32,11 +32,45 @@
                                 </tbody>
                                 
                             </table>
-                              <tr>
-                                        <button type="button" class="btn btn-info btn-fill pull-right" data-toggle="modal" data-target=".bs-example-modal-md">Ajouter une catégorie</button><br>
-                                    </tr>
+                            <tr>
+                                <button type="button" class="btn btn-neutral btn-fill pull-right" data-toggle="modal" data-target=".bs-example-modal-md" data-backdrop="false">Ajouter une catégorie</button><br>
+                            </tr>
                         </div>
+
+                                            
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                    
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-1 col-md-offset-11">
+                            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">X</button>
+                        </div>                    
+                    </div>
+                    <form id="form" method="post" action="{{ path('newcategory') }}">
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-3">
+                                <label>Nom de la catégorie :</label><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-3"> 
+                                <input type="text" name="title" id="title"><br><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-6">
+                                <input type="submit" value="Ajouter"><br><br>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
             </div>
         </div>

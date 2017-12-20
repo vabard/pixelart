@@ -2,5 +2,61 @@
 
 
 {% block content %}
-<h2>Bienvenue sur le Dashboard</h2>
+        <div class="content">
+            <div class="container-fluid">
+                {#{{ dump(pictures) }}#}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+
+                            <div class="header">
+                                <h4 class="title">Users Statistics</h4>
+                                <p class="category">Les statistiques utilisateurs</p>
+                            </div>
+                            <div class="content">
+                                <div id="chartPreferences" class="ct-chart ct-perfect-fourth">                                  
+                                    
+                                    <p>Il y a {{ users | length }} utilisateurs enregistrés sur le site à la date du
+                                        {{ "now"|date("d/m/Y") }} </p>
+                                    
+                                    {#{{ dump(users)}}#}
+                                    
+                                    <p>Le dernier utilisateur enregistré est :<pre>{{ users | last .username}}</pre><p>                                   
+                                    <hr>
+                                </div>
+
+                                <div class="footer">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Pictures statistics</h4>
+                                <p class="category">Les statistiques sur nos pixelarts</p>
+                            </div>
+                            <div class="content">
+                                <div id="chartHours" class="ct-chart">
+                                    <p>Il y a {{ pictures | length }} pixelarts enregistrés sur le site à la date du
+                                        {{ "now"|date("d/m/Y") }} </p>
+                                    
+                                    
+                                    
+                                    <p>Le dernier pixelart enregistré est :<pre>{{ pictures | last .title}}</pre><p>
+                                    <p><a href="{{ pictures | last .thumb | replace({" ":"+"})}}" data-toggle="lightbox"><img src="{{ pictures | last .thumb | replace({" ":"+"})}}" width="50px" height="50px"></a></p>
+                                    <p>Fait par :<pre>{{ pictures | last .users.username}} </pre></p>
+                                    <hr> 
+                                </div>
+                                <div class="footer">                                   
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 {% endblock %}
