@@ -17,6 +17,9 @@ var rectanglemoyen = document.getElementById("rectanglemoyen");
 var grandcarre = document.getElementById("grandcarre");
 var grandrectangle = document.getElementById("grandrectangle");
 var picture = '';
+var difficulty ='';
+var nrbcase='';
+
 
 //fonctions
 function Grid(wc, hc) {
@@ -158,7 +161,23 @@ function drawGrid(grid, canvas) {
         }
     });
 }
-
+//fonction qui évalue la difficulté
+function assessDifficulty(){
+    nbrcase=grid.exportData();
+    if (nbrcase.length<30){
+        difficulty="très facile";
+    }
+    else if(nbrcase.length<50){
+        difficulty="facile";
+    }
+    else if(nbrcase.length<=150){
+        difficulty="moyen";
+    }
+    else if(nbrcase.length>150){
+        difficulty="difficile";
+    }
+    return difficulty;
+}
 //ajax qui envoie le canvas dans la bdd
 function enregistrerCanvas(param) {
 
@@ -201,7 +220,7 @@ for (var i = 0; i < choix.length; i++) {
 
 
         //if(document.getElementById("canvas")){document.getElementById("cadre").removeChild(document.getElementById('canvas'))}; 
-        if (row.value != '' && col.value != '') {
+        if (row.value>=2 && col.value>=2) {
             $("#canvas").fadeOut(500, function () {
                 grid.setWc(parseInt(col.value));
                 grid.setHc(parseInt(row.value));
@@ -292,6 +311,8 @@ grandcarre.addEventListener("click", function (e) {
 
 $('.save').on('click', function () {
     createJson(grid);
+    assessDifficulty();
+    console.log(difficulty);
     console.log(envoijson);
     $('#envoicanvas').attr('value', envoijson);
     var thumb = canvas.toDataURL();
@@ -360,24 +381,34 @@ $("#erase").on('click',function(){
 })
 //Quand on submit le formulaire de sauvegarde du brouillon         
 $('#form').on('submit', function (e) {
+    $(".erreurtitre").text('');
     e.preventDefault();
+    
     var value=$("#id_categories").val();
-    param = 'title=' + $("#title").val() + '&thumb=' + $("#thumb").val() + '&state=' + $("#state").val() + '&canvas=' + envoijson + '&id_categories=' + value;
+    if($("#title").val().length>15){
+       $("#erreurtitre").text("La titre du dessin ne doit pas dépasser 15 caractères");
+    }else{
+    param = 'title=' + $("#title").val() + '&thumb=' + $("#thumb").val() + '&state=' + $("#state").val() + '&canvas=' + envoijson + '&id_categories=' + value + '&difficulty='+ difficulty;
     enregistrerCanvas(param);
     console.log(param);
     $("#modal").fadeOut(500);
     $("#modal").removeClass('in');
     $(".modal-backdrop").attr('style', 'position:static');
     $("body").removeClass('modal-open');
+    }
 });
 //Quand on envoiue le dessin
 $('#form2').on('submit', function (e) {
     e.preventDefault();
+    $(".erreurtitre").text('');
     var value=$("#id_categoriesdef").val();
-    param = 'title=' + $("#titledef").val() + '&thumb=' + $("#thumbdef").val() + '&state=' + $("#statedef").val() + '&canvas=' + envoijson + '&id_categories=' + value;
+    if($("#titledef").val().length>15){
+       $("#erreurtitredef").text("La titre du dessin ne doit pas dépasser 15 caractères");
+    }else{
+    param = 'title=' + $("#titledef").val() + '&thumb=' + $("#thumbdef").val() + '&state=' + $("#statedef").val() + '&canvas=' + envoijson + '&id_categories=' + value + '&difficulty='+ difficulty;;
     enregistrerCanvas(param);
     window.location = "mes-pixelarts";
-});
+}});
 
 
 

@@ -16,9 +16,9 @@
          <label>Combien de colonnes voulez-vous?</label><br>
          
              <select id="col" class="choix">
-                <option></option>
+                <option>2</option>
                 <script>
-                    for(i=1;i<=100;i++){
+                    for(i=3;i<=100;i++){
                         document.write('<option>'+i+'</option>');
                     }
                 </script>
@@ -26,9 +26,9 @@
             <br>
         <label>Combien de rangées voulez-vous?</label><br>
          <select id="row" class="choix">
-            <option></option>
+            <option>2</option>
             <script>
-                for(i=1;i<=100;i++){
+                for(i=3;i<=100;i++){
                     document.write('<option>'+i+'</option>');
                 }
             </script>
@@ -54,6 +54,7 @@
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3"> 
                         <input type="text" name="title" id="title"><br><br>
+                        <p id="erreurtitre"></p>
                     </div>
                 </div>
                 <div class="row">
@@ -72,6 +73,7 @@
                         <input type="hidden" name="canvas" value="" id="envoicanvas">
                         <input type="hidden" name="state" value="0" id="state">
                         <input type="hidden" name="thumb" value="1" id="thumb">
+                        
                     </div>
                 </div>
                         
@@ -136,6 +138,7 @@
             <div class="row">
                 <div class="col-md-6 col-md-offset-3"> 
                     <input type="text" name="title" id="titledef"><br><br>
+                    <p id="erreurtitredef"></p>
                 </div>
             </div>
             <div class="row">
@@ -245,12 +248,13 @@
                     <button style="background-color: Indigo;" data-color="Indigo"></button><br>
 
                 </div> 
-                <br><br>
+                
                 <div>
                     <!--Zoom et bouton pour effacer-->
+                    <button id="erase" class="btn btn-robot btn-sm">Effacer</button><br><br><br>
                     <button id="zoom"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></button>
                     <button type="button" id="dezoom"><span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span></button><br><br>
-                    <button id="erase" class="btn btn-robot btn-sm">Effacer</button>
+                    
             </div>
         </div>
     </div>

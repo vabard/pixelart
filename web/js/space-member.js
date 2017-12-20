@@ -25,13 +25,13 @@ $("#buttonenvoyes").on('click',function(){
 });
 
        $("#buttonbrouillons").on('click',function(){
-    if($("#brouillons").css('display')=="none"){
+       if($("#brouillons").css('display')=="none"){
        $("#envoyes").fadeOut(500);
        $("#brouillons").fadeIn(500,function(){
-           $(this).parent().height($(this).height());
+       $(this).parent().height($(this).height());
        });
     }
-   if($("#envoyes").css('display')!="none" && $("#brouillons").css('display')!="none"){
+        if($("#envoyes").css('display')!="none" && $("#brouillons").css('display')!="none"){
        $("#envoyes").fadeOut(200,function(){
            //$(this).parent().height($(this).height());
        $("#envoyes").css('position',"absolute");

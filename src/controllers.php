@@ -47,6 +47,10 @@ $app->get('/login', function(Request $request) use ($app) {
 ->bind('login')
 ;
 
+
+
+
+
 $app->match('/register', function(Request $request) use ($app) {
     
     $user = new Users();
@@ -252,6 +256,7 @@ $app->match('/register_picture', function (Request $request) use ($app){
     $canvas = $request->request->get('canvas');
     $id_categories = $request->request->get('id_categories');
     $thumb = $request->request->get('thumb');
+    $difficulty=$request->request->get('difficulty');
     
     
     var_dump($title);
@@ -272,6 +277,7 @@ $app->match('/register_picture', function (Request $request) use ($app){
                 $picture->setCanvas($canvas);
                 $picture->setState($state);
                 $picture->setThumb($thumb);
+                $picture->setDifficulty($difficulty);
                 $picture->setIdUsers($app['user']->getIdUsers());
                 $picture->save();
                 
