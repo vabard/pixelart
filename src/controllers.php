@@ -269,10 +269,10 @@ $app->get('/api/picture/{id}', function($id) use ($app) {
 ;
 
 
-$app->get('/qui-sommes-nous', function () use ($app) {
-    return $app['twig']->render('quisommesnous.html.twig', array());
+$app->get('/a-propos', function () use ($app) {
+    return $app['twig']->render('a-propos.html.twig', array());
 })
-->bind('qui-sommes-nous')
+->bind('a-propos')
 ;
 
 $app->get('/contacts', function () use ($app) {
