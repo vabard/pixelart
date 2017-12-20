@@ -1,5 +1,5 @@
 /* 
-    Style for apprendre-page
+    Style for apprendre-page & galery-page
 */
 /* 
     Created on : déc. 2017
@@ -9,6 +9,9 @@
 #container-learn {
     max-width: 800px;
     margin: 0 auto;
+    /*max-height: 95vh;*/ 
+    /*overflow: scroll;*/
+    /*border: 1px solid #fabe12;*/
 }
 
 #colors li {
@@ -41,13 +44,28 @@
     color: white;
 }
 
+.img-galery{
+    max-width: 100%;
+    max-height: 100%;     
+}
+
+.div-img{
+    width: 100%;
+    height: 100%; 
+}
+
+.shop-box {
+    height: 200px;
+    border: 0.1px solid #fabe12;
+}
+
 .shop-box-title h3 {
     margin: 0 0 5px 0;
     font-weight: 700;
     font-size: 18px;
 }
 .shop-box-title p {
-    font-size: 13px;
+    font-size: 11px;
 }
 
 .picture-desc {
@@ -55,15 +73,12 @@
     font-weight: 500;
 }
 
-bg-main-color {
+#pager-galery li>a.pager-galery {
+    color: #fff;
+    border-color: #fabe12;
     background-color: #fabe12;
 }
 
-#pager-galery li>a.pager-galery {
-	color: #fff;
-	border-color: #fabe12;
-	background-color: #fabe12;
-}
 .gras{
     font-weight: 500;
 }
@@ -71,6 +86,8 @@ bg-main-color {
 .btn-robot2{
 	padding: 5px 8px;
 }
+
+.active-btn,
 .btn-robot2:hover{
 	background-color: transparent;
 	color: #fabe12;
@@ -83,7 +100,7 @@ bg-main-color {
 	color: #fff;
 	text-transform: uppercase;
 	border-color: transparent;
-	padding: 5px 10px;
+	padding: 5px 15px;
 	transition: all 0.4s ease-in-out;
 	/*letter-spacing: 1px;*/
 	font-weight: 300;
@@ -95,40 +112,41 @@ bg-main-color {
 	border-color: #fabe12;
 }
 
-.nutral {
-    background-color: #fff;
-}
-
 .mt4{
 	margin-top: 4rem;
 }
 
-#sideBarShareBtns {
+#shareList {
 
         background-color: rgba(255,255,255, .5);
         text-align: center;
-        /*display: inline;*/
+        /*display: inline-flex;*/
         position: fixed;
         bottom: 10vh;
-        left: 0;
+        right: 0;
         z-index: 10;        
 }
 
 
 #divSteps {
     overflow: scroll;
-    border: 1px solid grey;
+    border: 1px solid #fabe12;
     height: 30vh;
+    
+}
+
+#colors {
+    border: 1px solid #fabe12;
 }
 
 
 @media (max-width: 499px) {
     #shareList {
-            display: inline-flex;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            z-index: 10;
+        display: inline-flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 10;
     }
     .btn-robot3{
 	
@@ -137,5 +155,5 @@ bg-main-color {
 	/*letter-spacing: 1px;*/
 	font-weight: 300;
 	margin-top: 2px;
-}
+    }
 }
