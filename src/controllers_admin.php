@@ -18,7 +18,15 @@ $app->get('/loginadmin', function(Request $request) use ($app) {
 $adminGroup = $app['controllers_factory']; 
 
 $adminGroup->get('dashboard', function() use ($app){
-    return $app['twig']->render('admin/dashboard.html.twig');
+    $users = UsersQuery::create()->find();
+    $pictures = PicturesQuery::create()
+            ->joinWithUsers()
+            ->joinWithCategories()
+            ->find();
+    return $app['twig']->render('admin/dashboard.html.twig', [
+        'users' => $users,
+        'pictures' => $pictures
+    ]);
 })
 ->bind('admin_dashboard')
 ;
