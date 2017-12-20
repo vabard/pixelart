@@ -5,40 +5,40 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
+                <!--Selection du format-->
                 <h2>Formats</h2><br>
-                <button id="petitrectangle" class="btn btn-info">Petit rectangle</button><br><br>
-                <button id="carremoyen" class="btn btn-info">Carré Moyen</button><br><br>
-                <button id="rectanglemoyen" class="btn btn-info">Rectangle Moyen</button><br><br>
-                <button id="grandcarre" class="btn btn-info">Grand carré</button><br><br>
-                <button id="grandrectangle" class="btn btn-info">Grand rectangle</button><br><br>
+                <button id="petitrectangle" class="btn btn-robot btn-md">Petit rectangle</button><br><br>
+                <button id="carremoyen" class="btn btn-robot btn-md">Carré Moyen</button><br><br>
+                <button id="rectanglemoyen" class="btn btn-robot btn-md">Rectangle Moyen</button><br><br>
+                <button id="grandcarre" class="btn btn-robot btn-md">Grand carré</button><br><br>
+                <button id="grandrectangle" class="btn btn-robot btn-md">Grand rectangle</button><br><br>
                 <h2>Personnaliser</h2>
          <label>Combien de colonnes voulez-vous?</label><br>
          
-     <select id="col" class="choix">
-        <option></option>
-        <script>
-            for(i=1;i<=100;i++){
-                document.write('<option>'+i+'</option>');
-            }
-        </script>
-    </select>
-    <br>
-    <label>Combien de rangées voulez-vous?</label><br>
-     <select id="row" class="choix">
-        <option></option>
-        <script>
-            for(i=1;i<=100;i++){
-                document.write('<option>'+i+'</option>');
-            }
-        </script>
-    </select><br>
+             <select id="col" class="choix">
+                <option>2</option>
+                <script>
+                    for(i=3;i<=100;i++){
+                        document.write('<option>'+i+'</option>');
+                    }
+                </script>
+            </select>
+            <br>
+        <label>Combien de rangées voulez-vous?</label><br>
+         <select id="row" class="choix">
+            <option>2</option>
+            <script>
+                for(i=3;i<=100;i++){
+                    document.write('<option>'+i+'</option>');
+                }
+            </script>
+        </select><br>
         <div>
             <br><br><br>
-            <button id="zoom"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></button>
-            <button type="button" id="dezoom"><span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span></button><br><br>
-            <!-- Large modal -->
-            <button type="button" class="btn btn-primary save" data-toggle="modal" data-target=".bs-example-modal-md">Sauvegarder le brouillon</button><br>
-</div>
+            
+            <!-- Large modal pour sauvegarder brouillon -->
+        <button type="button" class="btn btn-primary save" data-toggle="modal" data-target=".bs-example-modal-md">Sauvegarder le brouillon</button><br>
+        </div>
 {% if app.user %}
   <div id="modal" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg" role="document">
@@ -54,6 +54,7 @@
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3"> 
                         <input type="text" name="title" id="title"><br><br>
+                        <p id="erreurtitre"></p>
                     </div>
                 </div>
                 <div class="row">
@@ -72,6 +73,7 @@
                         <input type="hidden" name="canvas" value="" id="envoicanvas">
                         <input type="hidden" name="state" value="0" id="state">
                         <input type="hidden" name="thumb" value="1" id="thumb">
+                        
                     </div>
                 </div>
                         
@@ -80,10 +82,12 @@
                 <div class="row">
                     <div class="col-md-6 col-md-offset-6">
                         <input type="submit" value="Sauvegarder"><br>
+                        
                     </div>
                 </div>
+              </form>
+
             </div>  
-        </form>
         <br>
     </div>
   </div>
@@ -116,6 +120,7 @@
     <br>
 
 {% endif %}
+<!--Publier le dessin-->
 <button type="button" class="btn btn-primary save" data-toggle="modal" data-target=".bs-example-modal-lg">Publier votre dessin</button>
 {% if app.user %}
 
@@ -133,6 +138,7 @@
             <div class="row">
                 <div class="col-md-6 col-md-offset-3"> 
                     <input type="text" name="title" id="titledef"><br><br>
+                    <p id="erreurtitredef"></p>
                 </div>
             </div>
             <div class="row">
@@ -196,7 +202,7 @@
     <br>
           
             
-                
+           <!--Canvas ! Si l'utilisateur reprend un brouillon, il est automatiquement restitué par le script-->     
            {% if picture is defined and picture %} 
             <div class="col-md-6" id="cadre" style="overflow:scroll;">
                 <canvas id="canvas">Votre navigateur ne supporte pas canvas</canvas>
@@ -210,66 +216,49 @@
            {% endif %}
             
             <div class="col-md-3" id="couleurs">
+                <div id="sideBarShareButtons">
                 <div id="my">
+                    <!--Couleurs-->
                     <h2>Couleurs</h2>
-                    <button style="background-color: black;"
-data-color="Black"></button>
+                    <button style="background-color: black;" data-color="Black"></button>
    
-                    <button style="background-color: gainsboro;"
-                    data-color="Gainsboro"></button>
+                    <button style="background-color: gainsboro;" data-color="Gainsboro"></button>
                     
-<button style="background-color: dimgray;"
-    data-color="dimgray"></button><br>
-<button style="background-color: Peru;"
-    data-color="Peru"></button>
-<button style="background-color: SaddleBrown;"
-    data-color="SaddleBrown"></button>
-<button style="background-color: Sienna;"
-    data-color="Sienna"></button><br>
-<button style="background-color: red;"
-    data-color="red"></button>
-<button style="background-color: firebrick;"
-    data-color="firebrick"></button>
-<button style="background-color: darkred;"
-    data-color="darkred"></button><br>
-<button style="background-color: orangered;"
-    data-color="orangered"></button>
-<button style="background-color: DarkOrange;"
-    data-color="DarkOrange"></button>
-<button style="background-color: Orange;"
-    data-color="Orange"></button><br>
-<button style="background-color: Gold;"
-    data-color="Gold"></button>
-<button style="background-color: Yellow;"
-    data-color="Yellow"></button>
-<button style="background-color: Khaki;"
-    data-color="Khaki"></button><br>
-<button style="background-color: LawnGreen;"
-    data-color="LawnGreen"></button>
-<button style="background-color: Green;"
-    data-color="Green"></button>
-<button style="background-color: DarkGreen;"
-    data-color="DarkGreen"></button><br>
-<button style="background-color: DodgerBlue;"
-    data-color="DodgerBlue"></button>
-<button style="background-color: Blue;"    
-    data-color="Blue"></button>
-<button style="background-color: DarkBlue;"
-    data-color="DarkBlue"></button><br>
-<button style="background-color: DarkViolet;"
-    data-color="DarkViolet"></button>
-<button style="background-color: Purple;"
-    data-color="Purple"></button>
-<button style="background-color: Indigo;"
-    data-color="Indigo"></button><br>
+                    <button style="background-color: dimgray;" data-color="dimgray"></button><br>
+                    <button style="background-color: Peru;" data-color="Peru"></button>
+                    <button style="background-color: SaddleBrown;" data-color="SaddleBrown"></button>
+                    <button style="background-color: Sienna;" data-color="Sienna"></button><br>
+                    <button style="background-color: red;" data-color="red"></button>
+                    <button style="background-color: firebrick;" data-color="firebrick"></button>
+                    <button style="background-color: darkred;" data-color="darkred"></button><br>
+                    <button style="background-color: orangered;" data-color="orangered"></button>
+                    <button style="background-color: DarkOrange;" data-color="DarkOrange"></button>
+                    <button style="background-color: Orange;" data-color="Orange"></button><br>
+                    <button style="background-color: Gold;" data-color="Gold"></button>
+                    <button style="background-color: Yellow;" data-color="Yellow"></button>
+                    <button style="background-color: Khaki;" data-color="Khaki"></button><br>
+                    <button style="background-color: LawnGreen;" data-color="LawnGreen"></button>
+                    <button style="background-color: Green;" data-color="Green"></button>
+                    <button style="background-color: DarkGreen;" data-color="DarkGreen"></button><br>
+                    <button style="background-color: DodgerBlue;" data-color="DodgerBlue"></button>
+                    <button style="background-color: Blue;" data-color="Blue"></button>
+                    <button style="background-color: DarkBlue;" data-color="DarkBlue"></button><br>
+                    <button style="background-color: DarkViolet;" data-color="DarkViolet"></button>
+                    <button style="background-color: Purple;" data-color="Purple"></button>
+                    <button style="background-color: Indigo;" data-color="Indigo"></button><br>
 
                 </div> 
-                <br><br>
+                
                 <div>
-                    <button id="erase">Effacer</button>
+                    <!--Zoom et bouton pour effacer-->
+                    <button id="erase" class="btn btn-robot btn-sm">Effacer</button><br><br><br>
+                    <button id="zoom"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></button>
+                    <button type="button" id="dezoom"><span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span></button><br><br>
+                    
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
 
 {% block script %}<script src="{{ asset('js/creation.js') }}"></script>{% endblock %}

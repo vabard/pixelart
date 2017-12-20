@@ -47,6 +47,10 @@ $app->get('/login', function(Request $request) use ($app) {
 ->bind('login')
 ;
 
+
+
+
+
 $app->match('/register', function(Request $request) use ($app) {
     
     $user = new Users();
@@ -122,12 +126,13 @@ $app->get('/mes-pixelarts', function () use ($app) {
     $brouillons = Propel\Propel\PicturesQuery::create()
             
             ->filterByState('0')
+            ->orderByDateInsert('desc')
             ->findByIdUsers($app['user']->getIdUsers());
-            ;
+             
             //->find();
      $envoyes = Propel\Propel\PicturesQuery::create()
             ->filterByState((array(1,2)))
-            // ->filterByState('2')
+            ->orderByDateInsert('desc')
              
             ->findByIdUsers($app['user']->getIdUsers());
            // ->find();
@@ -144,25 +149,7 @@ $app->get('/mes-pixelarts', function () use ($app) {
 ->bind('mes-pixelarts')
 ;
 
-$app->get('/view-pixelart/{id}', function ($id) use ($app) {
-    $picture = Propel\Propel\PicturesQuery::create()
-            ->findOneByIdPictures($id);
-            ;
-            //->find();
-     
-           // ->find();
-    
-    
-    
-            //->joinWithCategories()
-            //->filterByState('2')
-            //->orderByDateInsert('desc')
-            //->find();
-   return $app['twig']->render('view-pixelart.html.twig',['picture'=>$picture]);
 
-})
-->bind('view-pixelart')
-;
 
 
 
@@ -297,6 +284,7 @@ $app->match('/register_picture', function (Request $request) use ($app){
     $canvas = $request->request->get('canvas');
     $id_categories = $request->request->get('id_categories');
     $thumb = $request->request->get('thumb');
+    $difficulty=$request->request->get('difficulty');
     
     
     var_dump($title);
@@ -317,6 +305,7 @@ $app->match('/register_picture', function (Request $request) use ($app){
                 $picture->setCanvas($canvas);
                 $picture->setState($state);
                 $picture->setThumb($thumb);
+                $picture->setDifficulty($difficulty);
                 $picture->setIdUsers($app['user']->getIdUsers());
                 $picture->save();
                 

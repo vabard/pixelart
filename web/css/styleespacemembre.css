@@ -3,14 +3,18 @@
    }
    
 #brouillons{
-   /* position:absolute; */
-    z-index:2;
+   /*position:absolute;*/
+    /*z-index:2;*/
    }
-
+   
+   
+   h2{
+       margin-left:15px;
+   }
    #envoyes{
-    position:absolute;
-    z-index:1;
-    display:none;
+   /* position:absolute;*/
+    /*z-index:1;*/
+   /* display:none; */
    }
 
    .container-fluid {

@@ -17,6 +17,9 @@ var rectanglemoyen = document.getElementById("rectanglemoyen");
 var grandcarre = document.getElementById("grandcarre");
 var grandrectangle = document.getElementById("grandrectangle");
 var picture = '';
+var difficulty ='';
+var nrbcase='';
+
 
 //fonctions
 function Grid(wc, hc) {
@@ -24,7 +27,7 @@ function Grid(wc, hc) {
     this.wc = wc;
     this.hc = hc;
 }
-
+//objet grid
 Grid.prototype.init = function (wc, hc) {
     var grid = [];
     for (var i = 0; i < hc; i++) {
@@ -95,7 +98,7 @@ Grid.prototype.clearColor = function (x, y) {
 // 
 
 /////////////////////////////
-
+//Dessin du canvas de départ(si l'utilisteur reprend un brouillon, un ID est passé dans le templet
 if (document.getElementById("picture")) {
     picture = (JSON.parse($("#picture").val()));
     console.log(picture);
@@ -113,7 +116,7 @@ if (document.getElementById("picture")) {
 }
 
 
-
+//fonction du responsive
 function adaptSize() {
     canvas.width = canvas.parentElement.clientWidth;
     if (step == '') {
@@ -123,7 +126,7 @@ function adaptSize() {
     }
     drawGrid(grid, canvas);
 }
-
+//fonction qui crée la métadata envoyée dans la BDD
 function createJson(grid) {
 
 
@@ -139,7 +142,7 @@ function createJson(grid) {
     envoijson = JSON.stringify(envoijson);
 
 }
-
+//Fonction qui dessin la grille 
 function drawGrid(grid, canvas) {
     var context = canvas.getContext('2d');
     var cellW = canvas.width / grid.wc;
@@ -158,8 +161,24 @@ function drawGrid(grid, canvas) {
         }
     });
 }
-
-
+//fonction qui évalue la difficulté
+function assessDifficulty(){
+    nbrcase=grid.exportData();
+    if (nbrcase.length<30){
+        difficulty="très facile";
+    }
+    else if(nbrcase.length<50){
+        difficulty="facile";
+    }
+    else if(nbrcase.length<=150){
+        difficulty="moyen";
+    }
+    else if(nbrcase.length>150){
+        difficulty="difficile";
+    }
+    return difficulty;
+}
+//ajax qui envoie le canvas dans la bdd
 function enregistrerCanvas(param) {
 
     console.log('enregistrer');
@@ -178,7 +197,7 @@ function enregistrerCanvas(param) {
 window.onresize = function (event) {
     adaptSize();
 };
-
+//Zoom et dézoom
 zoom = document.getElementById("zoom");
 zoom.addEventListener("click", function () {
     canvas.width = 1.1 * canvas.width;
@@ -195,12 +214,13 @@ dezoom.addEventListener("click", function () {
     }
 })
 
+//Choix des dimensions avec le select
 for (var i = 0; i < choix.length; i++) {
     choix[i].addEventListener("change", function (e) {
 
 
         //if(document.getElementById("canvas")){document.getElementById("cadre").removeChild(document.getElementById('canvas'))}; 
-        if (row.value != '' && col.value != '') {
+        if (row.value>=2 && col.value>=2) {
             $("#canvas").fadeOut(500, function () {
                 grid.setWc(parseInt(col.value));
                 grid.setHc(parseInt(row.value));
@@ -216,7 +236,7 @@ for (var i = 0; i < choix.length; i++) {
     })
 }
 
-
+//Choix des dimensions avec les boutons sur les cotés
 petitrectangle.addEventListener("click", function (e) {
 
 
@@ -291,6 +311,8 @@ grandcarre.addEventListener("click", function (e) {
 
 $('.save').on('click', function () {
     createJson(grid);
+    assessDifficulty();
+    console.log(difficulty);
     console.log(envoijson);
     $('#envoicanvas').attr('value', envoijson);
     var thumb = canvas.toDataURL();
@@ -321,11 +343,7 @@ grandrectangle.addEventListener("click", function (e) {
 
 
 
-//   envoi.addEventListener('click', function(){
-//      createJson(grid);
-//      console.log(envoijson);
-//   });
-
+//remplissage du canvas avec les couleurs quand on clique dessus
 canvas.addEventListener('click', function (event) {
     var posX = event.pageX - canvas.offsetLeft - cadre.offsetLeft + cadre.scrollLeft;//ne pas oublier les scrollTop et scrollLeft lors de l'intégration !//- canvas.offsetLeft
     var posY = event.pageY - canvas.offsetTop - cadre.offsetTop + cadre.scrollTop;
@@ -350,7 +368,7 @@ canvas.addEventListener('click', function (event) {
     var dessinJson = createJson(grid);
     console.log(dessinJson);
 });
-
+//Attribution de la couleur quand on clique sur le bouton
 var buttons = document.querySelectorAll('button');
 
 buttons.forEach(function (el) {
@@ -361,26 +379,36 @@ buttons.forEach(function (el) {
 $("#erase").on('click',function(){
   color=null;  
 })
-//            
+//Quand on submit le formulaire de sauvegarde du brouillon         
 $('#form').on('submit', function (e) {
+    $(".erreurtitre").text('');
     e.preventDefault();
+    
     var value=$("#id_categories").val();
-    param = 'title=' + $("#title").val() + '&thumb=' + $("#thumb").val() + '&state=' + $("#state").val() + '&canvas=' + envoijson + '&id_categories=' + value;
+    if($("#title").val().length>15){
+       $("#erreurtitre").text("La titre du dessin ne doit pas dépasser 15 caractères");
+    }else{
+    param = 'title=' + $("#title").val() + '&thumb=' + $("#thumb").val() + '&state=' + $("#state").val() + '&canvas=' + envoijson + '&id_categories=' + value + '&difficulty='+ difficulty;
     enregistrerCanvas(param);
     console.log(param);
     $("#modal").fadeOut(500);
     $("#modal").removeClass('in');
     $(".modal-backdrop").attr('style', 'position:static');
     $("body").removeClass('modal-open');
+    }
 });
-
+//Quand on envoiue le dessin
 $('#form2').on('submit', function (e) {
     e.preventDefault();
+    $(".erreurtitre").text('');
     var value=$("#id_categoriesdef").val();
-    param = 'title=' + $("#titledef").val() + '&thumb=' + $("#thumbdef").val() + '&state=' + $("#statedef").val() + '&canvas=' + envoijson + '&id_categories=' + value;
+    if($("#titledef").val().length>15){
+       $("#erreurtitredef").text("La titre du dessin ne doit pas dépasser 15 caractères");
+    }else{
+    param = 'title=' + $("#titledef").val() + '&thumb=' + $("#thumbdef").val() + '&state=' + $("#statedef").val() + '&canvas=' + envoijson + '&id_categories=' + value + '&difficulty='+ difficulty;;
     enregistrerCanvas(param);
     window.location = "mes-pixelarts";
-});
+}});
 
 
 
