@@ -13,9 +13,9 @@ return [
             'connections' => [
                 'default' => [
                     'adapter' => 'mysql',
-                    'dsn' => 'mysql:host=127.0.0.1;port=8889;dbname=pixelart',
+                    'dsn' => 'mysql:host=127.0.0.1;port=3306;dbname=pixelart',
                     'user' => 'root',
-                    'password' => 'root',
+                    'password' => '',
                     'settings' => [
                         'charset' => 'utf8'
                     ]
