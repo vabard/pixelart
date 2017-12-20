@@ -206,7 +206,7 @@ $app->match('/api/pictures', function(Request $request) use ($app) {
         $picturesQuery ->filterByIdCategories($category);
     }
     
-    $pictures = $picturesQuery ->paginate($page=$pager, $maxPerPage=3);
+    $pictures = $picturesQuery ->paginate($page=$pager, $maxPerPage=15);
     
     // Convert an array of objects ($pictures) into an array of associative arrays ($responseData)
     $responseData = array();

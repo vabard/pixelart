@@ -76,7 +76,7 @@ window.onload = function () {
 
         var link = document.createElement('a');
         link.className = "linkLearnPicture";
-        link.setAttribute('href', (BASE_URL + 'apprendre-pixelart/' + obj[i].id));
+        link.setAttribute('href', (BASE_URL + 'apprendre-pixelart/' + obj[i].IdPictures));
         div6.appendChild(link);
 
         var span = document.createElement('span');
