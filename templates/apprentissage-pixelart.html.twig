@@ -29,8 +29,7 @@
                     {% else %}
 
                         <div class="col-sm-3 col-md-2">
-                            
-                             
+
                             <h2>Difficulté</h2>
                             <ul id="filterByDifficulty" class="list-unstyled">
                                 <li class="filterDifficulty btn btn-robot btn-block " value="all">Tous</li>
@@ -59,13 +58,6 @@
                             <nav>    
                                 <ul class="pager" id="pager-galery">
                                     {# Pages #}
-{#                                    {% for i in 1..paginate.lastpage %}
-                                        {% if i == paginate.currentpage %}
-                                            <li><a class="pager-galery" href="{{ path('galery-pixelart', { p : i }) }}">{{ i }}</a></li>
-                                        {% else %}
-                                            <li ><a  href="{{ path('galery-pixelart', { p : i }) }}">{{ i }}</a></li>
-                                        {% endif %}
-                                    {% endfor %}#}
                                 </ul>
                             </nav>
                        
