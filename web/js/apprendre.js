@@ -1,3 +1,10 @@
+/* 
+    Scripts for apprendre-page & galery-page
+*/
+/* 
+    Created on : déc. 2017
+    Author     : Vassilina Bardol
+*/
 
 var canvas = document.getElementById("canvas-learn");
 var color = 'black';
@@ -75,15 +82,21 @@ window.onresize = function (event) {
 
 
 // DRAW GRID VIDE
+//function adaptSize() {
+//    canvas.width = canvas.parentElement.clientWidth;
+//    canvas.height = canvas.width;
+//    drawGrid(grid, canvas);
+//}
+
 function adaptSize() {
     canvas.width = canvas.parentElement.clientWidth;
-    canvas.height = canvas.width;
+    if (maxX == '') {
+        canvas.height = canvas.width;
+    } else {
+        canvas.height = maxY * (canvas.width / maxX);
+    }
     drawGrid(grid, canvas);
 }
-window.onresize = function (event) {
-    adaptSize();
-};
-
 
 // DRAW PICTURE
 function drawGrid(grid, canvas) {
@@ -151,7 +164,7 @@ function init(){
         return Math.min(a, b);
     });
     
-    var maxX = minX + tabx.reduce(function (a, b) {
+    maxX = minX + tabx.reduce(function (a, b) {
         return Math.max(a, b);
     });
     //console.log(maxX);
@@ -160,7 +173,7 @@ function init(){
         return Math.min(a, b);
     });
     
-    var maxY = minY + taby.reduce(function (a, b) {
+    maxY = minY + taby.reduce(function (a, b) {
         return Math.max(a, b);
     });
     //console.log(maxY);    
@@ -179,7 +192,22 @@ function init(){
     adaptSize();
 }
 
+//Zoom et dézoom
+zoom = document.getElementById("zoom");
+zoom.addEventListener("click", function () {
+    canvas.width = 1.1 * canvas.width;
+    canvas.height = 1.1 * canvas.height;
+    drawGrid(grid, canvas);
+})
 
+dezoom = document.getElementById("dezoom");
+dezoom.addEventListener("click", function () {
+    if (canvas.width > 50) {
+        canvas.width = 0.9 * canvas.width;
+        canvas.height = 0.9 * canvas.height;
+        drawGrid(grid, canvas);
+    }
+})
 
 //VITESSE
 speedOfAnimation = 2000; // valeur par default
@@ -305,6 +333,63 @@ function createColor(color) {
     ul.appendChild(li);
 }
 
+// SIDEBAR display on scroll
+$(document).ready(function(){
+    // Condition d'affichage du bouton
+    $(window).scroll(function(){
+        if ($(this).scrollTop() > 50){
+            $('#shareList').fadeIn();
+        }
+        else{
+            $('#shareList').fadeOut();
+        }
+    });
+});
+
+document.querySelectorAll('.speed').forEach(function (element) {
+    //console.log(element);
+    element.addEventListener('click', function () {
+
+        // On supprime la classe .active-btn sur tous les elements
+        document.querySelectorAll('.speed').forEach(function (e) {
+            e.classList.remove("active-btn-sideNav");
+        });
+
+        // On ajoute la classe  sur l'element cliqué
+        this.classList.add("active-btn-sideNav");
+
+    }); // end addEventListener'click'
+}); // end forEach
+
+document.querySelectorAll('.sideNav').forEach(function (element) {
+    //console.log(element);
+    element.addEventListener('click', function () {
+
+        // On supprime la classe .active-btn sur tous les elements
+        document.querySelectorAll('.sideNav').forEach(function (e) {
+            e.classList.remove("active-btn-sideNav");
+        });
+
+        // On ajoute la classe  sur l'element cliqué
+        this.classList.add("active-btn-sideNav");
+
+    }); // end addEventListener'click'
+}); // end forEach
+
+document.querySelectorAll('.zoom').forEach(function (element) {
+    //console.log(element);
+    element.addEventListener('click', function () {
+
+        // On supprime la classe .active-btn sur tous les elements
+        document.querySelectorAll('.zoom').forEach(function (e) {
+            e.classList.remove("active-btn-sideNav");
+        });
+
+        // On ajoute la classe  sur l'element cliqué
+        this.classList.add("active-btn-sideNav");
+
+    }); // end addEventListener'click'
+}); // end forEach
 
 
 

@@ -24,10 +24,14 @@
                 <li><button class="btn btn-robot3 btn-lg speed" value="500">5</button></li><br>
 
                 <li>Navigation</li>
-                <li><button id="play" class="btn btn-robot3 btn-lg"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button></li>
-                <li><button id="pause" class="btn btn-robot3 btn-lg"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button></li>
-                <li><button id="replay" class="btn btn-robot3 btn-lg"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button></li>
-
+                <li><button id="play" class="btn btn-robot3 btn-lg sideNav"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></button></li>
+                <li><button id="pause" class="btn btn-robot3 btn-lg sideNav"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span></button></li>
+                <li><button id="replay" class="btn btn-robot3 btn-lg sideNav"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button></li><br>
+                
+                <li>Zoom</li>
+                <li><button id="zoom" class="btn btn-robot3 btn-lg zoom"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></button></li>
+                <li><button id="dezoom" class="btn btn-robot3 btn-lg zoom"><span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span></button></li>
+                
             </ul>
         </div>
     </div>
@@ -54,7 +58,6 @@
                                 </div>
                             </div>
 
-
                             <h2>Palette</h2> 
                             <ul id="colors" class="list-unstyled list-inline"></ul>
 
@@ -64,11 +67,13 @@
                                     <ul id="steps" class="list-unstyled"></ul>
                                 </div>
                             </div>
+                            
+
 
                         </div>
 
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-9 container-learn-2">
                         <div id="container-learn" ><canvas id="canvas-learn">Votre navigateur ne supporte pas canvas</canvas></div>
                     </div>
 

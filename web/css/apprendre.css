@@ -9,9 +9,10 @@
 #container-learn {
     max-width: 800px;
     margin: 0 auto;
-    /*max-height: 95vh;*/ 
-    /*overflow: scroll;*/
-    /*border: 1px solid #fabe12;*/
+    max-height: 95vh;
+    overflow: scroll;
+    border: 1px solid #fabe12;
+    
 }
 
 #colors li {
@@ -106,6 +107,8 @@
 	font-weight: 300;
 	margin-top: 2px;
 }
+
+.active-btn-sideNav,
 .btn-robot3:hover{
 	background-color: transparent;
 	color: #fabe12;
@@ -117,14 +120,13 @@
 }
 
 #shareList {
-
         background-color: rgba(255,255,255, .5);
         text-align: center;
-        /*display: inline-flex;*/
         position: fixed;
         bottom: 10vh;
-        right: 0;
-        z-index: 10;        
+        right: 1vw;
+        z-index: 10;
+        display: none;
 }
 
 
@@ -152,7 +154,6 @@
 	
 	padding: 2px 5px;
 	transition: all 0.4s ease-in-out;
-	/*letter-spacing: 1px;*/
 	font-weight: 300;
 	margin-top: 2px;
     }
