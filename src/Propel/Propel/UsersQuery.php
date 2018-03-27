@@ -3,6 +3,7 @@ namespace Propel\Propel;
 
 use ArrayAccess;
 use Propel\Propel\Base\UsersQuery as BaseUsersQuery;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 /**
@@ -18,7 +19,11 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class UsersQuery extends BaseUsersQuery implements UserProviderInterface, ArrayAccess
 {
     public function loadUserByUsername($username): UserInterface {
-        return self::create()->findOneByUsername($username);
+        $user =  self::create()->findOneByUsername($username);
+        if(is_null($user)){
+            throw new UsernameNotFoundException();
+        }
+        return $user;
     }
     public function refreshUser(UserInterface $user): UserInterface {
         return self::create()->findOneByUsername($user->getUsername());

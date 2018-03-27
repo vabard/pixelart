@@ -91,16 +91,12 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">                        
-                    {% if app.user %}
+                    {#{% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
+                    {#{% if is_granted('ROLE_ADMIN') %}#}
                         <li>                                  
                              <a href="{{ path('admin_logoutadmin') }}">Déconnexion</a>                                
-                             <span style="margin: 5px; padding: 5px;">Admin : {{ app.user.username }}</span>
-                        </li>
-                    {% else %}
-                         <li>
-                             <a href="{{ path('loginadmin') }}">Connexion</a>
-                         </li>   
-                     {% endif %}                      
+                             
+                        </li>                   
                     </ul>
                 </div>
             </div>
